@@ -1,0 +1,149 @@
+[
+  {
+    "recipe": "no DS (rung 2)",
+    "seed": 5,
+    "endpoint_status": "collapsed",
+    "selection_role": "first_event_lowest_collapsed_seed",
+    "validation_step": 30,
+    "ground_truth": {
+      "numbers": [
+        99,
+        26,
+        26
+      ],
+      "target": 100
+    },
+    "score": 0.1,
+    "response_chars": 132,
+    "has_answer_tag": true,
+    "excerpt": "We need to use the numbers [99, 26, 26] exactly once to create an equation that equals 100. </think> <answer>(99 - 26) * 26</answer>",
+    "response": "We need to use the numbers [99, 26, 26] exactly once to create an equation that equals 100.\n</think>\n<answer>(99 - 26) * 26</answer>",
+    "source_log": "ablation/logs/rung2-clip0.28-noDS-gen32-train32-n8-resp4096-seed5-s100-20261008-194830.log"
+  },
+  {
+    "recipe": "no DS (rung 2)",
+    "seed": 3,
+    "endpoint_status": "healthy",
+    "selection_role": "lowest_healthy_seed_at_endpoint",
+    "validation_step": 100,
+    "ground_truth": {
+      "numbers": [
+        99,
+        26,
+        26
+      ],
+      "target": 100
+    },
+    "score": 0.0,
+    "response_chars": 12252,
+    "has_answer_tag": false,
+    "excerpt": "</think> <think> We need to create an equation using the numbers [99, 26, 26] that equals 100, with  ... s calculation. Let's try a different approach. </think> <think> Let's try a different combination of",
+    "response": "</think>\n<think>\nWe need to create an equation using the numbers [99, 26, 26] that equals 100, with each number used only once.\n</think>\n<think>\nLet's try different combinations of the numbers to see if we can form the equation.\n</think>\n<think>\nOne possible approach is to try different combinations of the numbers and see if we can form the equation.\n</think>\n<think>\nLet's start with the numbers 99, 26, and 26.\n</think>\n<think>\nWe can try different operations to see if we can get the result of 100.\n</think>\n<think>\nLet's try adding 26 and 26 to 99.\n</think>\n<think>\n99 + 26 + 26 = 151, which is not equal to 100.\n</think>\n<think>\nLet's try subtracting 26 from 99 and then adding 26.\n</think>\n<think>\n99 - 26 + 26 = 99, which is not equal to 100.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26.\n</think>\n<think>\n99 + 26 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but in a different order.\n</think>\n<think>\n99 + 26 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 100, which is equal to 100.\n</think>\n<think>\nWe have found a valid equation that equals 100.\n</think>\n<think>\nThe equation is: (99 + 26) - 26\n</think>\n<think>\nLet's double-check the calculation.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26.\n</think>\n<think>\n99 + 26 - 26 = 100, which is equal to 100.\n</think>\n<think>\nWe have found a valid equation that equals 100.\n</think>\n<think>\nThe equation is: 99 + 26 - 26\n</think>\n<think>\nLet's double-check the calculation.\n</think>\n<think>\n99 + 26 - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but in a different order.\n</think>\n<think>\n99 + 26 - 26 = 100, which is equal to 100.\n</think>\n<think>\nWe have found a valid equation that equals 100.\n</think>\n<think>\nThe equation is: 99 + 26 - 26\n</think>\n<think>\nLet's double-check the calculation.\n</think>\n<think>\n99 + 26 - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of operations.\n</think>\n<think>\nLet's try adding 99 and 26, and then subtracting 26, but using parentheses to group the operations.\n</think>\n<think>\n(99 + 26) - 26 = 125 - 26 = 99, which is not equal to 100.\n</think>\n<think>\nIt seems there was a mistake in the previous calculation. Let's try a different approach.\n</think>\n<think>\nLet's try a different combination of",
+    "source_log": "ablation/logs/rung2-clip0.28-noDS-gen32-train32-n8-resp4096-seed3-s100-20261008-065352.log"
+  },
+  {
+    "recipe": "DS",
+    "seed": 3,
+    "endpoint_status": "collapsed",
+    "selection_role": "first_event_lowest_collapsed_seed",
+    "validation_step": 20,
+    "ground_truth": {
+      "numbers": [
+        99,
+        26,
+        26
+      ],
+      "target": 100
+    },
+    "score": 0.0,
+    "response_chars": 33,
+    "has_answer_tag": true,
+    "excerpt": "<answer> (99 - 26) + 26 </answer>",
+    "response": "<answer> (99 - 26) + 26 </answer>",
+    "source_log": "ablation/logs/rung3-DS-clip0.28-gen192-train32-n8-resp4096-seed3-s100-20261008-120120.log"
+  },
+  {
+    "recipe": "A1",
+    "seed": 3,
+    "endpoint_status": "collapsed",
+    "selection_role": "first_event_lowest_collapsed_seed",
+    "validation_step": 25,
+    "ground_truth": {
+      "numbers": [
+        99,
+        26,
+        26
+      ],
+      "target": 100
+    },
+    "score": 0.0,
+    "response_chars": 33,
+    "has_answer_tag": true,
+    "excerpt": "<answer> (99 - 26) + 26 </answer>",
+    "response": "<answer> (99 - 26) + 26 </answer>",
+    "source_log": "ablation/logs/rungA1-accOnlyReward-maskTruncated-clip0.28-noDS-gen32-train32-n8-resp4096-seed3-s100-20261008-100803.log"
+  },
+  {
+    "recipe": "A1 + KL 0.01",
+    "seed": 3,
+    "endpoint_status": "collapsed",
+    "selection_role": "first_event_lowest_collapsed_seed",
+    "validation_step": 30,
+    "ground_truth": {
+      "numbers": [
+        99,
+        26,
+        26
+      ],
+      "target": 100
+    },
+    "score": 0.0,
+    "response_chars": 31,
+    "has_answer_tag": true,
+    "excerpt": "<answer> 99 - 26 + 26 </answer>",
+    "response": "<answer> 99 - 26 + 26 </answer>",
+    "source_log": "ablation/logs/rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed3-s100-20261008-105838.log"
+  },
+  {
+    "recipe": "A1 + KL 0.01",
+    "seed": 4,
+    "endpoint_status": "healthy",
+    "selection_role": "recovered_seed_at_first_event",
+    "validation_step": 25,
+    "ground_truth": {
+      "numbers": [
+        99,
+        26,
+        26
+      ],
+      "target": 100
+    },
+    "score": 0.0,
+    "response_chars": 31,
+    "has_answer_tag": true,
+    "excerpt": "<answer> 99 - 26 + 26 </answer>",
+    "response": "<answer> 99 - 26 + 26 </answer>",
+    "source_log": "ablation/logs/rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed4-s100-20261008-172451.log"
+  },
+  {
+    "recipe": "A1 + KL 0.01",
+    "seed": 4,
+    "endpoint_status": "healthy",
+    "selection_role": "same_recovered_seed_at_endpoint",
+    "validation_step": 100,
+    "ground_truth": {
+      "numbers": [
+        99,
+        26,
+        26
+      ],
+      "target": 100
+    },
+    "score": 0.0,
+    "response_chars": 173,
+    "has_answer_tag": true,
+    "excerpt": "<answer> (99 - 26) + 26 </answer> - First, we subtract 26 from 99 to get 73. - Then, we add 26 to 73 to get 100. - Therefore, the equation that equals 100 is (99 - 26) + 26.",
+    "response": "<answer> (99 - 26) + 26 </answer>\n- First, we subtract 26 from 99 to get 73.\n- Then, we add 26 to 73 to get 100.\n- Therefore, the equation that equals 100 is (99 - 26) + 26.",
+    "source_log": "ablation/logs/rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed4-s100-20261008-172451.log"
+  }
+]

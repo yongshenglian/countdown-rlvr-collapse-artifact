@@ -1,0 +1,13 @@
+model,prompt,metric,n,acc,se,truncated
+DS_step300,standard,strict,1319,0.6588,0.0131,0.0083
+DS_step300,standard,flexible,1319,0.7369,0.0121,0.0083
+DS_step300,think,strict,1319,0.7331,0.0122,0.0083
+DS_step300,think,flexible,1319,0.7331,0.0122,0.0083
+base,standard,strict,1319,0.329,0.0129,0.0061
+base,standard,flexible,1319,0.7149,0.0124,0.0061
+base,think,strict,1319,0.4837,0.0138,0.003
+base,think,flexible,1319,0.5171,0.0138,0.003
+noDS_step300,standard,strict,1319,0.6914,0.0127,0.0091
+noDS_step300,standard,flexible,1319,0.7475,0.012,0.0091
+noDS_step300,think,strict,1319,0.7589,0.0118,0.0076
+noDS_step300,think,flexible,1319,0.7589,0.0118,0.0076

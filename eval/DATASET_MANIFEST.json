@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-10-12",
+  "canonicalization": {
+    "encoding": "UTF-8",
+    "record": "JSON with sort_keys=true, separators=(',', ':'), ensure_ascii=false, followed by newline",
+    "purpose": "The digest covers benchmark inputs and references, excluding model outputs and scores."
+  },
+  "datasets": {
+    "gsm8k_test": {
+      "repository": "openai/gsm8k",
+      "upstream_revision": null,
+      "revision_note": "The legacy preparation did not preserve the upstream revision. Exact evaluated bytes are vendored and hashed.",
+      "split": "test",
+      "rows": 1319,
+      "path": "eval/data/gsm8k_test.parquet",
+      "file_sha256": "f284e0ad015991d0059d265051a3c0915c5c1def15a8c01ac9a9142eeb87a180",
+      "result_source": "eval/results_8k/gsm8k/base__standard.jsonl",
+      "canonical_fields": ["question", "gold"],
+      "canonical_sha256": "049726c21d58c7bd7db676cb8651e6c422e5cf0e7e05bca4d6e9812691931161"
+    },
+    "math_test": {
+      "repository": "EleutherAI/hendrycks_math",
+      "upstream_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "split": "test (all seven configurations)",
+      "rows": 5000,
+      "result_source": "eval/results_8k/math/base__standard.jsonl",
+      "canonical_fields": ["problem", "solution", "level", "subject"],
+      "canonical_sha256": "e677523e334175f524b43fcaef8fbda2f4dafe712f9d52357b6f5384d84a8e51",
+      "revision_recovery": "Exact 5000/5000 canonical-row match against the cached immutable snapshot."
+    },
+    "bbh_test": {
+      "repository": "SaylorTwift/bbh",
+      "upstream_revision": "b5306be6f827cfafbb545ff5a51f96916029b0fd",
+      "split": "test (all 27 configurations)",
+      "rows": 6511,
+      "result_source": "eval/results_8k/bbh/base__standard.jsonl",
+      "canonical_fields": ["task", "input", "gold", "example"],
+      "canonical_sha256": "90feedd300aefc68a9a7423bdb4a8413f91eec1322dc7d61c1aeec9f61db973c",
+      "revision_recovery": "Exact 6511/6511 canonical-row match against the cached immutable snapshot."
+    },
+    "mmlu_pro_test": {
+      "repository": "TIGER-Lab/MMLU-Pro",
+      "upstream_revision": "dd36ce4b34827164989f100331f82c5a29741747",
+      "split": "test",
+      "rows": 12032,
+      "result_source": "eval/results_8k/mmlupro/base__standard.jsonl",
+      "canonical_fields": ["question_id", "category", "question", "options", "gold"],
+      "canonical_sha256": "62e6b854c5b5047295d18fc8a316f3d775bc2a1ede0a9c0a4e0b46e199ae6368",
+      "revision_recovery": "Exact 12032/12032 canonical-row match against the cached immutable snapshot."
+    },
+    "math500": {
+      "repository": "Derived from EleutherAI/hendrycks_math",
+      "upstream_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+      "rows": 500,
+      "path": "eval/data/math500.jsonl",
+      "file_sha256": "200806fb17234213e909649c09a14ce01ef836b32d3bcb1a261fcf96cda4470f",
+      "subset_of_result": "eval/results_8k/math/base__standard.jsonl",
+      "subset_key": "problem"
+    },
+    "countdown_train": {
+      "repository": "Jiayi-Pan/Countdown-Tasks-3to4",
+      "upstream_revision": null,
+      "revision_note": "Exact training bytes are vendored and hashed.",
+      "rows": 50000,
+      "path": "replication/data/countdown_train.parquet",
+      "file_sha256": "a8508c1531cac14162327f97033572949905bb5d24a6993666813fbde9d12f8d"
+    },
+    "countdown_validation": {
+      "repository": "Jiayi-Pan/Countdown-Tasks-3to4",
+      "upstream_revision": null,
+      "revision_note": "Exact validation bytes are vendored and hashed.",
+      "rows": 1024,
+      "path": "replication/data/countdown_test.parquet",
+      "file_sha256": "63b631a38143f0d79090919be96f40848178f1befcb9eb100b1f46d6d22b6898"
+    }
+  }
+}

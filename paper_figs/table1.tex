@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{DAPO with and without dynamic sampling (DS) on Countdown, Qwen2.5-1.5B-Instruct. The two runs differ only in \texttt{filter\_groups.enable}. Both generate 192$\times$8 responses per step; DS trains on the first 32 groups that survive filtering. Val.\ accuracy is on 1024 held-out problems (one sample, $T{=}1.0$, top-$p{=}0.7$); @$s$ is the mean of the five evaluations centred on step $s$; ``Last 10'' averages steps 450--495. Steps/hours to accuracy use the first three consecutive evaluations averaging at or above the threshold.}
+\label{tab:ds_vs_nods}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccccccccccc}
+\toprule
+& \multicolumn{3}{c}{Prompts / updates per step} & \multicolumn{6}{c}{Val.\ accuracy} & \multicolumn{2}{c}{Steps to acc.} & \multicolumn{2}{c}{Hours to acc.} & Total \\
+Method & Gen. & Trained & Updates & @100 & @200 & @300 & @400 & Last 10 & Best & 0.6 & 0.7 & 0.6 & 0.7 & hours \\
+\midrule
+DAPO w/o DS & 192 & 192 & 6 & 0.683 & 0.737 & 0.755 & 0.778 & 0.784 & 0.793 & 80 & 115 & 7.1 & 11.8 & 70.4 \\
+DAPO w/ DS & 192 & 32 & 1 & 0.527 & 0.656 & 0.670 & 0.708 & 0.727 & 0.739 & 145 & 390 & 18.6 & 58.3 & 74.9 \\
+\bottomrule
+\end{tabular}
+\end{table*}

@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.xdv
+
+# Large artifacts are distributed separately from ordinary Git history.
+checkpoints/
+raw_generations/
+raw_logs/

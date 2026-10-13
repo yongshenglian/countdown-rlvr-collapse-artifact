@@ -1,0 +1,51 @@
+== 1. Tolerant-correctness and marker-compliance transitions (standard prompt, % of items) ==
+bench                       model  base_strict  base_no_marker  model_strict  total_gain  tolerant_fixes  tolerant_losses  net_tolerant          net_ci  marker_wins  marker_losses  p_flexible
+gsm8k                  DS_step300        33.36           54.44         66.11       32.75            7.05             6.29          0.76   [-1.21, 2.73]        30.86           1.52        0.50
+gsm8k                noDS_step300        33.36           54.44         69.90       36.54           10.31             6.97          3.34    [1.10, 5.57]        31.77           1.74        0.00
+gsm8k      GRPO_n2_kl4e-2_step250        33.36           54.44         69.52       36.16            7.13             4.02          3.11    [1.31, 4.90]        33.06           1.44        0.00
+gsm8k      GRPO_n2_kl1e-2_step250        33.36           54.44         56.48       23.12            7.05             5.84          1.21   [-0.72, 3.15]        22.90           3.03        0.25
+gsm8k      GRPO_n8_kl1e-3_step520        33.36           54.44         63.53       30.17            8.79             9.02         -0.23   [-2.51, 2.05]        28.58           2.58        0.90
+gsm8k PPO_klF_ent0_lr1e-6_step520        33.36           54.44         62.17       28.81            7.88            17.44         -9.55 [-12.22, -6.89]        28.81           0.23        0.00
+ math                  DS_step300        55.14            4.84         55.12       -0.02            7.78             7.90         -0.12   [-1.22, 0.98]         0.10           0.00        0.86
+ math                noDS_step300        55.14            4.84         54.88       -0.26            8.00             8.38         -0.38   [-1.50, 0.74]         0.08           0.00        0.53
+ math      GRPO_n2_kl4e-2_step250        55.14            4.84         55.34        0.20            5.68             5.58          0.10   [-0.83, 1.03]         0.10           0.00        0.87
+ math      GRPO_n2_kl1e-2_step250        55.14            4.84         56.04        0.90            6.48             5.68          0.80   [-0.17, 1.77]         0.08           0.00        0.11
+ math      GRPO_n8_kl1e-3_step520        55.14            4.84         52.68       -2.46            7.46             9.94         -2.48  [-3.63, -1.33]         0.10           0.10        0.00
+ math PPO_klF_ent0_lr1e-6_step520        55.14            4.84         46.16       -8.98            6.38            15.50         -9.12 [-10.39, -7.85]         0.08           0.00        0.00
+
+== 2. Arithmetic accuracy: explicit calculations recomputed (standard prompt) ==
+bench                       model  calcs_per_response  calc_error_rate_pct  responses_with_error_pct  wrong_answers_with_error_pct  correct_answers_with_error_pct
+gsm8k                        base                1.43                 2.70                      2.27                          2.39                            2.05
+gsm8k                  DS_step300                1.72                 4.75                      2.88                          5.37                            1.61
+gsm8k                noDS_step300                1.82                 2.29                      3.03                          7.05                            1.30
+gsm8k      GRPO_n2_kl4e-2_step250                1.59                 2.00                      2.20                          3.98                            1.42
+gsm8k      GRPO_n2_kl1e-2_step250                1.52                 1.95                      2.35                          2.61                            2.15
+gsm8k      GRPO_n8_kl1e-3_step520                1.67                 4.45                      3.34                          6.24                            1.67
+gsm8k PPO_klF_ent0_lr1e-6_step520                2.43                 8.91                     13.87                         34.07                            1.59
+ math                        base                2.43                21.47                     15.34                         18.10                           13.09
+ math                  DS_step300                3.01                27.07                     15.56                         19.16                           12.63
+ math                noDS_step300                3.51                23.30                     15.88                         19.68                           12.76
+ math      GRPO_n2_kl4e-2_step250                2.01                21.24                     14.82                         17.96                           12.29
+ math      GRPO_n2_kl1e-2_step250                2.68                22.72                     14.72                         17.15                           12.81
+ math      GRPO_n8_kl1e-3_step520                2.42                32.50                     14.62                         17.24                           12.26
+ math PPO_klF_ent0_lr1e-6_step520                5.13                30.82                     20.66                         28.49                           11.53
+
+== 3. Base-model errors that contain an arithmetic slip, and whether trained models fix them ==
+gsm8k: base wrong (flexible) 27.7% of items; of those, 4.4% contain an arithmetic slip
+   DS_step300                     fixes  18.8% of base errors WITH a slip,  25.7% of base errors WITHOUT a slip
+   noDS_step300                   fixes  18.8% of base errors WITH a slip,  38.0% of base errors WITHOUT a slip
+   GRPO_n2_kl4e-2_step250         fixes  18.8% of base errors WITH a slip,  26.0% of base errors WITHOUT a slip
+   GRPO_n2_kl1e-2_step250         fixes  12.5% of base errors WITH a slip,  26.0% of base errors WITHOUT a slip
+   GRPO_n8_kl1e-3_step520         fixes  12.5% of base errors WITH a slip,  32.6% of base errors WITHOUT a slip
+   PPO_klF_ent0_lr1e-6_step520    fixes   6.2% of base errors WITH a slip,  29.4% of base errors WITHOUT a slip
+math: base wrong (flexible) 44.7% of items; of those, 18.1% contain an arithmetic slip
+   DS_step300                     fixes  17.0% of base errors WITH a slip,  17.5% of base errors WITHOUT a slip
+   noDS_step300                   fixes  17.5% of base errors WITH a slip,  18.0% of base errors WITHOUT a slip
+   GRPO_n2_kl4e-2_step250         fixes  13.1% of base errors WITH a slip,  12.6% of base errors WITHOUT a slip
+   GRPO_n2_kl1e-2_step250         fixes  14.6% of base errors WITH a slip,  14.5% of base errors WITHOUT a slip
+   GRPO_n8_kl1e-3_step520         fixes  17.3% of base errors WITH a slip,  16.5% of base errors WITHOUT a slip
+   PPO_klF_ent0_lr1e-6_step520    fixes   8.6% of base errors WITH a slip,  15.5% of base errors WITHOUT a slip
+
+== 4. MATH by subject: gain over base (standard, strict, points) ==
+   noDS_step300: algebra +0.8, counting_and_probability +0.8, geometry -3.1, intermediate_algebra +0.1, number_theory -3.1, prealgebra +0.7, precalculus -0.4
+   GRPO_n2_kl4e-2_step250: algebra +0.3, counting_and_probability +1.1, geometry -1.9, intermediate_algebra +1.2, number_theory -2.0, prealgebra +0.2, precalculus +1.6

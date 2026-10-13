@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-10-12T18:46:41+00:00",
+  "base_model": {
+    "repository": "Qwen/Qwen2.5-1.5B-Instruct",
+    "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306"
+  },
+  "checkpoints": {
+    "DS_step300": {
+      "local_path": "/mnt/sdb/verl/DAPO_new/merged_hf/DS_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "4adfe72afb42a58da13e5e7adc4c6b5281da07e3ab31a60d6db39796b2160752",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "86b9bb40d7549a953d79e8f6fe3bdfa2b1c675c03af8bbac8c2dfacac90f4f29"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "noDS_step300": {
+      "local_path": "/mnt/sdb/verl/DAPO_new/merged_hf/noDS_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "e1a6abf1c9debe0928f670ed804b4152a506a1c0e79f32fd0c7006b12cfe392d",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "533113ecc365b937ab6b3ebb4335449ffa65ff6044b67210bffa892800a81fb8"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "GRPO_n2_kl4e-2_step250": {
+      "local_path": "/mnt/sdb/verl/DAPO_new/merged_hf/GRPO_n2_kl4e-2_step250",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "679f16c43306f74cd0c94444c4e6c2f8472acccba062d11f2c469c8c5713ab4b",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "c94eb3ac704f0a145d867611a3b7fa38554681e793123b83541688d84cb3c8d8"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "PPO_klF_ent0_lr1e-6_step520": {
+      "local_path": "/mnt/sdb/verl/DAPO_new/merged_hf/PPO_klF_ent0_lr1e-6_step520",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "d67441ed7d3f8378ebc839c0eb9c613109c335debbbd1e822cbf0851534203bf",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "d3b420600d56e0926ee69b835ed86af274cbc62b1687cbd7d8a4bf73f92d4cb3"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    }
+  }
+}

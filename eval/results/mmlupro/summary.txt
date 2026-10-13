@@ -1,0 +1,28 @@
+== mmlupro [all] ==
+prompt       standard            think        
+metric       flexible  strict flexible  strict
+model                                         
+DS_step300     0.3336  0.3335   0.2623  0.2616
+base           0.3302  0.3298   0.2792  0.2786
+noDS_step300   0.3235  0.3232   0.2878  0.2867
+McNemar [all] standard strict  : noDS-only 1103, DS-only 1227, p=0.0108
+McNemar [all] standard flexible: noDS-only 1106, DS-only 1228, p=0.0122
+McNemar [all] think    strict  : noDS-only 1462, DS-only 1160, p=3.99e-09
+McNemar [all] think    flexible: noDS-only 1467, DS-only 1160, p=2.28e-09
+== strict accuracy by category ==
+                  DS_step300|standard  DS_step300|think  base|standard  base|think  noDS_step300|standard  noDS_step300|think
+category                                                                                                                     
+biology                         0.534             0.430          0.526       0.463                  0.534               0.501
+business                        0.381             0.297          0.399       0.295                  0.387               0.331
+chemistry                       0.283             0.181          0.273       0.221                  0.249               0.231
+computer science                0.334             0.268          0.356       0.271                  0.324               0.280
+economics                       0.424             0.367          0.428       0.380                  0.428               0.376
+engineering                     0.188             0.144          0.176       0.158                  0.183               0.126
+health                          0.303             0.259          0.281       0.287                  0.296               0.297
+history                         0.234             0.234          0.234       0.218                  0.239               0.210
+law                             0.190             0.132          0.176       0.148                  0.181               0.144
+math                            0.462             0.312          0.446       0.346                  0.431               0.366
+other                           0.275             0.261          0.292       0.244                  0.289               0.264
+philosophy                      0.289             0.255          0.255       0.220                  0.253               0.232
+physics                         0.306             0.229          0.316       0.257                  0.296               0.249
+psychology                      0.460             0.386          0.457       0.419                  0.446               0.445

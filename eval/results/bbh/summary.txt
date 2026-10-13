@@ -1,0 +1,41 @@
+== bbh [all] ==
+prompt       standard            think        
+metric       flexible  strict flexible  strict
+model                                         
+DS_step300     0.3546  0.3525   0.4033  0.4027
+base           0.3575  0.3551   0.3692  0.3559
+noDS_step300   0.3543  0.3505   0.4119  0.4081
+McNemar [all] standard strict  : noDS-only 820, DS-only 833, p=0.768
+McNemar [all] standard flexible: noDS-only 824, DS-only 826, p=0.98
+McNemar [all] think    strict  : noDS-only 1024, DS-only 989, p=0.449
+McNemar [all] think    flexible: noDS-only 1037, DS-only 981, p=0.221
+== strict accuracy by task ==
+                                         DS_step300|standard  DS_step300|think  base|standard  base|think  noDS_step300|standard  noDS_step300|think
+task                                                                                                                                                
+boolean_expressions                                    0.764             0.800          0.760       0.684                  0.728               0.780
+causal_judgement                                       0.449             0.540          0.460       0.471                  0.380               0.471
+date_understanding                                     0.368             0.384          0.472       0.440                  0.452               0.492
+disambiguation_qa                                      0.500             0.464          0.484       0.496                  0.440               0.576
+dyck_languages                                         0.076             0.084          0.076       0.060                  0.060               0.084
+formal_fallacies                                       0.520             0.556          0.516       0.436                  0.568               0.528
+geometric_shapes                                       0.192             0.172          0.184       0.200                  0.188               0.204
+hyperbaton                                             0.540             0.552          0.520       0.468                  0.636               0.600
+logical_deduction_five_objects                         0.276             0.324          0.312       0.308                  0.268               0.260
+logical_deduction_seven_objects                        0.236             0.164          0.216       0.188                  0.224               0.196
+logical_deduction_three_objects                        0.484             0.432          0.460       0.388                  0.512               0.536
+movie_recommendation                                   0.336             0.420          0.384       0.424                  0.236               0.336
+multistep_arithmetic_two                               0.692             0.680          0.540       0.188                  0.524               0.488
+navigate                                               0.660             0.632          0.720       0.700                  0.648               0.696
+object_counting                                        0.540             0.576          0.424       0.488                  0.440               0.660
+penguins_in_a_table                                    0.658             0.589          0.651       0.548                  0.651               0.637
+reasoning_about_colored_objects                        0.280             0.404          0.368       0.376                  0.364               0.480
+ruin_names                                             0.344             0.384          0.336       0.304                  0.380               0.336
+salient_translation_error_detection                    0.296             0.320          0.200       0.272                  0.332               0.356
+snarks                                                 0.455             0.511          0.579       0.444                  0.551               0.489
+sports_understanding                                   0.000             0.532          0.076       0.532                  0.060               0.604
+temporal_sequences                                     0.204             0.164          0.216       0.124                  0.172               0.148
+tracking_shuffled_objects_five_objects                 0.216             0.196          0.232       0.184                  0.244               0.216
+tracking_shuffled_objects_seven_objects                0.160             0.184          0.164       0.128                  0.148               0.148
+tracking_shuffled_objects_three_objects                0.372             0.412          0.360       0.332                  0.360               0.320
+web_of_lies                                            0.000             0.496          0.000       0.512                  0.000               0.460
+word_sorting                                           0.080             0.044          0.092       0.048                  0.088               0.052

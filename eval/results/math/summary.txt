@@ -1,0 +1,32 @@
+== math [all] ==
+prompt       standard            think        
+metric       flexible  strict flexible  strict
+model                                         
+DS_step300     0.5548  0.5532   0.4748  0.4662
+base           0.5538  0.5522   0.4958  0.4728
+noDS_step300   0.5494  0.5478   0.5110  0.4958
+== math [math500] ==
+prompt       standard           think       
+metric       flexible strict flexible strict
+model                                       
+DS_step300      0.556  0.556    0.472  0.464
+base            0.534  0.532    0.504  0.488
+noDS_step300    0.558  0.558    0.516  0.492
+McNemar [all] standard strict  : noDS-only 410, DS-only 437, p=0.372
+McNemar [all] standard flexible: noDS-only 412, DS-only 439, p=0.373
+McNemar [all] think    strict  : noDS-only 656, DS-only 508, p=1.6e-05
+McNemar [all] think    flexible: noDS-only 674, DS-only 493, p=1.3e-07
+McNemar [math500] standard strict  : noDS-only 46, DS-only 45, p=1
+McNemar [math500] standard flexible: noDS-only 46, DS-only 45, p=1
+McNemar [math500] think    strict  : noDS-only 70, DS-only 56, p=0.247
+McNemar [math500] think    flexible: noDS-only 73, DS-only 51, p=0.0589
+== strict accuracy by subject ==
+                          DS_step300|standard  DS_step300|think  base|standard  base|think  noDS_step300|standard  noDS_step300|think
+subject                                                                                                                              
+algebra                                 0.765             0.671          0.751       0.664                  0.756               0.732
+counting_and_probability                0.460             0.399          0.475       0.403                  0.464               0.378
+geometry                                0.463             0.361          0.480       0.374                  0.455               0.405
+intermediate_algebra                    0.358             0.286          0.338       0.310                  0.359               0.283
+number_theory                           0.461             0.381          0.502       0.396                  0.459               0.381
+prealgebra                              0.707             0.618          0.693       0.586                  0.708               0.656
+precalculus                             0.421             0.311          0.429       0.370                  0.394               0.374

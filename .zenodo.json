@@ -1,0 +1,21 @@
+{
+  "creators": [
+    {
+      "name": "Lian, Yongsheng",
+      "affiliation": "University of Louisville"
+    }
+  ],
+  "title": "Countdown RLVR Collapse and Transfer Artifact",
+  "description": "Manuscript source, compact results, configurations, evaluation code, and reproducibility records for a study of environment- and seed-dependent short-response collapse, format effects, and limited transfer in Countdown RLVR.",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "apache-2.0",
+  "language": "eng",
+  "keywords": [
+    "reinforcement learning with verifiable rewards",
+    "GRPO",
+    "DAPO",
+    "training collapse",
+    "reasoning transfer"
+  ]
+}

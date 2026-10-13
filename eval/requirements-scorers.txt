@@ -1,0 +1,4 @@
+# Runtime dependencies for eval/test_scorers.py and symbolic MATH scoring.
+math-verify==0.8.0
+latex2sympy2-extended==1.10.2
+antlr4-python3-runtime==4.13.2

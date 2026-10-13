@@ -1,0 +1,25 @@
+recipe,seed,run,wandb,len_step25,len_step50,len_step90_100,val_acc_step100,status
+no DS (rung 2),1,rung2-clip0.28-noDS-gen32-train32-n8-resp4096,5vmxmx4q,115.0,77.0,62.0,22.4,collapsed
+no DS (rung 2),2,rung2-clip0.28-noDS-gen32-train32-n8-resp4096-seed2,iic956n7,147.0,215.0,230.0,18.8,healthy
+no DS (rung 2),3,rung2-clip0.28-noDS-gen32-train32-n8-resp4096-seed3-s100,f346631t,131.0,245.0,1007.0,21.8,healthy
+no DS (rung 2),4,rung2-clip0.28-noDS-gen32-train32-n8-resp4096-seed4-s100,x2djfjpf,138.0,340.0,498.0,25.6,healthy
+no DS (rung 2),5,rung2-clip0.28-noDS-gen32-train32-n8-resp4096-seed5-s100,2pc6931g,127.0,55.0,42.0,20.3,collapsed
+no DS (rung 2),6,rung2-clip0.28-noDS-gen32-train32-n8-resp4096-seed6-s100,fx6ntgy6,173.0,75.0,53.0,20.1,collapsed
+DS,1,Qwen2.5-1.5B-G8-acc-filtering-tokenlevel-bsz-32-0910,f8h77wol,361.0,678.0,1569.0,50.8,healthy
+DS,2,rung3-DS-clip0.28-gen192-train32-n8-resp4096-seed2,359gx7xo,20.0,21.0,20.0,26.2,collapsed
+DS,3,rung3-DS-clip0.28-gen192-train32-n8-resp4096-seed3-s100,cuu3i1xj,21.0,20.0,21.0,27.9,collapsed
+DS,4,rung3-DS-clip0.28-gen192-train32-n8-resp4096-seed4-s100,4xma3zki,19.0,20.0,21.0,26.6,collapsed
+DS,5,rung3-DS-clip0.28-gen192-train32-n8-resp4096-seed5-s100,x43gbqkj,20.0,20.0,20.0,28.7,collapsed
+DS,6,rung3-DS-clip0.28-gen192-train32-n8-resp4096-seed6-s100,xa0ykms7,19.0,19.0,19.0,28.8,collapsed
+A1,1,rungA1-accOnlyReward-maskTruncated-clip0.28-noDS-gen32-train32-n8-resp4096,bynfpzjt,252.0,996.0,2224.0,41.6,healthy
+A1,2,rungA1-accOnlyReward-maskTruncated-clip0.28-noDS-gen32-train32-n8-resp4096-seed2,rsa2qzj9,23.0,24.0,20.0,24.6,collapsed
+A1,3,rungA1-accOnlyReward-maskTruncated-clip0.28-noDS-gen32-train32-n8-resp4096-seed3-s100,00syzabd,25.0,19.0,20.0,22.0,collapsed
+A1,4,rungA1-accOnlyReward-maskTruncated-clip0.28-noDS-gen32-train32-n8-resp4096-seed4-s100,q2cih0cw,255.0,44.0,21.0,22.9,collapsed
+A1,5,rungA1-accOnlyReward-maskTruncated-clip0.28-noDS-gen32-train32-n8-resp4096-seed5-s100,m5lgjg52,23.0,22.0,20.0,19.6,collapsed
+A1,6,rungA1-accOnlyReward-maskTruncated-clip0.28-noDS-gen32-train32-n8-resp4096-seed6-s100,wghm4mct,23.0,19.0,20.0,25.7,collapsed
+A1 + KL 0.01,1,rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed1-s100,,,,,,not run
+A1 + KL 0.01,2,rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed2-s100,,,,,,not run
+A1 + KL 0.01,3,rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed3-s100,xtwilh0l,188.0,21.0,21.0,23.4,collapsed
+A1 + KL 0.01,4,rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed4-s100,wl6bdjat,21.0,23.0,132.0,25.3,healthy
+A1 + KL 0.01,5,rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed5-s100,pc748q7c,59.0,86.0,19.0,22.8,collapsed
+A1 + KL 0.01,6,rungA1KL-accOnlyReward-maskTruncated-kl0.01-clip0.28-noDS-gen32-train32-n8-resp4096-seed6-s100,mfreek0z,95.0,44.0,21.0,23.5,collapsed

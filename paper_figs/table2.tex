@@ -1,0 +1,27 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Downstream accuracy (\%) of the step-300 checkpoints of DAPO with and without dynamic sampling (DS), trained only on Countdown, and of the untrained base model; PPO rows are GAE baselines trained on the same Countdown data with one response per prompt and a critic learning rate of $10^{-5}$, labelled actor lr / KL-loss coefficient (-- = KL loss off) / entropy coefficient / step. All use PPO mini-batch 16 except $^\dagger$ (mini-batch 64, separate project); $^\ddagger$ KL loss enabled with coefficient 0. Full settings in runs\_registry.md. Greedy decoding, up to 8192 output tokens, zero-shot. \emph{Std.}: the benchmark's usual chain-of-thought prompt; \emph{Think}: the Countdown training prompt with \texttt{<think>}/\texttt{<answer>} tags. An answer counts only if it appears in an explicit final-answer marker (\texttt{\#\#\#\#}, \texttt{\textbackslash boxed\{\}}, \texttt{<answer>}, or ``the answer is''). $\Delta$ = w/o DS $-$ w/ DS on the same problems; exact McNemar test, $^{*}p<0.05$, $^{**}p<0.01$, $^{***}p<0.001$. Bold: the better of the two DAPO variants when $p<0.05$.}
+\label{tab:downstream}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lcccccccc}
+\toprule
+ & \multicolumn{2}{c}{GSM8K ($n$=1,319)} & \multicolumn{2}{c}{MATH ($n$=5,000)} & \multicolumn{2}{c}{BBH ($n$=6,511)} & \multicolumn{2}{c}{MMLU-Pro ($n$=12,032)} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Model & Std. & Think & Std. & Think & Std. & Think & Std. & Think \\
+\midrule
+Qwen2.5-1.5B-Instruct & 33.4 & 48.4 & 55.1 & 47.4 & 35.2 & 36.2 & 33.1 & 27.5 \\
+DAPO w/ DS & 66.1 & 74.4 & 55.1 & 46.5 & 35.1 & 40.2 & 33.1 & 26.1 \\
+DAPO w/o DS & \textbf{69.9} & 75.7 & 54.9 & \textbf{49.5} & 34.4 & 41.5 & 32.9 & \textbf{29.7} \\
+PPO $1{\times}10^{-6}$ / -- / 0 / 400$^\dagger$ & 40.1 & 50.0 & 53.6 & 28.0 & 35.6 & 36.1 & 33.1 & 25.3 \\
+PPO $1{\times}10^{-6}$ / -- / 0 / 520 & 62.2 & 62.4 & 46.2 & 42.3 & 24.3 & 36.4 & 31.4 & 27.0 \\
+PPO $3{\times}10^{-6}$ / -- / 0 / 520 & 28.7 & 25.3 & 12.1 & 10.7 & 18.0 & 20.9 & 18.6 & 11.4 \\
+PPO $3{\times}10^{-6}$ / -- / 0.001 / 520 & 1.0 & 1.4 & 2.6 & 2.1 & 5.7 & 25.7 & 1.6 & 13.9 \\
+PPO $3{\times}10^{-6}$ / 0$^\ddagger$ / 0.001 / 520 & 20.4 & 21.6 & 11.9 & 7.5 & 22.9 & 33.8 & 18.5 & 20.5 \\
+PPO $3{\times}10^{-6}$ / 0.001 / 0.001 / 520 & 32.8 & 28.4 & 12.3 & 7.8 & 28.1 & 29.8 & 19.8 & 15.9 \\
+\midrule
+$\Delta$ (w/o DS $-$ w/ DS) & $+3.8^{**}$ & $+1.3$ & $-0.2$ & $+3.0^{***}$ & $-0.7$ & $+1.3$ & $-0.1$ & $+3.5^{***}$ \\
+McNemar $p$ & 0.006 & 0.282 & 0.708 & $<$0.001 & 0.248 & 0.064 & 0.724 & $<$0.001 \\
+\bottomrule
+\end{tabular}
+\end{table*}
