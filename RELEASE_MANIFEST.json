@@ -1,6 +1,6 @@
 {
   "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
-  "aggregate_sha256": "868a53f3f0b26676a7d39875fee2d87e34146355eda05080a4cd0737c63264d7",
+  "aggregate_sha256": "257d8c58bc0e5e310fc69df5d97fa62fcbd9f64886c90e70fb72de789ffdf606",
   "file_count": 223,
   "files": [
     {
@@ -489,9 +489,9 @@
       "sha256": "2c89a2ff241f4f47be5c9705ade3474193ebb9ed7fcd2de50576314699361504"
     },
     {
-      "bytes": 5429,
+      "bytes": 5430,
       "path": "eval/make_scorer_audit.py",
-      "sha256": "9bfdfe058350137705b5f6f14aadb469db88b5e5b806dfb632f48e23ddedd137"
+      "sha256": "355c5f1c02fb9681d145cc5df4d3962fb6f52cbd0a72f32cc6484b5961bd8f69"
     },
     {
       "bytes": 5492,
@@ -1121,5 +1121,5 @@
   ],
   "root_name": "public_artifact",
   "schema_version": 1,
-  "total_bytes": 86884153
+  "total_bytes": 86884154
 }
