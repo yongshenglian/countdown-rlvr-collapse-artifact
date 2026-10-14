@@ -1,7 +1,7 @@
 {
   "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
-  "aggregate_sha256": "ca32730f6c7f8be3d20c29243e45091001acea6054b6e5ed2cdcb8a5ec7efa64",
-  "file_count": 222,
+  "aggregate_sha256": "d3430c6c312cc5b1b3ff410379d70ff751122a35817c5dddb1afccdf5e0eb0b2",
+  "file_count": 223,
   "files": [
     {
       "bytes": 205,
@@ -9,9 +9,9 @@
       "sha256": "964f6b7e3b5d2a708eb40352f4faa3d08adb8a3862519dc0457fbcbe3717e6db"
     },
     {
-      "bytes": 674,
+      "bytes": 656,
       "path": ".zenodo.json",
-      "sha256": "d239cbfffaf208ddbd99dcea87529e3dd1537d61a9edf383fb8c3f87bcb6f427"
+      "sha256": "24f5085fabb1b163ed94c64f29167aa0c8bdfc150dac5c7d49c4f6f9473a0981"
     },
     {
       "bytes": 554,
@@ -79,9 +79,9 @@
       "sha256": "bd354c471d571a64d56841c8de528b3710543b9717e823c6a69875575aea1bd5"
     },
     {
-      "bytes": 2551,
+      "bytes": 2660,
       "path": "README.md",
-      "sha256": "c5866922ac6c25b27f5f846e74c350219cfae18d61704dfbbaf0c1aeb5ad78fd"
+      "sha256": "4f39fcc7086257586c969e2845f9eee9d155e9c2b188a548e31b862447dfd8be"
     },
     {
       "bytes": 10433,
@@ -339,9 +339,9 @@
       "sha256": "6d4746f45f52ef6921407d961271a85b01ccc4a622664f2e8529c0ef3ddbc111"
     },
     {
-      "bytes": 2653,
+      "bytes": 3823,
       "path": "environment/DS_LEGACY_CURRENT_COMPARISON.md",
-      "sha256": "d10075d16da6c16b30b8482ac03de6fd4398b3c18a273ca11ea4601d7ba0cf49"
+      "sha256": "fe0a15e34999c35cd6e4813389eba2a7a840a47f2af568e558da43c05c9f7ead"
     },
     {
       "bytes": 3308,
@@ -1034,14 +1034,14 @@
       "sha256": "2e08c66570188233fe328770a992b1da79db72d630f9a4734a02817e30d588b2"
     },
     {
-      "bytes": 219280,
+      "bytes": 222001,
       "path": "ppo_comparison_revised.pdf",
-      "sha256": "8d20815ec021c0be00f312862a01bf5429293eefff7b99c4f68e4c59bf545fea"
+      "sha256": "fa3487ae9bc8645485f484a2d808af6f5dd46a888d6674d39a0ceda992f8660e"
     },
     {
-      "bytes": 63440,
+      "bytes": 66220,
       "path": "ppo_comparison_revised.tex",
-      "sha256": "614036545ae337bd17279c1f0b21dafd5e9199884a4a926326bdf9e29d57b7e3"
+      "sha256": "50b7deeab6d79afeaa0f438905af8b54d79adbd03b217eba5df3f1e4326453a3"
     },
     {
       "bytes": 6582,
@@ -1054,14 +1054,14 @@
       "sha256": "a8141de1bf9730d23437c0463a54cb4cdce1e1533cf74f8c195f5fa82b57a3ae"
     },
     {
-      "bytes": 8106,
+      "bytes": 8765,
       "path": "replication/PROTOCOL.md",
-      "sha256": "8219663567669d24690a1fe391ec43878f72f90ac8ec7658f1501060995adf06"
+      "sha256": "51f513018347904b22751f9133acc5e3f61398aeac409de868c7e8afec3b1683"
     },
     {
-      "bytes": 2123,
+      "bytes": 2918,
       "path": "replication/RESULTS.md",
-      "sha256": "5d1d6582354bb52a8f60fab24d0f098951807d8a8b8bbfcb1a8f14e53d1afde1"
+      "sha256": "128fab7ff91c8eeba703a47bc4c63e19966725046751d486b59afe48f1492efa"
     },
     {
       "bytes": 70742,
@@ -1082,6 +1082,11 @@
       "bytes": 3131,
       "path": "replication/extract_training_metrics.py",
       "sha256": "5b7469522761ff73908ffcbd693f42b3b1e3b7411629ed4111acacfbbc610ebb"
+    },
+    {
+      "bytes": 20238,
+      "path": "replication/results/DS_legacy_replay_training_metrics.csv",
+      "sha256": "5e18491d9b387f9dc8ce7d3eb136bd6ab9eff4531237b527bdfd84aafaeb7644"
     },
     {
       "bytes": 76531,
@@ -1116,5 +1121,5 @@
   ],
   "root_name": "public_artifact",
   "schema_version": 1,
-  "total_bytes": 86876785
+  "total_bytes": 86905239
 }

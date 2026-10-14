@@ -131,3 +131,10 @@ The execution log and any deviations will be appended below without rewriting th
   `rung3-DS-clip0.28-gen192-train32-n8-resp4096-legacy-replay-s100-20261013-080044`; no stopping rule depends
   on validation accuracy or response length. At step 50 the run remained above the collapse threshold (807.1
   mean response tokens; 0.269 Countdown validation accuracy). This interim value is not a terminal result.
+- 13 October 2026: the targeted DS replay completed the fixed step-100 horizon successfully and saved
+  `global_step_100`. Its mean response length over steps 90--100 was 1,527.4 tokens, classifying it as
+  endpoint-healthy. At step 100, Countdown validation accuracy was 0.472, validation reward was 0.477,
+  format-valid rate was 0.524, mean response length was 1,618.9 tokens, and truncation fraction was 0.223.
+  The compact 101-row trajectory is `replication/results/DS_legacy_replay_training_metrics.csv`. This
+  targeted post-screen run remains separate from the original 22-run denominator and does not reopen the
+  suspended full continuation queue.

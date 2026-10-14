@@ -3,8 +3,8 @@
 This repository contains the manuscript source, compact results, training
 configurations, evaluation code, and reproducibility records for:
 
-> Yongsheng Lian, *Environment- and Seed-Dependent Short-Response Collapse in
-> Countdown RLVR: Format Effects and Limited Transfer*.
+> Yongsheng Lian, *Short-Response Collapse in Countdown RLVR: Training
+> Instability, Format Effects, and Limited Transfer*.
 
 The study examines Qwen2.5-1.5B-Instruct fine-tuning on Countdown using a
 DAPO-style collapse screen, with selected PPO- and GRPO-style checkpoints as
@@ -14,10 +14,11 @@ held-out transfer, and pass@k behavior.
 ## Release status
 
 This public repository is the compact reproducibility artifact. The DOI-bearing
-`v1.0.0` release will be created after the targeted dynamic-sampling replay and
-manuscript consistency checks are complete. Until then, the default branch is a
-transparent pre-release snapshot rather than the archival version cited by the
-paper.
+`v1.0.0` release will be created after the final consistency checks and Zenodo
+integration are complete. The targeted dynamic-sampling replay has completed
+successfully and is reported separately from the original 22-run screen. Until
+the DOI is minted, the default branch is a transparent pre-release snapshot
+rather than the archival version cited by the paper.
 
 ## Contents
 

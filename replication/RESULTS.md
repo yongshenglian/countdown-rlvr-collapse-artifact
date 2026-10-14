@@ -15,15 +15,25 @@ Online token entropy was not instrumented for this first continuation, as disclo
 The remaining queue and post-hoc evaluations were suspended after the completed seed-3 continuation. They can
 be restarted from the original step-100 checkpoints if additional replication is requested during peer review.
 
-## Reviewer-requested DS configuration replay (in progress)
+## Reviewer-requested DS configuration replay
 
 One targeted run replays the legacy DS configuration in the current frozen environment with its original
 default seed pair (`data.seed=1`, rollout seed 0). This is not part of the stopped full continuation queue and
 has a fixed 100-step endpoint. Run identifier:
 `rung3-DS-clip0.28-gen192-train32-n8-resp4096-legacy-replay-s100-20261013-080044`.
 
-| Step | Status | Countdown validation accuracy | Mean response length |
-|---:|---|---:|---:|
-| 50 | Interim; run active | 0.269 | 807.1 tokens |
+| Step | Countdown validation accuracy | Validation reward | Format-valid rate | Mean response length | Truncation |
+|---:|---:|---:|---:|---:|---:|
+| 90 | 0.437 | 0.443 | 0.506 | 1445.2 | 0.148 |
+| 95 | 0.453 | 0.459 | 0.515 | 1616.9 | 0.211 |
+| 100 | 0.472 | 0.477 | 0.524 | 1618.9 | 0.223 |
 
-The manuscript will not use this run in endpoint counts until step 100 is complete.
+The run completed successfully and saved `global_step_100`. Its mean response length over the predefined
+steps 90--100 endpoint window was **1527.4 tokens**, so it was healthy under the manuscript's primary
+100-token collapse rule. The compact 101-row trajectory is
+`results/DS_legacy_replay_training_metrics.csv`.
+
+This post-screen replay is reported separately and is not added to the original 22-run screen denominator.
+Together with the five current-environment equal-seed-pair DS failures, it rules out deterministic failure
+caused solely by the current environment. A single replay cannot identify whether the contrast arises from
+the data seed, rollout seed, their interaction, or a residual difference in the reconstructed legacy setup.

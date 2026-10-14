@@ -28,3 +28,21 @@ This record separates settings recovered from the archived healthy DS run (`DAPO
 | Hardware | Four RTX A6000 GPUs | Four RTX A6000 GPUs | Matched at model level |
 
 The replay is therefore a close reconstruction, not a byte-identical reproduction. The unverified legacy model hash, data hashes, reward source, code commit, driver/runtime details, and nondeterministic GPU kernels remain possible differences. Its fixed 100-step outcome should be interpreted together with these residual uncertainties.
+
+## Step-100 outcome
+
+| Run group | Environment | Data seed | Rollout seed | Steps 90--100 mean length | Step-100 validation accuracy | Endpoint |
+|---|---|---:|---:|---:|---:|---|
+| Archived healthy DS | Legacy | Default 1 | Default 0 | 1569.4 | 0.508 | Healthy |
+| Original DS screen, five runs | Current | 2--6 | 2--6 | 19.5--20.6 | 0.262--0.288 | Collapsed |
+| Targeted legacy-config replay | Current | 1 | 0 | 1527.4 | 0.472 | Healthy |
+
+The targeted replay completed successfully at step 100. It demonstrates that the current frozen environment
+does not deterministically produce DS collapse under the reconstructed legacy recipe. Because this is one
+post-screen replay and both the data and rollout seeds differ from the five failed pairs, it does not identify
+which random stream or interaction caused the contrast. Nor can it eliminate every residual difference listed
+above. The original 22-run screen is therefore left unchanged; the targeted replay is reported separately.
+
+Compact trajectory: `replication/results/DS_legacy_replay_training_metrics.csv`.
+Ray job identifier:
+`rung3-DS-clip0.28-gen192-train32-n8-resp4096-legacy-replay-s100-20261013-080044`.
