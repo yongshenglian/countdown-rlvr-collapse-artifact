@@ -32,7 +32,7 @@
 \corres{Correspondence: yongsheng.lian@louisville.edu}
 
 \abstract{
-Reinforcement learning with verifiable rewards can raise in-domain scores, but its stability and transfer remain uncertain. We study Qwen2.5-1.5B-Instruct fine-tuning on Countdown, centered on a 22-run DAPO-style collapse screen; selected PPO- and GRPO-style checkpoints serve as observational references. Sixteen runs produced responses averaging fewer than 100 tokens by step 100. All five dynamic-sampling runs using equal data and rollout seeds 2--6 collapsed at step 20. A targeted current-environment replay of the legacy configuration with its default seed pair remained healthy, averaging 1,527 tokens over steps 90--100 and reaching 47.2\% validation accuracy. Matched no-dynamic-sampling runs also varied across seeds. Selected checkpoints raised Countdown validation accuracy from 3.0\% for the base model to 64.1--75.1\%, but collapsed and healthy members of matched recipes diverged at long horizons. The largest selected-checkpoint gain in format-tolerant GSM8K accuracy was approximately three points, with no consistent improvement on MATH, BBH, or MMLU-Pro. A mandatory final-answer prompt increased the unchanged base model's strict GSM8K score by 25.2 points while reducing tolerant accuracy by 5.2 points. The evidence establishes run-dependent training instability and strong format effects, but not its precise stochastic cause, broad reasoning transfer, or an algorithm ranking.
+Reinforcement learning with verifiable rewards can raise in-domain scores, but its stability and transfer remain uncertain. We study Qwen2.5-1.5B-Instruct fine-tuning on Countdown, centered on a 22-run DAPO-style collapse screen; selected PPO- and GRPO-style checkpoints serve as observational references. Sixteen runs produced responses averaging fewer than 100 tokens by step 100. All five dynamic-sampling runs using equal data and rollout seeds 2--6 collapsed at step 20. A targeted current-environment replay of the legacy configuration with its default seed pair remained healthy, averaging 1,527 tokens over steps 90--100 and reaching 47.2\% validation accuracy. Matched no-dynamic-sampling runs also varied across seeds. Selected healthy checkpoints raised Countdown validation accuracy from 3.0\% for the base model to 66.0--75.1\%, but collapsed and healthy members of matched recipes diverged at long horizons. The largest selected-checkpoint gain in format-tolerant GSM8K accuracy was approximately three points, with no consistent improvement on MATH, BBH, or MMLU-Pro. A mandatory final-answer prompt increased the unchanged base model's strict GSM8K score by 25.2 points while reducing tolerant accuracy by 5.2 points. The evidence establishes run-dependent training instability and strong format effects, but not its precise stochastic cause, broad reasoning transfer, or an algorithm ranking.
 }
 \keyword{reinforcement learning with verifiable rewards; large language models; GRPO; DAPO; training collapse; reasoning transfer}
 
@@ -96,7 +96,7 @@ PPO replaces TRPO's constrained second-order update~\cite{schulman2015trust} wit
 where $r_t = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}$ is the likelihood ratio evaluated at the sampled state--action pair $(s_t,a_t)$, $\hat{A}_t = \hat{A}^{\pi_{\theta_{\text{old}}}}(s_t,a_t)$ is the estimated advantage (GAE for the displayed PPO recipe~\cite{schulman2015high}), $\pi_{\theta_{\text{old}}}$ is the pre-update policy, and $\pi_\theta$ is the updated policy. The first argument of $\min$ is the ordinary importance-weighted policy-gradient contribution; $\operatorname{clip}(r_t,1-\epsilon,1+\epsilon)$ truncates the ratio to the displayed interval, where $\epsilon$ is the symmetric clipping width.
 
 
-\paragraph{Clipping and regularization.}
+\noindent\textbf{Clipping and regularization.}
 Clipping limits extreme likelihood-ratio contributions to the surrogate objective but does not impose a hard trust region~\cite{ilyas2018deep,wang2020truly}. In our implementation, the PPO actor minimizes
 \begin{equation}\label{eq:total_ppo_loss}
 L(\theta,\phi)=-\mathcal{J}^{\mathrm{CLIP}}(\theta)+c_1L^{\mathrm{critic}}(\phi)-c_2\mathcal{H}(\pi_\theta),
@@ -138,7 +138,7 @@ The \emph{standard} condition uses a benchmark-specific direct prompt and is the
 
 The strict scorer requires the answer in the last explicit final-answer marker. Format-tolerant correctness is a strict superset: a correct explicit marker is always accepted, and a marker-free fallback is applied only when generation completed without length truncation. The fallback uses the last number for GSM8K, symbolic extraction over the response for MATH, or the last choice for BBH and MMLU-Pro. Tolerant accuracy is primary; strict accuracy combines correctness and format compliance. BBH and MMLU-Pro use this custom zero-shot protocol rather than their conventional few-shot protocols.
 
-For pass@$k$, we sample at temperature 0.6 and top-$p=0.95$ with a 4,096-token limit, drawing 64 responses per MATH-500 item and 32 per GSM8K item. We report the unbiased estimator. Paired tests compare fixed checkpoints and do not estimate training-seed uncertainty. Appendix~\ref{app:evaluation_details} gives the exact prompt strings, chat wrapping, dataset identifiers, stopping behavior, and scorer precedence. Although immutable revisions were not recorded initially, exact canonical-row comparison recovered the MATH, BBH, and MMLU-Pro revisions; their loaders are now pinned. The upstream GSM8K revision remains unknown, but the exact evaluated parquet is vendored and hashed. A machine-readable manifest and offline verifier accompany the artifact. A deterministic stratified code-and-record audit exposed two scorer-precedence errors: later incidental text could override a correct GSM8K marker, and unfinished length-truncated work could receive fallback credit. We corrected both rules, rescored the archived outputs, and added regression checks; among the five headline checkpoints, any individual benchmark accuracy changed by at most 0.91 percentage points. A blinded 40-record independent audit packet is archived but has not yet been completed, so we do not claim a human agreement or scorer-error rate. In particular, the approximately three-point tolerant GSM8K gain remains conditional on the validity of the last-number fallback.
+For pass@$k$, we sample at temperature 0.6 and top-$p=0.95$ with a 4,096-token limit, drawing 64 responses per MATH-500 item and 32 per GSM8K item. We report the unbiased estimator. Paired tests compare fixed checkpoints and do not estimate training-seed uncertainty. Appendix~\ref{app:evaluation_details} gives the exact prompt strings, chat wrapping, dataset identifiers, stopping behavior, and scorer precedence. Although immutable revisions were not recorded initially, exact canonical-row comparison recovered the MATH, BBH, and MMLU-Pro revisions; their loaders are now pinned. The upstream GSM8K revision remains unknown, but the exact evaluated parquet is vendored and hashed. A machine-readable manifest and offline verifier accompany the artifact. A deterministic stratified code-and-record audit exposed two scorer-precedence errors: later incidental text could override a correct GSM8K marker, and unfinished length-truncated work could receive fallback credit. We corrected both rules, rescored the archived outputs, and added regression checks; among the five headline checkpoints, any individual benchmark accuracy changed by at most 0.91 percentage points. A blinded 40-record audit packet now targets the remaining GSM8K concern: 24 base-model responses scored correct only by the last-number fallback, eight base marker-free incorrect controls, four base strict-correct controls, and four trained-model fallback-only cases. Independent annotation has not yet been completed, so we do not claim a human agreement or scorer-error rate. In particular, the approximately three-point tolerant GSM8K gain remains conditional on the validity of the last-number fallback.
 
 \subsection{Training Setup and Headline Configurations}
 
@@ -229,6 +229,8 @@ All screened runs & 16 & 22 & 72.7 & 51.8--86.8 \\
 
 A threshold-sensitivity check yielded 14/22, 16/22, and 17/22 labeled runs at 50, 100, and 200 tokens, respectively. The no-DS count changed from 1/6 at 50 tokens to 3/6 at 100 and 200 tokens; DS and A1 remained 5/6 at all three thresholds, while A1+KL changed from 3/4 to 4/4 only at 200 tokens. Thus, the qualitative observation of frequent very short outputs is robust overall, but the recipe-specific no-DS rate is threshold-sensitive. In the original screen, the one healthy DS run was also the only legacy-environment DS run; all five current-environment DS runs, which used equal data and rollout seed pairs 2--6, collapsed at the same step-20 event window. A targeted current-environment replay of the reconstructed legacy configuration with its default seed pair (1, 0) subsequently remained healthy through step 100 (Table~\ref{tab:ds_replay}). This result rules out the hypothesis that the current environment deterministically produces DS collapse. Because only one targeted replay was performed and both seed streams differ from the failed runs, it neither identifies the responsible stochastic factor nor estimates a DS failure probability. The current-environment matched no-DS recipe also varied sharply by seed. In the original 22-run screen, the recipe-specific Wilson intervals overlap substantially, and a two-sided Fisher exact comparison of DS and matched no-DS gives $p=0.55$. With only four to six runs per arm, this test is severely underpowered; these data establish instability, not a statistically resolved ordering among recipes.
 
+The default seed pair did not guarantee survival in the current environment: A1 run 1 remained healthy whereas matched no-DS run 1 collapsed, so the cross-recipe evidence argues against a generic explicit-seed-handling artifact while leaving the DS-specific mechanism unresolved.
+
 \begin{table}[ht]
 \centering
 \caption{Targeted DS replay compared with the archived DS evidence. The replay was conducted after the 22-run screen and is excluded from Table~\ref{tab:collapse_screen}, its Wilson intervals, and the Fisher test. Endpoint length is the mean over steps 90--100; accuracy is sampled Countdown validation accuracy at step 100. Ranges summarize the five current-environment screen runs.}
@@ -284,7 +286,7 @@ To avoid selecting examples by their apparent quality, Appendix~\ref{app:collaps
 
 The original DS and no-DS runs do not isolate dynamic sampling. The DS run generated approximately 200 prompts per step, retained 32, collected 256 responses, and made one optimizer update. The original no-DS run generated and trained 192 prompts, collected 1,536 responses, and made six updates per step. Thus, at step 300 the two checkpoints represent approximately 300 versus 1,800 optimizer updates. The matched no-DS ablation used 32 generated and trained prompts, 256 responses, and one update per step.
 
-In one matched run, no-DS collapsed to a 54-token mean response and 25\% Countdown validation accuracy at step 300, whereas the legacy-environment DS run retained approximately 2,577-token responses and reached 65\%. That contrast does not support a general DS effect once the screen and replay are considered: both DS and no-DS produced healthy and collapsed outcomes within the current environment. The evidence therefore does not establish that disabling DS is intrinsically superior. Nor does the single replay determine whether the DS contrast is driven by the data seed, rollout seed, their interaction, or a residual difference between the reconstructed and archived configurations.
+In one matched run, no-DS collapsed to a 54-token mean response and 25\% Countdown validation accuracy at step 300, whereas the legacy-environment DS run retained approximately 2,577-token responses and reached 66.0\%. That contrast does not support a general DS effect once the screen and replay are considered: both DS and no-DS produced healthy and collapsed outcomes within the current environment. The evidence therefore does not establish that disabling DS is intrinsically superior. Nor does the single replay determine whether the DS contrast is driven by the data seed, rollout seed, their interaction, or a residual difference between the reconstructed and archived configurations.
 
 \subsection{Downstream Transfer}
 
@@ -392,7 +394,7 @@ Countdown RL produced large in-domain changes but did not yield uniform general-
 
 \informedconsent{Not applicable.}
 
-\dataavailability{The public reproducibility artifact---including training and evaluation code, exact configurations, the run registry, compact derived results, vendored training and GSM8K parquet files, immutable revisions or file hashes for every dataset, environment locks, checkpoint hash manifests, and verification scripts---is available at \url{https://github.com/yongshenglian/countdown-rlvr-collapse-artifact}. A DOI-bearing archived release will be cited in the final accepted version. Large model checkpoints, raw training logs, and per-item generation archives are available from the corresponding author on reasonable request where redistribution terms permit. Third-party source datasets and the Verl framework are available through their respective citations.}
+\dataavailability{The public reproducibility artifact---including training and evaluation code, exact configurations, the run registry, compact derived results, vendored training and GSM8K parquet files, immutable revisions or file hashes for every dataset, environment locks, checkpoint hash manifests, and verification scripts---is available in the \href{https://github.com/yongshenglian/countdown-rlvr-collapse-artifact}{public GitHub repository}. A DOI-bearing archived release will be cited in the final accepted version. Large model checkpoints, raw training logs, and per-item generation archives are available from the corresponding author on reasonable request where redistribution terms permit. Third-party source datasets and the Verl framework are available through their respective citations.}
 
 \acknowledgments{During preparation of this manuscript, the author used OpenAI Codex for language editing, manuscript restructuring, and code-assisted consistency checks. The author reviewed and edited all output and takes full responsibility for the content of this publication.}
 
@@ -443,7 +445,7 @@ line is mandatory and must be the last line of your response.
 The standard MATH user content was:
 \begin{verbatim}
 {problem}
-Please reason step by step, and put your final answer within \boxed{answer}.
+Please reason step by step, and put your final answer within \boxed{}.
 \end{verbatim}
 The standard BBH user content was:
 \begin{verbatim}
@@ -584,17 +586,23 @@ A1 + KL 0.01 & 6 & Current & 30 & Collapsed & 20.7 & 23.5 \\
 \scriptsize
 \caption{Archived exploratory PPO and GRPO grids. Panel A reports the mean standard-prompt, format-tolerant accuracy across GSM8K, MATH, BBH, and MMLU-Pro. Panel B reports strict accuracy and the range of median think-prompt response lengths across the four benchmarks. Each row is one training run; these incomplete grids do not isolate components or estimate seed variance.}
 \label{tab:exploratory_grid}
+\begin{tabular}{lcccc}
+\toprule
+\multicolumn{5}{l}{\textit{Panel A: PPO reference recipes}} \\
+Actor LR & Entropy & KL-loss setting & Step & Four-task mean (\%) \\
+\midrule
+$10^{-6}$ & 0 & Off & 520 & 41.2 \\
+$3\times10^{-6}$ & 0 & Off & 520 & 19.5 \\
+$3\times10^{-6}$ & 0.001 & Off & 520 & 5.9 \\
+$3\times10^{-6}$ & 0.001 & Enabled, coefficient 0 & 520 & 18.6 \\
+$3\times10^{-6}$ & 0.001 & Enabled, coefficient 0.001 & 520 & 23.3 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.6em}
+
 \begin{tabular}{lccccr}
 \toprule
-\multicolumn{6}{l}{\textit{Panel A: PPO reference recipes}} \\
-Actor LR & Entropy & KL-loss setting & Step & Four-task mean (\%) &  \\
-\midrule
-$10^{-6}$ & 0 & Off & 520 & 41.2 & \\
-$3\times10^{-6}$ & 0 & Off & 520 & 19.5 & \\
-$3\times10^{-6}$ & 0.001 & Off & 520 & 5.9 & \\
-$3\times10^{-6}$ & 0.001 & Enabled, coefficient 0 & 520 & 18.6 & \\
-$3\times10^{-6}$ & 0.001 & Enabled, coefficient 0.001 & 520 & 23.3 & \\
-\midrule
 \multicolumn{6}{l}{\textit{Panel B: GRPO KL sweep ($G=2$, step 250)}} \\
 KL coefficient & GSM8K std. & GSM8K think & MATH std. & MATH think & Think median chars \\
 \midrule

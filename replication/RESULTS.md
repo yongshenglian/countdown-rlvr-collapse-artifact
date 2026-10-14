@@ -15,7 +15,7 @@ Online token entropy was not instrumented for this first continuation, as disclo
 The remaining queue and post-hoc evaluations were suspended after the completed seed-3 continuation. They can
 be restarted from the original step-100 checkpoints if additional replication is requested during peer review.
 
-## Reviewer-requested DS configuration replay
+## Targeted post-screen DS configuration replay
 
 One targeted run replays the legacy DS configuration in the current frozen environment with its original
 default seed pair (`data.seed=1`, rollout seed 0). This is not part of the stopped full continuation queue and

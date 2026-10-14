@@ -8,13 +8,16 @@ a deterministic sample for later second-person adjudication.
 
 ## Audit sample
 
-`make_scorer_audit.py` selects 40 saved standard-prompt records: two records for
-each of five headline checkpoints on each of GSM8K, MATH, BBH, and MMLU-Pro.
-Where available, one record is a strict/flexible disagreement and one is a
-general control; if no disagreement exists after correction, a second control
-is selected. SHA-256 ranking makes the sample deterministic. The resulting
-records, raw responses, extracted predictions, labels, finish reasons, and blank
-adjudication fields are stored in `scorer_audit_sample.jsonl`.
+`make_scorer_audit.py` selects 40 saved standard-prompt GSM8K records targeted
+at the last-number fallback: 24 base-model responses scored correct only by
+fallback, eight base-model marker-free responses with an incorrect fallback
+result, four base-model strict-correct controls, and one fallback-only correct
+response from each of four trained checkpoints. This allocation directly tests
+the fallback on which the reported base-model tolerant accuracy depends; it is
+not a prevalence-weighted error-rate sample. SHA-256 ranking makes the sample
+deterministic. The resulting records, raw responses, extracted predictions,
+labels, finish reasons, and blank adjudication fields are stored in
+`scorer_audit_sample.jsonl`.
 
 ## Defects found
 

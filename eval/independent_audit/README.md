@@ -1,8 +1,18 @@
 # Independent Scorer Audit Protocol
 
 Purpose: independently check answer extraction and correctness labels for the
-40-record deterministic sample used in the revision. This protocol separates a
-blinded first pass from discrepancy adjudication.
+40-record deterministic GSM8K sample used in the revision. This protocol
+separates a blinded first pass from discrepancy adjudication.
+
+## Targeted sample
+
+The packet deliberately emphasizes the last-number fallback: it contains 24
+base-model responses scored correct only by fallback, eight base-model
+marker-free responses with an incorrect fallback result, four base-model
+strict-correct controls, and four trained-model fallback-only correct cases.
+The allocation evaluates the fallback's validity where it matters most for the
+reported comparison. It is stratified and is not a prevalence-weighted estimate
+of the scorer's overall error rate.
 
 ## Files and roles
 

@@ -123,7 +123,7 @@ The execution log and any deviations will be appended below without rewriting th
   predeclared training queue completes.
 - 13 October 2026: after the completed seed-3 continuation, the author suspended the remaining serial queue
   to limit additional compute. No additional continuation is retained or included in the analysis.
-- 13 October 2026: following reviewer concern that the five equal-seed current-environment DS runs could be
+- 13 October 2026: to test whether the five equal-seed current-environment DS failures could be
   separated from the healthy legacy DS run by environment rather than seed, one targeted 100-step replay was
   launched in the frozen current environment. It uses the recorded legacy DS configuration and the legacy
   defaults (`data.seed=1`, rollout seed 0), rather than the later screen convention that set both seed fields

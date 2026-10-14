@@ -85,6 +85,9 @@ def main() -> int:
     tolerant_agree = 0
     disagreements = []
     categories = Counter()
+    stratum_total = Counter()
+    stratum_strict_agree = Counter()
+    stratum_tolerant_agree = Counter()
     for key in keys:
         human = by_id[key["blind_id"]]
         categories[human["human_error_category"]] += 1
@@ -92,6 +95,10 @@ def main() -> int:
         tolerant_match = human["human_tolerant_correct"] == key["automatic_tolerant_correct"]
         strict_agree += strict_match
         tolerant_agree += tolerant_match
+        stratum = key["stratum"]
+        stratum_total[stratum] += 1
+        stratum_strict_agree[stratum] += strict_match
+        stratum_tolerant_agree[stratum] += tolerant_match
         if not (strict_match and tolerant_match):
             disagreements.append((key, human, strict_match, tolerant_match))
 

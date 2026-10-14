@@ -21,7 +21,7 @@ ALLOWED_CATEGORIES = [
 
 
 def rank(record: dict) -> str:
-    value = "independent-scorer-audit-v1|" + record["audit_id"]
+    value = "independent-scorer-audit-v2|" + record["audit_id"]
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 

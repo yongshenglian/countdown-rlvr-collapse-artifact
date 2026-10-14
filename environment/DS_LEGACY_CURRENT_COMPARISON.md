@@ -1,6 +1,6 @@
 # Dynamic-Sampling Run: Legacy versus Current Environment
 
-This record separates settings recovered from the archived healthy DS run (`DAPO_new/f8h77wol`) from settings fixed for the reviewer-requested replay (`DAPO_ablation/rung3-DS-clip0.28-gen192-train32-n8-resp4096-legacy-replay-s100`). “Unknown” means the legacy artifact did not preserve enough information; no value is inferred retrospectively.
+This record separates settings recovered from the archived healthy DS run (`DAPO_new/f8h77wol`) from settings fixed for the targeted post-screen replay (`DAPO_ablation/rung3-DS-clip0.28-gen192-train32-n8-resp4096-legacy-replay-s100`). “Unknown” means the legacy artifact did not preserve enough information; no value is inferred retrospectively.
 
 | Factor | Legacy healthy DS run | Current controlled replay | Assessment |
 |---|---|---|---|

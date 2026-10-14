@@ -1,4 +1,4 @@
-"""Generate reviewer-requested seed trajectories and pass@k figures.
+"""Generate publication seed trajectories and pass@k figures.
 
 The script uses only archived CSV outputs and does not query external services.
 """
