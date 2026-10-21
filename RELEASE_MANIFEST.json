@@ -1,6 +1,6 @@
 {
   "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
-  "aggregate_sha256": "5106f27cf365d1d003b574b26c604cdd6fa51f8a83923e5a2ac3059d47affbec",
+  "aggregate_sha256": "f1d196fae42ff85e690c5dc0837e8a50ff1de5e0533634dc584c1c67100d120a",
   "file_count": 246,
   "files": [
     {
@@ -1054,14 +1054,14 @@
       "sha256": "db98f94873a672dd44cc34aafb21882e9cf57110eeba089bac53a790ca146401"
     },
     {
-      "bytes": 211645,
+      "bytes": 213031,
       "path": "ppo_comparison_revised.pdf",
-      "sha256": "c3d01c571a693c16dade9698a6f9fda5c213b930fe8352298d672cabcb910aa9"
+      "sha256": "96ece4dd9cc22ec6d178111eed821e25a0c20ed16c93e3be6d2f9b556f49a2f5"
     },
     {
-      "bytes": 49397,
+      "bytes": 51672,
       "path": "ppo_comparison_revised.tex",
-      "sha256": "8d58905f1ce1ba9526ac9fb895e74776ea1576239060ea835e0502ac493131f5"
+      "sha256": "27027948ed6d2b193e59145457c41d85f27f11a69a82e97e3693d437e8f44b27"
     },
     {
       "bytes": 6687,
@@ -1236,5 +1236,5 @@
   ],
   "root_name": "public_artifact",
   "schema_version": 1,
-  "total_bytes": 87447653
+  "total_bytes": 87451314
 }

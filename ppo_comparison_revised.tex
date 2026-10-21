@@ -231,11 +231,30 @@ DAPO-style & 3/3 & 43.4 (0.8) & 48.9 (0.3) & 20.0 (1.5) \\
 \end{tabular}}
 \end{table}
 
-The think condition exposes the failure hidden by standard prompts. Collapsed GRPO seed 9 averaged 18.2\%, compared with 37.8\% and 42.3\% for the two non-collapsed GRPO seeds. The three DAPO-style seeds averaged 20.0\%. PPO seed 9 was less severely affected but still fell to 36.2\%, versus 46.2--47.8\% for PPO seeds 7--8. Collapse is therefore prompt-conditional: a checkpoint can remain near the base model under conventional prompts while failing when the same problems are expressed in the training wrapper.
+The think condition exposes the failure hidden by standard prompts. Collapsed GRPO seed 9 averaged 18.2\%, compared with 37.8\% and 42.3\% for the two non-collapsed GRPO seeds. The three DAPO-style seeds averaged 20.0\%. PPO seed 9 was less severely affected but still fell to 36.2\%, versus 46.2--47.8\% for PPO seeds 7--8. The downstream effect of short-response collapse is therefore prompt-conditional. Under conventional benchmark prompts, collapsed checkpoints retain approximately base-model accuracy. However, when the identical questions are presented using the Countdown-style training wrapper, the checkpoints often revert to the learned short-answer behavior and accuracy drops sharply. Thus, the training did not uniformly erase the model's underlying capabilities; it created a prompt-triggered behavioral failure.
 
-\subsection{Historical Robustness Checks}
+\subsection{Experiment Groups and Robustness Checks}
 
-The earlier heterogeneous screen supports frequent instability but is not used to rank the matched recipes. Sixteen of 22 runs met the same step-100 collapse criterion: 5/6 with dynamic sampling, 3/6 in a matched-exposure no-DS recipe, 5/6 with correctness-only reward and overlong filtering, and 3/4 when KL 0.01 was added. A current-environment replay of the reconstructed legacy dynamic-sampling configuration remained healthy, ruling out a deterministic environment-only explanation. Single-seed KL sweeps also showed that stronger KL could preserve response length, but their thresholds changed with the rest of the recipe. Full run-level outcomes and these exploratory diagnostics are reported in Appendices~\ref{app:complete_results} and~\ref{app:secondary}.
+The experiments were designed in groups that address different questions. Table~\ref{tab:evidence_groups} summarizes them together so that the matched comparison can be interpreted alongside the earlier studies without treating all runs as interchangeable replicates. The nine matched runs provide the controlled recipe comparison. The earlier studies probe how often collapse occurs across configurations, whether environment or dynamic sampling alone explains it, how KL regularization relates to response length, and whether evaluation changes reflect format compliance or broader solution coverage.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Experimental groups and their intended roles. Results are interpreted jointly, but groups with different protocols are not pooled into a single algorithm comparison.}
+\label{tab:evidence_groups}
+\begin{tabularx}{\textwidth}{@{}L L L L@{}}
+\toprule
+Group & Evidence & Intended question & Inferential role \\
+\midrule
+Matched recipe comparison & Nine step-300 runs: PPO, GRPO, and DAPO-style; seeds 7--9 & What changes when actor-side exposure, reward, data, optimizer settings, seeds, and horizon are matched? & Primary controlled comparison \\
+Early configuration studies & 22-run collapse screen plus the reconstructed legacy-configuration replay & How frequently does short-response collapse occur across dynamic-sampling, no-DS, reward, KL, and environment variants? & Robustness and mechanism context \\
+Regularization diagnostics & Single-seed GRPO and DAPO-style KL sweeps & Can stronger KL preserve response length within a particular recipe? & Exploratory; no universal threshold claim \\
+Evaluation controls & Prompt-only base-model control and pass@$k$ evaluation of selected checkpoints & Do score changes reflect answer format, probability redistribution, or expanded observed solution coverage? & Interpretation of downstream results \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The groups give a consistent but qualified picture. In the matched comparison, early collapse occurred in 1/3 PPO runs, 1/3 GRPO runs, and 3/3 DAPO-style runs. In the earlier 22-run screen, 16 runs met the same step-100 criterion: 5/6 with dynamic sampling, 3/6 in a matched-exposure no-DS recipe, 5/6 with correctness-only reward and overlong filtering, and 3/4 when KL 0.01 was added. The healthy current-environment replay rules out a deterministic environment-only explanation, while the KL sweeps show that stronger regularization can preserve response length in some configurations but do not identify a transferable safe coefficient. Full run-level outcomes and secondary diagnostics are reported in Appendices~\ref{app:complete_results} and~\ref{app:secondary}.
 
 \subsection{Format and Coverage Controls}
 
