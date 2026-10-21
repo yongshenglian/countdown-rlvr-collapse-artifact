@@ -19,7 +19,7 @@
 
   
 %% Title
-\Title{Short-Response Collapse in Countdown RLVR: Training Instability, Format Effects, and Limited Transfer
+\Title{Short-Response Collapse in Countdown RLVR: A Matched Study of PPO, GRPO, and Asymmetric Clipping
 %%%% Cite as
 %%%% Update your official citation here when published 
 % \thanks{\textit{\underline{Citation}}: 
@@ -32,9 +32,9 @@
 \corres{Correspondence: yongsheng.lian@louisville.edu}
 
 \abstract{
-Reinforcement learning with verifiable rewards can raise in-domain scores, but its stability and transfer remain uncertain. We study Qwen2.5-1.5B-Instruct fine-tuning on Countdown, centered on a 22-run DAPO-style collapse screen; selected PPO- and GRPO-style checkpoints serve as observational references. Sixteen runs produced responses averaging fewer than 100 tokens by step 100. All five dynamic-sampling runs using equal data and rollout seeds 2--6 collapsed at step 20. A targeted current-environment replay of the legacy configuration with its default seed pair remained healthy, averaging 1,527 tokens over steps 90--100 and reaching 47.2\% validation accuracy. Matched no-dynamic-sampling runs also varied across seeds. Selected healthy checkpoints raised Countdown validation accuracy from 3.0\% for the base model to 66.0--75.1\%, but collapsed and healthy members of matched recipes diverged at long horizons. The largest selected-checkpoint gain in format-tolerant GSM8K accuracy was approximately three points, with no consistent improvement on MATH, BBH, or MMLU-Pro. A mandatory final-answer prompt increased the unchanged base model's strict GSM8K score by 25.2 points while reducing tolerant accuracy by 5.2 points. The evidence establishes run-dependent training instability and strong format effects, but not its precise stochastic cause, broad reasoning transfer, or an algorithm ranking.
+Reinforcement learning with verifiable rewards (RLVR) can raise an in-domain score while degrading the behavior that score is intended to represent. We test this risk by fine-tuning Qwen2.5-1.5B-Instruct on Countdown. We conduct nine 300-step runs: PPO, symmetric-clip GRPO, and an asymmetric-clip DAPO-style recipe, with paired seeds 7--9 and matched data, reward, rollout count, actor updates, optimizer settings, and response limit. Early short-response collapse occurred in 1/3 PPO runs, 1/3 GRPO runs, and 3/3 asymmetric-clip runs. Across GSM8K, MATH, BBH, and MMLU-Pro, mean flexible accuracy under standard prompts remained near the base model (49.0\%): 49.0\% for PPO, 49.2\% for GRPO, and 48.9\% for DAPO-style training. Under the Countdown-style think prompt, the corresponding means were 43.4\%, 32.8\%, and 20.0\%, exposing prompt-conditional damage. Strict scores rose without flexible-accuracy gains; a prompt-only control likewise raised base-model strict GSM8K accuracy by 25.2 points while lowering flexible accuracy by 5.2 points. A historical 22-run screen shows collapse is frequent but configuration- and run-dependent. These results do not establish a universal algorithm ranking; they show that matched multi-seed training, marker-independent scoring, and prompt-robust evaluation are necessary to detect reward-compatible collapse.
 }
-\keyword{reinforcement learning with verifiable rewards; large language models; GRPO; DAPO; training collapse; reasoning transfer}
+\keyword{reinforcement learning with verifiable rewards; large language models; PPO; GRPO; training collapse; prompt robustness}
 
 \begin{document}
 
@@ -44,17 +44,17 @@ Reinforcement learning with verifiable rewards can raise in-domain scores, but i
 
 
 Reinforcement learning with verifiable rewards (RLVR) has become a prominent approach to eliciting mathematical and symbolic reasoning from large language models (LLMs). Systems such as OpenAI o1~\cite{openai2024reasoning} and DeepSeek-R1~\cite{guo2025deepseek} demonstrate that post-training can substantially change generated reasoning behavior. However, higher task reward does not by itself establish that a model has acquired broadly transferable reasoning capability. An apparent gain can instead arise from better compliance with an answer format, a redistribution of probability toward solutions already available in the base model, or selection of an unusually successful training seed.
-Community reproductions such as TinyZero made Countdown a prominent small-model testbed for R1-Zero-style training~\cite{pan2025tinyzero}; this motivates auditing whether its apparent reasoning gains are stable and transferable.
+Community reproductions such as TinyZero use Countdown as a small-model R1-Zero-style training task~\cite{pan2025tinyzero}; this motivates auditing whether its apparent reasoning gains are stable and transferable.
 
 A variety of policy-optimization recipes have been proposed for LLM post-training. Proximal Policy Optimization (PPO) uses a learned critic and clipped policy updates~\cite{schulman2017proximalpolicyoptimizationalgorithms}. Group Relative Policy Optimization (GRPO) replaces the critic with advantages normalized over responses to the same prompt~\cite{shao2024deepseekmathpushinglimitsmathematical}. Decoupled Clip and Dynamic sAmpling Policy Optimization (DAPO) modifies clipping and loss aggregation and uses dynamic sampling to retain prompts whose response groups contain reward variation~\cite{yu2025dapo}. These methods are usually reported with different models, datasets, reward functions, rollout budgets, and optimization schedules, so comparisons between their published headline scores do not isolate algorithmic effects.
 
-This single-model, single-training-domain case study centers on DAPO-style stability experiments using Qwen2.5-1.5B-Instruct and Countdown; selected PPO- and GRPO-style checkpoints provide contextual, not algorithm-controlled, references. We investigate four questions: (1) how frequently early short-response collapse occurs across runs and environments; (2) whether dynamic sampling prevents collapse when training exposure is controlled; (3) how reward composition, normalization, clipping, and KL regularization relate to the survival of reasoning behavior; and (4) whether downstream gains reflect problem-solving transfer, answer-format compliance, or increased probability assigned to solutions already present in the base model's sampling distribution.
+This single-model, single-domain study uses Qwen2.5-1.5B-Instruct and Countdown to ask four focused questions. First, when training exposure and optimization settings are matched, how often do PPO, symmetric-clip GRPO, and asymmetric-clip group-relative training collapse across paired seeds? Second, does the operational collapse label predict degraded behavior, or merely shorter answers? Third, do downstream changes survive both marker-independent scoring and a change of prompt format? Fourth, do broader historical ablations support the same interpretation?
 
-Our results reveal substantial run-dependent instability. A screen of 22 runs finds early short-response collapse in 16 runs, including runs with and without dynamic sampling. All five screened dynamic-sampling runs in the current environment, which used equal data and rollout seed pairs 2--6, collapsed; however, a targeted replay of the reconstructed legacy configuration in the same current environment with the legacy default seed pair (1, 0) remained healthy through step 100. The replay rules out a deterministic current-environment explanation but does not isolate which random stream or residual reconstruction difference caused the contrast. In the legacy headline comparison, disabling dynamic sampling also increased the number of trained prompts and optimizer updates by a factor of six, precluding a causal attribution to sampling alone. Under format-tolerant evaluation, the strongest individual checkpoints improve GSM8K modestly but do not consistently improve MATH, BBH, or MMLU-Pro. A prompt-only format control produces a large strict-score increase while reducing tolerant accuracy, confirming that presentation alone can move the strict benchmark substantially. These results motivate evaluating RL recipes through training stability, behavioral diagnostics, compute exposure, and held-out transfer rather than training reward alone.
+The matched experiment gives a simple central result. PPO and symmetric-clip GRPO each collapsed in one of three seeds, whereas the asymmetric-clip DAPO-style recipe collapsed in all three. The damage was not apparent from standard-prompt flexible accuracy averaged over four downstream benchmarks, which remained approximately 49\% for every recipe and for the base model. It became clear under the Countdown-style think prompt: collapsed GRPO seed 9 averaged 18.2\% versus 39.8\% for the two non-collapsed GRPO seeds, and the three collapsed DAPO-style seeds averaged 20.0\%. Thus, the failure is prompt-conditional rather than a uniform loss of benchmark accuracy. A historical 22-run screen (16 collapses) and a prompt-only format control provide supporting evidence that run selection and answer format can strongly change the apparent conclusion.
 
-Relative to the preliminary preprint~\cite{lian2025comparative}, this article adds the multi-run collapse screen, a targeted frozen-environment replay, explicit environment stratification, format-tolerant rescoring, a prompt-only format control, pass@$k$ analysis, scorer-precedence corrections, and artifact manifests. It also narrows the earlier algorithm-comparison framing: PPO and GRPO are now reference recipes, and claims about dynamic sampling, training stability, and transferable reasoning are limited to what the matched evidence supports.
+Relative to the preliminary preprint~\cite{lian2025comparative}, this article adds the prospective matched nine-run comparison, the multi-run collapse screen, flexible rescoring, two-prompt evaluation, a prompt-only format control, pass@$k$ analysis, and reproducibility manifests. The matched study replaces selected historical checkpoints as the primary evidence. Historical sweeps are retained only as exploratory context.
 
-The remainder of this paper is structured as follows. Section~\ref{sec:related} situates the study in recent RLVR work. Section~\ref{sec:method} defines the optimization recipes, and Section~\ref{sec:methods_data} describes training and evaluation. Section~\ref{sec:results} reports training diagnostics, ablations, collapse rates, transfer, and capability coverage. Sections~\ref{sec:discussion} and~\ref{sec:conclusion} discuss the scope and implications of the findings.
+Section~\ref{sec:related} reviews related RLVR and reproducibility work. Section~\ref{sec:method} defines the three recipes, Section~\ref{sec:methods_data} gives the matched protocol, and Section~\ref{sec:results} reports training and downstream outcomes. Secondary sweeps, complete per-seed benchmark tables, prompts, and the historical screen are provided in the appendices.
 
 
 
@@ -66,19 +66,19 @@ The remainder of this paper is structured as follows. Section~\ref{sec:related} 
 \noindent\textbf{Critic-free optimization and loss normalization.}
 GRPO removes the learned critic used by PPO and estimates advantages from response groups~\cite{shao2024deepseekmathpushinglimitsmathematical}. Subsequent work has shown that implementation details are consequential: REINFORCE++ uses global advantage normalization~\cite{hu2025reinforce++}, while the Dr.\ GRPO analysis identifies response-length bias induced by common GRPO normalization choices and proposes an alternative objective~\cite{liu2025understanding}. DAPO combines asymmetric clipping, dynamic sampling, token-level loss aggregation, and overlong-response handling~\cite{yu2025dapo}. These studies motivate our decision to treat named methods as complete recipes unless sampling budget, aggregation, reward, and update exposure are matched.
 
-Reinforcement-learning reproducibility studies show that apparent improvements can depend strongly on random seeds, implementation details, and the statistical unit of analysis~\cite{henderson2018matters,engstrom2020implementation,agarwal2021precipice}. This literature motivates our separation of benchmark-item uncertainty from training-run uncertainty and our refusal to infer an algorithm ranking from single selected checkpoints.
+Henderson et al. document seed- and environment-induced variance~\cite{henderson2018matters}; Engstrom et al. show that code-level optimizations materially change PPO and TRPO behavior~\cite{engstrom2020implementation}; and Agarwal et al. show that few-run aggregate comparisons can carry substantial statistical uncertainty~\cite{agarwal2021precipice}. This literature motivates our separation of benchmark-item uncertainty from training-run uncertainty and our refusal to infer an algorithm ranking from single selected checkpoints.
 
 \noindent\textbf{Sampling efficiency and collapse.}
-The open-source TinyZero project used Countdown and multiplication as small-scale R1-Zero reproduction tasks~\cite{pan2025tinyzero}, helping establish the setting audited here. Dynamic sampling excludes homogeneous reward groups so that retained prompts produce a learning signal, but additional rollouts can be expensive. Selective-rollout methods instead attempt to predict and skip uninformative prompts before generation~\cite{zheng2025selectiverollouts}. A complementary line of work analyzes entropy collapse and proposes targeted clipping or KL control for high-covariance tokens~\cite{cui2025entropy}. Our study contributes a seed-level screen of a different observable failure mode---collapse to extremely short responses---and tests whether dynamic sampling, reward changes, overlong filtering, or KL regularization reliably prevent it.
+The open-source TinyZero project used Countdown and multiplication as small-scale R1-Zero reproduction tasks~\cite{pan2025tinyzero}, helping establish the setting audited here. Dynamic sampling excludes homogeneous reward groups so that retained prompts produce a learning signal, but it requires a variable number of rollouts~\cite{yu2025dapo}. Selective-rollout methods instead attempt to predict and skip uninformative prompts before generation~\cite{zheng2025selectiverollouts}. A complementary line of work analyzes entropy collapse and proposes targeted clipping or KL control for high-covariance tokens~\cite{cui2025entropy}. Our study contributes a seed-level screen of a different observable failure mode---collapse to extremely short responses---and tests whether dynamic sampling, reward changes, overlong filtering, or KL regularization reliably prevent it.
 
 \noindent\textbf{Reward validity, elicitation, and transfer.}
-Recent evidence cautions against equating benchmark improvement with newly acquired reasoning. Spurious or format-based rewards can elicit large gains in some Qwen models, with weaker effects in other model families~\cite{shao2025spurious}. Large-$k$ sampling studies similarly report that RLVR often improves pass@1 while failing to expand, and sometimes narrowing, the solution coverage of the base model~\cite{yue2025reasoningcapacity}. Broader evaluations of math-tuned models find that transfer beyond the training domain is uneven and depends on the post-training method~\cite{huan2025transferability}. We connect these concerns by jointly reporting format-tolerant scores, strict-format decomposition, held-out transfer, and pass@$k$ after Countdown training.
+Recent evidence cautions against equating benchmark improvement with newly acquired reasoning. Format, incorrect-label, and random rewards can elicit large gains in Qwen2.5-Math models, while the same signals are less reliable in other model families~\cite{shao2025spurious}. Large-$k$ sampling studies similarly report that RLVR often improves pass@1 while failing to expand, and sometimes narrowing, the solution coverage of the base model~\cite{yue2025reasoningcapacity}. Broader evaluations of math-tuned models find that transfer beyond the training domain is uneven and depends on the post-training method~\cite{huan2025transferability}. We connect these concerns by jointly reporting flexible scores, strict-format decomposition, held-out transfer, and pass@$k$ after Countdown training.
 
 \section{Background: Optimization Recipes}\label{sec:method}
 
 This section reviews the formulations of PPO, GRPO, and DAPO needed to distinguish the implemented recipes; the empirical contribution begins in Section~\ref{sec:results}. Extended derivations are available in Ref.~\cite{lian2025comparative}.
 
-PPO~\cite{schulman2017proximalpolicyoptimizationalgorithms} is widely used for RLHF, but its learned value function adds memory and optimization overhead. GRPO~\cite{shao2024deepseekmathpushinglimitsmathematical} and DAPO~\cite{yu2025dapo} remove the critic in favor of group-relative advantage estimation. We summarize the three objectives to identify the recipe differences examined empirically.
+PPO~\cite{schulman2017proximalpolicyoptimizationalgorithms} is widely used for RLHF, where its learned value function adds memory and optimization overhead~\cite{hu2025reinforce++}. GRPO~\cite{shao2024deepseekmathpushinglimitsmathematical} and DAPO~\cite{yu2025dapo} remove the critic in favor of group-relative advantage estimation. We summarize the three objectives to identify the recipe differences examined empirically.
 
 
 \subsection{Proximal Policy Optimization}
@@ -97,11 +97,11 @@ where $r_t = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}$ is 
 
 
 \noindent\textbf{Clipping and regularization.}
-Clipping limits extreme likelihood-ratio contributions to the surrogate objective but does not impose a hard trust region~\cite{ilyas2018deep,wang2020truly}. In our implementation, the PPO actor minimizes
+Clipping limits extreme likelihood-ratio contributions to the surrogate objective but does not enforce a hard trust-region constraint~\cite{wang2020truly}. More broadly, empirical policy-gradient behavior can depart from the surrogate-based framework used to motivate it~\cite{ilyas2018deep}. In our implementation, the PPO actor minimizes
 \begin{equation}\label{eq:total_ppo_loss}
 L(\theta,\phi)=-\mathcal{J}^{\mathrm{CLIP}}(\theta)+c_1L^{\mathrm{critic}}(\phi)-c_2\mathcal{H}(\pi_\theta),
 \end{equation}
-where $L^{\mathrm{critic}}$ trains the value model and $c_2$ controls the optional entropy bonus. The broader PPO sweep also varies a per-token KL reward penalty against the reference model; the headline PPO checkpoint in Tables~\ref{tab:headline_optimization} and~\ref{tab:headline_exposure} has that penalty disabled. Thus, the reported settings are complete recipes rather than estimates of one abstract PPO algorithm.
+where $L^{\mathrm{critic}}$ trains the value model and $c_2$ controls the optional entropy bonus. The matched PPO recipe sets both the entropy coefficient and the KL reward penalty to zero. Historical PPO sweeps vary these terms, but they are retained only as secondary diagnostics. Thus, the reported comparison concerns complete implemented recipes rather than one abstract PPO algorithm.
 
 \subsection{Group Relative Policy Optimization}
 
@@ -110,281 +110,172 @@ For each prompt, GRPO samples $G$ responses and replaces the critic with within-
 \widehat{A}_i=\frac{R_i-\overline{R}}{\operatorname{std}(R_1,\ldots,R_G)+\epsilon_A},
 \qquad \overline{R}=\frac{1}{G}\sum_{j=1}^{G}R_j .
 \end{equation}
-A conventional GRPO presentation averages the clipped token objective within each response and then across the $G$ responses. That response-normalized form is background and is not the aggregation used by the headline GRPO checkpoint. All headline group-relative runs use Verl's global \texttt{token-mean} aggregation. Defining the clipped token contribution as $\ell_{i,t}$, their implemented actor objective has the form
+A conventional GRPO presentation averages the clipped token objective within each response and then across the $G$ responses. That response-normalized form is background and is not the aggregation used in the matched comparison. All matched group-relative runs use Verl's global \texttt{token-mean} aggregation. Defining the clipped token contribution as $\ell_{i,t}$, their implemented actor objective has the form
 \begin{equation}\label{eq:implemented_token_mean}
 \mathcal{J}_{\mathrm{impl}}(\theta)=
 \mathbb{E}\!\left[\frac{1}{\sum_{i,t}m_{i,t}}\sum_{i,t}m_{i,t}
 \left(\ell_{i,t}-\beta k_{i,t}\right)\right],
 \end{equation}
-where $\ell_{i,t}=\min\!\left(r_{i,t}\widehat{A}_i,\operatorname{clip}(r_{i,t},1-\epsilon,1+\epsilon)\widehat{A}_i\right)$, $m_{i,t}$ masks padding and otherwise selects generated tokens, and $k_{i,t}$ is Verl's per-token low-variance KL estimator when KL loss is enabled. For the headline DAPO recipes $\beta=0$; for the strong-KL GRPO checkpoint $\beta=0.04$. The A1 ablation additionally masks truncated responses, but A1 is not a headline checkpoint in Tables~\ref{tab:headline_optimization}--\ref{tab:headline_exposure}.
+where $\ell_{i,t}=\min\!\left(r_{i,t}\widehat{A}_i,\operatorname{clip}(r_{i,t},1-\epsilon,1+\epsilon)\widehat{A}_i\right)$, $m_{i,t}$ masks padding and otherwise selects generated tokens, and $k_{i,t}$ is the Verl per-token low-variance KL estimator when KL loss is enabled. The matched GRPO and DAPO-style recipes set $\beta=0$.
 
-If every reward in a group is identical, Equation~\ref{eq:grpo_advantage} is zero. A small nonzero reward difference can nevertheless become an order-one standardized advantage. For example, with $G=8$, seven rewards of 0 and one format-only reward of 0.1 give $\overline{R}=0.0125$. Verl's implementation uses PyTorch's default Bessel-corrected sample standard deviation, giving $s\approx0.0354$ and a format-only advantage of $(0.1-0.0125)/(0.0354+\epsilon_A)\approx2.47$ when $\epsilon_A$ is negligible. Thus, group standardization can make a minor format credit a strong positive update signal. This calculation identifies a plausible pressure toward reward-bearing shortcuts, not a demonstrated cause of collapse. In particular, global token-mean aggregation weights generated tokens equally and does not give a short response greater weight per token; establishing the temporal mechanism requires token-level entropy and format-validity diagnostics.
+If every reward in a group is identical, Equation~\ref{eq:grpo_advantage} is zero. Conversely, group standardization can amplify a small reward difference, including the 0.1 format credit used here. This supplies a plausible pressure toward reward-bearing shortcuts but is not evidence of a causal mechanism; the implementation-specific calculation is given in Appendix~\ref{app:secondary}.
 
 \subsection{Decoupled Clip and Dynamic Sampling Policy Optimization}
 
-The DAPO-style recipe uses the implemented token-mean objective in Equation~\ref{eq:implemented_token_mean} with asymmetric ratio clipping, dynamic sampling, and optional overlong-response handling~\cite{yu2025dapo}. Here the symmetric interval inside $\ell_{i,t}$ is replaced by $[1-\epsilon_{\mathrm{low}},1+\epsilon_{\mathrm{high}}]$; the recorded widths are reported in Table~\ref{tab:headline_optimization}. Dynamic sampling retains prompt groups containing reward variation and resamples when too few informative groups remain. It neither balances correct and incorrect responses nor deletes correct responses from a mixed group. Global token aggregation changes length weighting; it does not create token-level rewards because all tokens share the response-level outcome advantage.
+The DAPO-style recipe uses the implemented token-mean objective in Equation~\ref{eq:implemented_token_mean} with asymmetric ratio clipping. The symmetric GRPO interval is replaced by $[1-\epsilon_{\mathrm{low}},1+\epsilon_{\mathrm{high}}]$. Published DAPO also uses dynamic sampling and overlong-response handling~\cite{yu2025dapo}; those components are disabled in the matched experiment so that the GRPO--DAPO-style contrast isolates the clipping range.
 
 \subsection{Recipe Comparison}
 
-PPO uses generalized advantage estimation and a learned critic; GRPO and DAPO use group-relative outcome advantages. The implementations also differ in clipping, KL placement, aggregation, group size, response cap, reward, and update exposure. We reserve causal language for explicitly matched ablations and otherwise refer to PPO-, GRPO-, and DAPO-style recipes.
+PPO uses generalized advantage estimation and a learned critic; GRPO and DAPO use group-relative outcome advantages. Our matched comparison fixes data, reward, rollout count, actor updates, optimizer settings, aggregation, response cap, and horizon. PPO differs through its estimator and critic, while the GRPO--DAPO-style contrast isolates symmetric versus asymmetric clipping. We therefore compare complete matched recipes and do not claim that one component explains every difference.
 
 \section{Materials and Methods}\label{sec:methods_data}
 
-We fine-tune Qwen2.5-1.5B-Instruct~\cite{qwen2.5} on Countdown and evaluate on GSM8K~\cite{cobbe2021gsm8k}, MATH~\cite{hendrycks2021measuringmathematicalproblemsolving}, BBH~\cite{suzgun2022challenging}, and MMLU-Pro~\cite{wang2024mmlupro}. The complete test sets contain 1,319, 5,000, 6,511, and 12,032 items, respectively.
+We fine-tune Qwen2.5-1.5B-Instruct~\cite{qwen2.5} on Countdown and evaluate on GSM8K~\cite{cobbe2021gsm8k}, MATH~\cite{hendrycks2021measuringmathematicalproblemsolving}, BBH~\cite{suzgun2022challenging}, and MMLU-Pro~\cite{wang2024mmlupro}.
 
-\subsection{Evaluation Protocol}
+\subsection{Evaluation Protocol}\label{sec:eval_protocol}
 
-The \emph{standard} condition uses a benchmark-specific direct prompt and is the primary transfer measure. The \emph{think} condition requests Countdown-style reasoning and answer tags and probes whether the trained format survives out of domain. Main-table generations use vLLM greedy decoding (temperature 0), no repetition penalty, and at most 8,192 output tokens.
+Each benchmark is evaluated under two prompt conditions. The \emph{standard} condition uses the benchmark-specific instruction; the \emph{think} condition inserts the same item into the Countdown training wrapper and requests \texttt{<think>} and \texttt{<answer>} tags. Standard prompts are the primary transfer condition. Think prompts test robustness to the training format. We report both conditions separately and never select the better prompt after observing the result. Exact prompt strings appear in Appendix~\ref{app:evaluation_details}.
 
-The strict scorer requires the answer in the last explicit final-answer marker. Format-tolerant correctness is a strict superset: a correct explicit marker is always accepted, and a marker-free fallback is applied only when generation completed without length truncation. The fallback uses the last number for GSM8K, symbolic extraction over the response for MATH, or the last choice for BBH and MMLU-Pro. Tolerant accuracy is primary; strict accuracy combines correctness and format compliance. BBH and MMLU-Pro use this custom zero-shot protocol rather than their conventional few-shot protocols.
+All main evaluations use vLLM greedy decoding (temperature 0), no repetition penalty, and at most 8,192 output tokens. Each model therefore produces one deterministic response per item. We score responses in two ways. The \emph{strict} scorer accepts only the last explicit final-answer marker. The \emph{flexible} scorer accepts a correct strict marker and otherwise extracts an answer from completed, non-truncated text: the last number for GSM8K, symbolic matching for MATH, or the last answer choice for BBH and MMLU-Pro. Strict accuracy combines correctness with format compliance; flexible accuracy is the primary approximation to problem correctness.
 
-For pass@$k$, we sample at temperature 0.6 and top-$p=0.95$ with a 4,096-token limit, drawing 64 responses per MATH-500 item and 32 per GSM8K item. We report the unbiased estimator. Paired tests compare fixed checkpoints and do not estimate training-seed uncertainty. Appendix~\ref{app:evaluation_details} gives the exact prompt strings, chat wrapping, dataset identifiers, stopping behavior, and scorer precedence. Although immutable revisions were not recorded initially, exact canonical-row comparison recovered the MATH, BBH, and MMLU-Pro revisions; their loaders are now pinned. The upstream GSM8K revision remains unknown, but the exact evaluated parquet is vendored and hashed. A machine-readable manifest and offline verifier accompany the artifact. A deterministic stratified code-and-record audit exposed two scorer-precedence errors: later incidental text could override a correct GSM8K marker, and unfinished length-truncated work could receive fallback credit. We corrected both rules, rescored the archived outputs, and added regression checks; among the five headline checkpoints, any individual benchmark accuracy changed by at most 0.91 percentage points. A blinded 40-record audit packet now targets the remaining GSM8K concern: 24 base-model responses scored correct only by the last-number fallback, eight base marker-free incorrect controls, four base strict-correct controls, and four trained-model fallback-only cases. Independent annotation has not yet been completed, so we do not claim a human agreement or scorer-error rate. In particular, the approximately three-point tolerant GSM8K gain remains conditional on the validity of the last-number fallback.
+The complete test sets contain 1,319 GSM8K, 5,000 MATH, 6,511 BBH, and 12,032 MMLU-Pro items. BBH and MMLU-Pro use the stated custom zero-shot protocol rather than their conventional few-shot variants. Dataset revisions, chat wrapping, stopping rules, and scorer precedence are documented in Appendix~\ref{app:evaluation_details}. A deterministic code-and-record audit corrected marker precedence and removed fallback credit from length-truncated responses; the archived outputs were then rescored with regression checks. The remaining limitation of the GSM8K last-number fallback is stated in the appendix.
 
-\subsection{Training Setup and Headline Configurations}
+Pass@$k$ is secondary because it uses a different decoding protocol: temperature 0.6, top-$p=0.95$, a 4,096-token cap, and 64 samples per MATH-500 item or 32 per GSM8K item. Its estimator and results are given in Appendix~\ref{app:secondary}.
 
-All runs initialize from Qwen2.5-1.5B-Instruct and use Countdown as the sole training task~\cite{CountdownTasks3to4}. The DAPO-style scalar reward is the sum of a 0.1 credit for the full reasoning-and-answer tag structure and a 0.9 correctness credit. Thus a correct but format-invalid response scores 0.9, whereas a fully formatted incorrect response scores 0.1. The selected PPO and GRPO runs use an extraction-based reward: any correct extracted \texttt{<answer>} expression scores 1.0 regardless of the full reasoning-tag structure, any extracted but wrong or invalid expression scores 0.1, and a response with no extracted expression scores 0. These rewards share the numerical values 0, 0.1, and 1.0 but differ in what earns the 0.1 component and whether correct format-invalid responses score 0.9 or 1.0. Training uses Verl~\cite{sheng2024hybridflow}, one actor epoch per batch, AdamW, and rollout temperature 1.0.
+\subsection{Training Setup}
 
-\noindent\textbf{Implementation details and hardware.}
-The recorded current-environment ablations used one node with four NVIDIA RTX A6000 GPUs (48 GB each), bfloat16 rollout weights, PyTorch 2.6.0+cu124, and vLLM 0.8.5.post1. FSDP optimization used AdamW with the framework defaults $\beta_1=0.9$ and $\beta_2=0.999$. The current-environment DAPO-style actor used weight decay 0.1, a 10-step linear warmup to the reported learning rate, and a constant schedule thereafter. The archived headline PPO and GRPO actor configurations used weight decay 0.01, zero warmup, and a constant schedule; the PPO critic likewise used weight decay 0.01 and zero warmup. The archived legacy configurations do not preserve every environment field, so current-environment specifications are not retroactively assigned to them. In the DS configuration, a group was rejected only when all eight response-level accuracy values were identical. The retry limit was non-positive (no fixed numerical cap): sampling continued until 32 informative prompt groups were collected or the finite data iterator was exhausted; the archived run required at most three generation rounds in an observed step.
+All runs initialize from Qwen2.5-1.5B-Instruct and use Countdown as the sole training task~\cite{CountdownTasks3to4}. The frozen scalar reward is 0.9 for a correct equation plus 0.1 for the complete reasoning-and-answer tag structure. A correct format-invalid response therefore scores 0.9, a fully formatted incorrect response scores 0.1, and a fully formatted correct response scores 1.0. Training uses Verl~\cite{sheng2024hybridflow}, bfloat16 weights, AdamW, one actor epoch per batch, and rollout temperature 1.0 on four NVIDIA RTX A6000 GPUs.
 
-A dash in Tables~\ref{tab:headline_optimization} and~\ref{tab:headline_exposure} means not applicable; NR means unavailable. The legacy DS configuration omitted explicit seed overrides; the archived framework defaults were data seed 1 and rollout seed 0, although the exact runtime random-number-generator state was not preserved. The 22-run screen contains current-environment seed labels 1--6 for A1 and matched no-DS, current-environment equal data/rollout seed pairs 2--6 plus one legacy run for DS, and current-environment seeds 3--6 for A1+KL. The legacy DS run is displayed as run 1 only for table ordering. A targeted post-screen replay used the reconstructed legacy configuration, including the default seed pair, in the current environment; it is reported separately and is not added to the 22-run denominator. The current environment uses Verl-fork with PyTorch 2.6.0 and vLLM 0.8.5.post1. A side-by-side legacy/current record in \path{environment/DS_LEGACY_CURRENT_COMPARISON.md} distinguishes matched settings from unverified legacy fields.
+\subsection{Matched Recipe Comparison}\label{sec:matched_design}
 
-\begin{table}[H]
-\caption{Recorded optimization settings of the headline checkpoints. Clip ``.20/.28'' denotes $\epsilon_{\mathrm{low}}=0.20$ and $\epsilon_{\mathrm{high}}=0.28$; symmetric ``.20/.20'' uses 0.20 on both sides.\label{tab:headline_optimization}}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccccccc}
-\toprule
-Recipe (step) & Estimator & Actor LR & Critic LR & KL & Ent. & Clip & Aggregation & $G$ & Reward & Cap \\
-\midrule
-DAPO DS (300) & GRPO & $10^{-6}$ & -- & 0 & 0 & .20/.28 & token mean & 8 & format+corr. & 4096 \\
-DAPO original no-DS (300) & GRPO & $10^{-6}$ & -- & 0 & 0 & .20/.28 & token mean & 8 & format+corr. & 4096 \\
-DAPO matched no-DS (300) & GRPO & $10^{-6}$ & -- & 0 & 0 & .20/.28 & token mean & 8 & format+corr. & 4096 \\
-GRPO strong-KL (250) & GRPO & $10^{-6}$ & -- & .04 & 0 & .20/.20 & token mean & 2 & extract+corr. & 2048 \\
-PPO (520) & GAE & $10^{-6}$ & $10^{-5}$ & 0 & 0 & .20/.20 & token mean & 1 & extract+corr. & 2048 \\
-\bottomrule
-\end{tabular}}
-\end{table}
+We froze the comparison protocol on 14 October 2026 before launching the nine runs. Each recipe uses the same training data, prompts, reward, software environment, paired data/rollout seeds (7, 8, and 9), and 300-step horizon. Each step samples 32 prompts with eight responses per prompt (256 trajectories) and performs eight actor updates with a response mini-batch of 32. The actor learning rate is $10^{-6}$ with a 10-step warmup and weight decay 0.1; KL loss, KL reward, and entropy regularization are disabled; loss aggregation is global token mean; and responses are capped at 4,096 tokens.
+
+The recipes differ only in their defining optimization components. PPO uses generalized advantage estimation ($\gamma=\lambda=1$), a learned critic (learning rate $10^{-5}$, mini-batch 32), and symmetric clipping 0.2/0.2. GRPO uses group-standardized advantages and symmetric clipping 0.2/0.2. The DAPO-style recipe uses the same group-relative estimator with asymmetric clipping 0.2/0.28. Dynamic sampling and overlong shaping are disabled, so the GRPO--DAPO-style contrast isolates clipping rather than every component of published DAPO. Actor-side exposure is matched; total compute is not identical because PPO also trains a critic.
 
 \begin{table}[H]
-\caption{Recorded per-step training exposure. Updates are inferred for one actor epoch; the DS generated-prompt count is the observed mean. Generated and retained response counts are separated because dynamic sampling makes them unequal.\label{tab:headline_exposure}}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrrrrr}
-\toprule
-Recipe & Gen. prompts & Gen. responses & Trained prompts & Trained responses & Mini-batch & Updates/step & Step & Wall time \\
-\midrule
-DAPO DS & 200.3 mean & $\sim$1602 & 32 & 256 & 32 & 1 & 300 & 74.9 h \\
-DAPO original no-DS & 192 & 1536 & 192 & 1536 & 32 & 6 & 300 & 70.4 h \\
-DAPO matched no-DS & 32 & 256 & 32 & 256 & 32 & 1 & 300 & NR \\
-GRPO strong-KL & 192 & 384 & 192 & 384 & 64 & 3 & 250 & NR \\
-PPO & 192 & 192 & 192 & 192 & 16 & 12 & 520 & NR \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-These data were reconstructed from configurations and logs, not a preregistered protocol. Generated- and trained-token counts and GPU-hours are unavailable. Wall time is NR when the legacy job's complete start/end timestamps were not retained; it is not an estimate of zero or equal compute. Cross-family comparisons remain observational, and the original DS/no-DS contrast cannot identify the effect of filtering.
-
-\section{Results}\label{sec:results}\label{sec:parametric}
-
-We first summarize component diagnostics and then present the collapse screen, transfer, format decomposition, and pass@$k$. Unless stated otherwise, downstream accuracies use the standard prompt and format-tolerant scoring. Most full-length configurations have one seed and do not support population-level method rankings.
-
-\subsection{Exploratory Recipe Diagnostics}
-
-\noindent\textbf{PPO learning rate and regularization.}
-The archived PPO grid is incomplete and cannot isolate entropy or KL effects. Its directly observed downstream values are therefore reported without a component-level causal claim in Appendix Table~\ref{tab:exploratory_grid}. Every evaluated PPO run at $3\times10^{-6}$ performed substantially below the base model on the four-benchmark standard-prompt mean, whereas the selected $10^{-6}$ run retained more performance. These single-seed configurations identify high-risk recipes rather than universal effects.
-
-\noindent\textbf{GRPO group size and KL.}
-The $G=2$, 4, and 8 runs generated 384, 768, and 1,536 responses per step, so group size is confounded with rollout budget and no independent group-size effect is claimed. The single-seed KL sweep is reported in Appendix Table~\ref{tab:exploratory_grid}; it shows a sharp prompt-conditioned contrast but does not calibrate a general threshold.
-
-\noindent\textbf{Aggregation, DAPO group size, and dynamic sampling.}
-Response-length differences cannot be attributed to aggregation because KL, reward, response cap, and rollout budget also change. DAPO group-size comparisons likewise change response budget, and $G=2$ also changes KL. The original DS/no-DS runs change both filtering and exposure. In matched-exposure runs, collapsed and non-collapsed seeds occur with and without DS; the recorded DS run also required up to three generation rounds for some steps.
-
-\subsection{Short-Answer Shortcut under the Think Prompt}
-
-Weak-KL GRPO runs learned a prompt-conditional shortcut: under the Countdown-style think prompt they often emitted only a final-answer tag, with median responses near 20 characters, while standard-prompt performance remained much closer to the base model. Stronger KL runs retained longer responses. This behavior is evidence that the reward can be optimized without preserving the requested reasoning trace, but the present sweep does not identify a single cause: KL, loss aggregation, reward definition, and sampling configuration differ across recipe families. The format credit also did not prevent early collapse in the multi-seed screen. We therefore report response length and prompt-conditioned behavior as diagnostics rather than treating verbosity as a proxy for reasoning quality.
-
-
-
-
-\subsection{Early Short-Response Collapse across Seeds}
-
-We use \emph{early short-response collapse} as an operational screening label, not as a direct measure of reasoning quality. The primary definition is a mean generated response length below 100 tokens over steps 90--100. Sixteen of 22 runs met this criterion. The label was often associated with answer-only behavior, but not invariably with lower Countdown validation accuracy: some endpoint-healthy no-DS seeds had validation accuracy comparable to collapsed seeds, and the longest runs also had substantial length truncation. Concise correct reasoning and long incoherent reasoning remain possible; response length alone is therefore insufficient to establish capability loss.
-
-\begin{table}[ht]
+\caption{Matched comparison. Only the final three rows vary by recipe.}
+\label{tab:matched_design}
 \centering
-\caption{Early short-response screen at the 100-token threshold. Wilson intervals describe binomial uncertainty within each recipe. A1 denotes correctness-only reward with overlong-response filtering. The targeted DS replay was conducted after this screen and is excluded from its counts and inferential summaries.}
-\label{tab:collapse_screen}
-\begin{tabular}{lcccc}
+\small
+\begin{tabular}{@{}ll@{}}
 \toprule
-Recipe & Collapsed & Total & Rate (\%) & Wilson 95\% CI (\%) \\
+Setting & Value \\
 \midrule
-Dynamic sampling (DS) & 5 & 6 & 83.3 & 43.6--97.0 \\
-Matched no-DS & 3 & 6 & 50.0 & 18.8--81.2 \\
-A1 & 5 & 6 & 83.3 & 43.6--97.0 \\
-A1 + KL 0.01 & 3 & 4 & 75.0 & 30.1--95.4 \\
+Reward & 0.9 correctness + 0.1 full-format credit \\
+Prompts $\times$ responses per step & $32\times8=256$ trajectories \\
+Actor mini-batch / updates per step & 32 responses / 8 \\
+Actor LR / warmup / weight decay & $10^{-6}$ / 10 steps / 0.1 \\
+KL loss / KL reward / entropy & off / off / 0 \\
+Aggregation / response cap & global token mean / 4,096 \\
+Seeds / horizon & paired 7, 8, 9 / 300 steps \\
 \midrule
-All screened runs & 16 & 22 & 72.7 & 51.8--86.8 \\
+PPO & GAE, critic, clip 0.2/0.2 \\
+GRPO & group-standardized advantage, clip 0.2/0.2 \\
+DAPO-style & as GRPO, clip 0.2/0.28, no dynamic sampling \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-A threshold-sensitivity check yielded 14/22, 16/22, and 17/22 labeled runs at 50, 100, and 200 tokens, respectively. The no-DS count changed from 1/6 at 50 tokens to 3/6 at 100 and 200 tokens; DS and A1 remained 5/6 at all three thresholds, while A1+KL changed from 3/4 to 4/4 only at 200 tokens. Thus, the qualitative observation of frequent very short outputs is robust overall, but the recipe-specific no-DS rate is threshold-sensitive. In the original screen, the one healthy DS run was also the only legacy-environment DS run; all five current-environment DS runs, which used equal data and rollout seed pairs 2--6, collapsed at the same step-20 event window. A targeted current-environment replay of the reconstructed legacy configuration with its default seed pair (1, 0) subsequently remained healthy through step 100 (Table~\ref{tab:ds_replay}). This result rules out the hypothesis that the current environment deterministically produces DS collapse. Because only one targeted replay was performed and both seed streams differ from the failed runs, it neither identifies the responsible stochastic factor nor estimates a DS failure probability. The current-environment matched no-DS recipe also varied sharply by seed. In the original 22-run screen, the recipe-specific Wilson intervals overlap substantially, and a two-sided Fisher exact comparison of DS and matched no-DS gives $p=0.55$. With only four to six runs per arm, this test is severely underpowered; these data establish instability, not a statistically resolved ordering among recipes.
+The collapse endpoint was fixed before training: mean generated response length below 100 tokens over steps 90--100. Every run continued to step 300 regardless of this label, and every seed remained in the analysis. The step-300 checkpoints were evaluated on all four complete downstream test sets under both prompt conditions. With three seeds per recipe, means and sample standard deviations are descriptive. Historical single-seed sweeps and the earlier 22-run screen use heterogeneous configurations and are treated as secondary evidence in Appendix~\ref{app:secondary} and Appendix~\ref{app:complete_results}.
 
-The default seed pair did not guarantee survival in the current environment: A1 run 1 remained healthy whereas matched no-DS run 1 collapsed, so the cross-recipe evidence argues against a generic explicit-seed-handling artifact while leaving the DS-specific mechanism unresolved.
+\section{Results}\label{sec:results}
 
-\begin{table}[ht]
+\subsection{Matched Training Outcomes}
+
+Table~\ref{tab:matched_outcomes} reports every run in the matched experiment. The prespecified early-collapse rule labeled PPO seed 9, GRPO seed 9, and all three DAPO-style seeds. PPO seed 9 later lengthened again, but its step-300 Countdown accuracy was only 1.5\%; the label therefore identifies an early trajectory, not an irreversible absorbing state. The other collapsed runs ended at 22--60 tokens and 24.8--27.1\% Countdown accuracy. By contrast, the non-collapsed PPO and GRPO runs reached 52.0--59.1\%.
+
+\begin{table}[H]
 \centering
-\caption{Targeted DS replay compared with the archived DS evidence. The replay was conducted after the 22-run screen and is excluded from Table~\ref{tab:collapse_screen}, its Wilson intervals, and the Fisher test. Endpoint length is the mean over steps 90--100; accuracy is sampled Countdown validation accuracy at step 100. Ranges summarize the five current-environment screen runs.}
-\label{tab:ds_replay}
+\caption{All nine matched runs. Mean tokens is computed over steps 90--100 and defines early collapse at fewer than 100 tokens. Countdown accuracy is measured at step 300. Downstream columns are each seed's mean flexible accuracy across GSM8K, MATH, BBH, and MMLU-Pro.}
+\label{tab:matched_outcomes}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccccc}
+\begin{tabular}{llcrrrr}
 \toprule
-Run group & Environment & Data seed & Rollout seed & Endpoint length & Accuracy (\%) & Status \\
+Recipe & Seed & Collapse & Mean tokens & Countdown (\%) & Standard (\%) & Think (\%) \\
 \midrule
-Archived healthy DS & Legacy & Default 1 & Default 0 & 1569.4 & 50.8 & Healthy \\
-DS screen runs ($n=5$) & Current & 2--6 & 2--6 & 19.5--20.6 & 26.2--28.8 & Collapsed \\
-Targeted legacy-config replay & Current & 1 & 0 & 1527.4 & 47.2 & Healthy \\
+PPO & 7 & No & 1374.1 & 55.7 & 49.2 & 46.2 \\
+PPO & 8 & No & 447.0 & 53.5 & 49.4 & 47.8 \\
+PPO & 9 & Yes & 16.3 & 1.5 & 48.5 & 36.2 \\
+\midrule
+GRPO & 7 & No & 267.8 & 52.0 & 49.0 & 37.8 \\
+GRPO & 8 & No & 725.0 & 59.1 & 49.6 & 42.3 \\
+GRPO & 9 & Yes & 22.4 & 25.9 & 48.9 & 18.2 \\
+\midrule
+DAPO-style & 7 & Yes & 55.6 & 25.8 & 48.6 & 18.4 \\
+DAPO-style & 8 & Yes & 54.7 & 24.8 & 49.1 & 21.4 \\
+DAPO-style & 9 & Yes & 51.0 & 27.1 & 49.0 & 20.2 \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-We also performed a descriptive post-hoc time-to-event analysis on the archived per-step histories. Five-step trailing windows were evaluated at steps 10, 15, \ldots, 100. The event time is the first window with mean response length below 100 tokens when the next two windows are also below 100; runs without an event are right-censored at step 100. As shown by the multi-panel trajectories in Figure~\ref{fig:collapse_seeds}, 17 of 22 runs had such a sustained short-response episode. The five current-environment DS events occurred by step 20; A1 events occurred at steps 25 (four seeds) and 50 (one seed); matched no-DS events occurred at steps 30, 45, and 50; and A1+KL events occurred at steps 25 or 30. One A1+KL seed subsequently recovered to a 132-token mean over steps 90--100 and was endpoint-healthy. Thus, the event denotes the first sustained episode, not an irreversible absorbing state, and it answers a different question from the primary endpoint label.
+The collapse counts are 1/3 for PPO, 1/3 for symmetric-clip GRPO, and 3/3 for the asymmetric-clip DAPO-style recipe. The paired GRPO--DAPO-style contrast is underpowered (two-sided exact McNemar $p=0.50$). This controlled contrast is consistent with lower stability under asymmetric clipping in the tested setting. Three seeds are too few to estimate population failure rates or to claim that asymmetric clipping alone is causal, especially because the PPO comparison also changes the estimator and adds a critic.
 
-\begin{figure}[H]
+\subsection{Prompt-Conditional Downstream Behavior}
+
+Standard-prompt flexible accuracy does not distinguish the recipes: all three means are within 0.2 points of the base model's 49.0\% four-benchmark mean (Table~\ref{tab:matched_summary}). Strict standard-prompt accuracy is 4.3--6.0 points higher than the base while flexible accuracy is unchanged, indicating improved answer-marker compliance rather than a broad correctness gain. MATH, BBH, and MMLU-Pro show no consistent standard-prompt improvement; the largest changes are concentrated on GSM8K, the benchmark closest to the arithmetic training domain. Complete per-seed benchmark values are in Appendix~\ref{app:matched_full}.
+
+\begin{table}[H]
 \centering
-\includegraphics[width=\textwidth]{paper_figs/fig5_collapse_survival_diagnostics.pdf}
-\caption{First-100-step joint diagnostics and time to the first sustained short-response episode for all 22 screened runs. Each thin line is one run; color identifies recipe, solid lines are right-censored, and dashed lines have an event. Panel letters identify response length, Countdown validation accuracy, training score, KL-loss estimate, truncation, and the descriptive Kaplan--Meier curve. The response-length panel uses a logarithmic scale and shows the 100-token threshold. Dynamic-sampling training score starts higher because it is computed only over retained groups conditioned on within-group accuracy variation, whereas no-DS includes all generated groups; scores are therefore not compared across recipes. The sole legacy-environment run is the DS run displayed as 1. No confidence bands are shown because each arm has only four to six runs. Token entropy and explicit format-validity rates were not logged and are not inferred.}
-\label{fig:collapse_seeds}
-\end{figure}
-
-The joint panels reinforce the endpoint's limited construct validity. Several short-response runs retained 20--29\% Countdown validation accuracy, while the healthy A1 and legacy DS seeds reached 42\% and 51\%, respectively; the healthy no-DS seeds ranged from 19\% to 26\%. Long-response survivors could have high truncation rates (approximately 43\% for A1 seed 1 and 20\% for legacy DS seed 1), so length alone does not distinguish coherent reasoning from unfinished generation. Training-score levels are not compared across recipes because their reward definitions differ. The archived histories contain reward/score, approximate KL, and truncation, but not token entropy or an explicit format-validity metric; those missing quantities cannot be reconstructed from scalar logs.
-
-The step-100 snapshot can make collapse look like mere concision because some collapsed runs then match or exceed healthy runs from other recipes in validation accuracy. The longer archived trajectories in Table~\ref{tab:long_horizon_countdown} show why the label matters empirically: within both current-environment matched no-DS and A1, the collapsed member remains near 29--30\% at step 520, while a healthy member reaches 63--70\%. The comparison remains observational and response length is not itself a capability measure, but the paired recipe-level divergence rules out treating every short-response endpoint as an equally capable concise style.
-
-\begin{table}[ht]
-\centering
-\caption{Long-horizon in-domain outcomes for archived healthy and collapsed runs. Endpoint status is fixed from mean response length over steps 90--100; the reported accuracy is the run's sampled Countdown validation accuracy at the listed checkpoint. The DS current run ended at step 245, so step 200 is its last saved checkpoint.}
-\label{tab:long_horizon_countdown}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lllrr}
-\toprule
-Recipe & Environment & Endpoint status & Step & Validation accuracy (\%) \\
-\midrule
-DS & Legacy & Healthy & 300 & 66.0 \\
-DS, seed 2 & Current & Collapsed & 200 & 34.0 \\
-Matched no-DS, run 1 & Current & Collapsed & 520 & 30.2 \\
-Matched no-DS, seed 2 & Current & Healthy & 520 & 63.5 \\
-Matched no-DS, seed 3 & Current & Healthy & 520 & 64.1 \\
-A1, run 1 & Current & Healthy & 520 & 70.0 \\
-A1, seed 2 & Current & Collapsed & 520 & 28.5 \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-To avoid selecting examples by their apparent quality, Appendix~\ref{app:collapse_examples} uses a content-blind rule based only on recipe, seed number, endpoint status, and event time. The selected outputs confirm both sides of the construct-validity problem: sustained short-response episodes often yield wrong answer-only equations, while an endpoint-healthy no-DS seed produces an extremely long unfinished response without an answer tag. Recovery in response length also does not guarantee correctness.
-
-\subsection{Dynamic Sampling and Training Exposure}
-
-The original DS and no-DS runs do not isolate dynamic sampling. The DS run generated approximately 200 prompts per step, retained 32, collected 256 responses, and made one optimizer update. The original no-DS run generated and trained 192 prompts, collected 1,536 responses, and made six updates per step. Thus, at step 300 the two checkpoints represent approximately 300 versus 1,800 optimizer updates. The matched no-DS ablation used 32 generated and trained prompts, 256 responses, and one update per step.
-
-In one matched run, no-DS collapsed to a 54-token mean response and 25\% Countdown validation accuracy at step 300, whereas the legacy-environment DS run retained approximately 2,577-token responses and reached 66.0\%. That contrast does not support a general DS effect once the screen and replay are considered: both DS and no-DS produced healthy and collapsed outcomes within the current environment. The evidence therefore does not establish that disabling DS is intrinsically superior. Nor does the single replay determine whether the DS contrast is driven by the data seed, rollout seed, their interaction, or a residual difference between the reconstructed and archived configurations.
-
-\subsection{Downstream Transfer}
-
-Table~\ref{tab:flexible_transfer} reports archived selected checkpoints under the primary format-tolerant metric and adds the only collapsed DS checkpoint evaluated on all four full test sets. Step 300 is used for the legacy DS/no-DS comparison because it is the only archived full checkpoint for the healthy DS run; step 250 is used for the GRPO KL sweep; and the displayed PPO result is its final step-520 checkpoint. These choices were not preregistered. Except for the explicitly labeled collapsed row, the table is a survivorship case study conditional on checkpoint selection, not an estimate of expected performance from starting a recipe. The two strongest selected checkpoints improved GSM8K by 3.1--3.3 percentage points relative to the base model, whereas healthy DS improved it by 0.8 points. Under the standard prompt, the collapsed DS seed-2 checkpoint was only 1.8 points below the base model on GSM8K and lower on the other three benchmarks. Its failure was strongly prompt-conditional: under the Countdown-style think prompt, strict accuracy fell to 9.9\% on GSM8K and 14.7\% on MATH, compared with 48.4\% and 47.4\% for the base model. The run exhausted its finite two-epoch data iterator at step 245 after dynamic resampling required up to three generation rounds per update; with a 50-step save cadence, step 200 was the last available checkpoint. The displayed PPO checkpoint was lower than the base model on all four benchmarks. Other PPO configurations at learning rate $3\times10^{-6}$ degraded substantially further. These comparisons describe complete training recipes, not controlled estimates of PPO, GRPO, or DAPO as algorithms.
-
-\begin{table}[ht]
-\centering
-\caption{In-domain and transfer evaluation of selected checkpoints (survivorship case study; not an expectation over recipe seeds). Countdown is the sampled validation accuracy logged during training; downstream full-test-set accuracy uses the standard prompt and format-tolerant scoring. NR denotes a non-comparable logged reward rather than accuracy. Values are individual checkpoints, not seed averages.}
-\label{tab:flexible_transfer}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lccccc}
-\toprule
-Checkpoint (recipe) & Countdown & GSM8K & MATH & BBH & MMLU-Pro \\
-\midrule
-Base model & 3.0 & 72.3 & 55.3 & 35.4 & 33.1 \\
-DS, step 300 & 66.0 & 73.0 & 55.2 & 35.3 & 33.1 \\
-DS seed 2, step 200 (collapsed) & 34.0 & 70.4 & 54.5 & 35.1 & 32.7 \\
-Original no-DS, step 300 & 75.1 & 75.6 & 54.9 & 34.5 & 32.9 \\
-GRPO, KL 0.04, step 250 & NR & 75.4 & 55.4 & 35.2 & 33.9 \\
-PPO, lr $10^{-6}$, step 520 & NR & 62.7 & 46.2 & 24.3 & 31.4 \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-Appendix Table~\ref{tab:exploratory_grid} gives the matched-step GRPO KL sweep. Stronger KL is associated with preservation of the requested reasoning behavior, but with one seed per coefficient it is a prompt-conditioned mechanism diagnostic rather than a reliable threshold estimate.
-
-\subsection{Format Compliance versus Problem Solving}
-
-The strict GSM8K score of the base model was 33.36\%, although its format-tolerant accuracy was 72.25\%; 54.44\% of base responses omitted the expected marker. Table~\ref{tab:format_decomposition} uses tolerant correctness first and treats marker compliance as a separate transition. For all three selected checkpoints, tolerant fixes and losses were both common and largely offset one another; the much larger strict-score increases were dominated by marker compliance among responses that were already correct under tolerant scoring. On MATH, where the base model rarely omitted the marker, strict and tolerant scores were similar and no comparable gain appeared.
-
-\begin{table}[ht]
-\centering
-\caption{Format decomposition for selected surviving checkpoints (survivorship case study; not an expectation over recipe seeds). Paired GSM8K transitions are percentages of 1,319 items. Tolerant fixes are incorrect-to-correct transitions; tolerant losses are correct-to-incorrect transitions. Marker wins/losses are restricted to items for which both responses are tolerant-correct and only one satisfies the strict final-answer-marker rule.}
-\label{tab:format_decomposition}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrrr}
-\toprule
-Checkpoint & Tolerant fixes & Tolerant losses & Net tolerant & Paired 95\% CI & Marker wins & Marker losses \\
-\midrule
-DS, step 300 & 7.05 & 6.29 & 0.76 & $[-1.21,2.73]$ & 30.86 & 1.52 \\
-Original no-DS, step 300 & 10.31 & 6.97 & 3.34 & $[1.10,5.57]$ & 31.77 & 1.74 \\
-GRPO, KL 0.04, step 250 & 7.13 & 4.02 & 3.11 & $[1.31,4.90]$ & 33.06 & 1.44 \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-Exploratory paired item-level tests on tolerant GSM8K predictions gave exact McNemar $p=0.498$, $0.0043$, and $0.00091$ for DS, original no-DS, and step-250 strong-KL GRPO, respectively. Holm adjustment across these three displayed comparisons gives $p=0.498$, $0.0086$, and $0.0027$. The paired asymptotic 95\% intervals in Table~\ref{tab:format_decomposition} describe benchmark-item uncertainty for fixed checkpoints. The comparisons and outcomes were selected after examining a broader sweep, so even adjusted item-level tests remain exploratory; they do not incorporate training-seed variance and must not be read as confirmatory method-level significance tests.
-
-\subsection{Prompt-Only Format Control}
-
-To test how much strict-score movement can be obtained without changing model weights, we evaluated the base model with the standard GSM8K prompt plus a mandatory final-line contract: the response had to end with exactly one line of the form \texttt{\#\#\#\# N}, with only the final numeric answer replacing \texttt{N}. All other evaluation choices were held fixed: the pinned base-model snapshot, Qwen chat template, 1,319 test items, greedy decoding, 8,192-token cap, and strict/tolerant scorers. This control was specified and run after the earlier results had been examined, so it is a diagnostic rather than a preregistered confirmatory experiment. The intervention results and selected trained-checkpoint references are summarized in Table~\ref{tab:format_control}.
-
-\begin{table}[ht]
-\centering
-\caption{GSM8K prompt-only format control and fixed-checkpoint references. Marker rate is the percentage of responses containing a recognized explicit final-answer marker. Trained-checkpoint rows use the original standard prompt and are descriptive references, not randomized controls.}
-\label{tab:format_control}
+\caption{Recipe-level downstream summary. Values for trained recipes are the mean across three seeds, with sample standard deviation in parentheses. Each accuracy averages GSM8K, MATH, BBH, and MMLU-Pro with equal benchmark weight. Strict scoring requires the answer marker; flexible scoring permits answer extraction from completed responses.}
+\label{tab:matched_summary}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrr}
 \toprule
-Condition & Strict accuracy (\%) & Tolerant accuracy (\%) & Marker rate (\%) & Truncated (\%) \\
+Recipe & Collapses & Strict standard & Flexible standard & Flexible think \\
 \midrule
-Base, standard prompt & 33.36 & 72.25 & 45.56 & 0.15 \\
-Base, mandatory-format prompt & 58.53 & 67.10 & 88.93 & 0.45 \\
-DS, step 300, standard prompt & 66.11 & 73.01 & 89.01 & 0.45 \\
-Original no-DS, step 300, standard prompt & 69.90 & 75.59 & 91.28 & 0.83 \\
-GRPO, KL 0.04, step 250, standard prompt & 69.52 & 75.36 & 92.19 & 0.61 \\
+Base model & -- & 39.2 & 49.0 & 41.6 \\
+PPO & 1/3 & 44.8 (0.9) & 49.0 (0.5) & 43.4 (6.3) \\
+GRPO & 1/3 & 45.2 (0.9) & 49.2 (0.4) & 32.8 (12.8) \\
+DAPO-style & 3/3 & 43.4 (0.8) & 48.9 (0.3) & 20.0 (1.5) \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-Relative to the base model under the standard prompt, the mandatory-format prompt increased strict accuracy by 25.17 points (paired 95\% CI $[21.86,28.48]$; 124 standard-only versus 456 format-control-only correct items; exact McNemar raw $p=1.45\times10^{-45}$, Holm-adjusted across the two reported outcomes $p=2.91\times10^{-45}$). It simultaneously \emph{decreased} tolerant accuracy by 5.16 points (95\% CI $[-7.70,-2.61]$; 182 standard-only versus 114 format-control-only; raw and Holm-adjusted $p=9.23\times10^{-5}$). Thus, a stronger inference instruction reproduced a large strict-score gain but did not improve problem correctness. The tolerant reduction also shows that prompting is not behaviorally neutral; this control should not be interpreted as a causal decomposition of the trained models' outputs or as a substitute for a format-only supervised-tuning experiment.
+The think condition exposes the failure hidden by standard prompts. Collapsed GRPO seed 9 averaged 18.2\%, compared with 37.8\% and 42.3\% for the two non-collapsed GRPO seeds. The three DAPO-style seeds averaged 20.0\%. PPO seed 9 was less severely affected but still fell to 36.2\%, versus 46.2--47.8\% for PPO seeds 7--8. Collapse is therefore prompt-conditional: a checkpoint can remain near the base model under conventional prompts while failing when the same problems are expressed in the training wrapper.
 
-\subsection{Pass@$k$ and Solution Coverage}
+\subsection{Historical Robustness Checks}
 
-Sampling-based evaluation can distinguish increased probability on sampled solutions from evidence that additional items become solvable; the empirical curves are plotted in Figure~\ref{fig:passk}. On MATH-500, base, DS step 300, original no-DS step 300, and headline strong-KL GRPO step 250 obtained format-tolerant pass@1 of 54.06, 55.23, 54.07, and 54.40, respectively; their pass@64 values were 91.0, 92.2, 90.8, and 91.6. On GSM8K, pass@1 was 70.40 for the base model, 72.92 for DS step 300, 73.87 for original no-DS step 300, and 73.21 for \texttt{GRPO\_n2\_kl4e-2\_step250}; pass@32 was 96.29, 96.82, 96.66, and 97.12. The GRPO pass@$k$ curve uses the same step-250 checkpoint as Table~\ref{tab:flexible_transfer}; an archived step-520 run gives the same qualitative pattern. Differences at pass@1 were smaller at the largest sampled $k$, which is consistent with probability redistribution but does not prove equality of latent solution support: finite samples, ceiling saturation, correlated generations, truncation, and scorer error remain possible. The selected PPO step-520 checkpoint had lower empirical coverage: GSM8K pass@32 was 88.48 and MATH pass@64 was 85.6.
+The earlier heterogeneous screen supports frequent instability but is not used to rank the matched recipes. Sixteen of 22 runs met the same step-100 collapse criterion: 5/6 with dynamic sampling, 3/6 in a matched-exposure no-DS recipe, 5/6 with correctness-only reward and overlong filtering, and 3/4 when KL 0.01 was added. A current-environment replay of the reconstructed legacy dynamic-sampling configuration remained healthy, ruling out a deterministic environment-only explanation. Single-seed KL sweeps also showed that stronger KL could preserve response length, but their thresholds changed with the rest of the recipe. Full run-level outcomes and these exploratory diagnostics are reported in Appendices~\ref{app:complete_results} and~\ref{app:secondary}.
 
-\begin{figure}[H]
+\subsection{Format and Coverage Controls}
+
+The prompt-only control isolates how much strict GSM8K accuracy can move without changing model weights. Adding a mandatory final-line contract to the base model increased marker use from 45.6\% to 88.9\% and strict accuracy from 33.4\% to 58.5\%, while flexible accuracy decreased from 72.3\% to 67.1\% (Table~\ref{tab:format_control}). Thus, a 25.2-point strict gain can be produced by presentation alone and need not indicate improved correctness.
+
+\begin{table}[H]
 \centering
-\includegraphics[width=\textwidth]{paper_figs/fig4_passk.pdf}
-\caption{Empirical format-tolerant pass@$k$ for fixed checkpoints on MATH-500 and GSM8K. Curves use up to 64 samples per MATH-500 item and 32 per GSM8K item under the common sampling protocol. The GRPO curve uses the same step-250 checkpoint as the headline transfer table. The convergence of several curves at large $k$ is descriptive and does not establish equal latent solution support.}
-\label{fig:passk}
-\end{figure}
+\caption{GSM8K prompt-only format control on the unchanged base model.}
+\label{tab:format_control}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrr}
+\toprule
+Condition & Strict accuracy (\%) & Flexible accuracy (\%) & Marker rate (\%) \\
+\midrule
+Standard prompt & 33.36 & 72.25 & 45.56 \\
+Mandatory-format prompt & 58.53 & 67.10 & 88.93 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+The sampling analysis leads to the same restrained interpretation. On MATH-500, base, healthy DS, original no-DS, and strong-KL GRPO checkpoints reached 90.8--92.2\% flexible pass@64; on GSM8K they reached 96.3--97.1\% pass@32. Differences visible at pass@1 largely narrowed at larger $k$. This pattern is consistent with probability redistribution among already sampled solutions, although finite-sample saturation does not prove equal latent capability. Full curves and protocol details are in Appendix~\ref{app:secondary}.
+
 
 \section{Discussion}\label{sec:discussion}
 
-The central empirical result is run-dependent instability. Early short-response collapse occurred in 16 of 22 screened runs, often within the first 25 steps. All five current-environment DS screen runs with equal data and rollout seed pairs 2--6 failed identically at the step-20 event window. However, the targeted reconstructed-legacy replay with seed pair (1, 0) remained healthy in that same environment, as did the archived legacy run. The current environment is therefore not a deterministic explanation for DS collapse. The matched no-DS recipe likewise shows healthy and collapsed seeds within the current environment. These data support sensitivity to run-level stochastic or residual configuration differences, but the design does not identify a precise mechanism or population failure rate. The selected long-reasoning checkpoints come from a heterogeneous distribution containing many failures. Reporting only those checkpoints would materially overstate recipe reliability. Tables~\ref{tab:flexible_transfer} and~\ref{tab:format_decomposition} estimate performance conditional on selected checkpoints, not expected performance from starting a recipe.
+The matched experiment changes the interpretation of the earlier evidence. Under the same reward, rollout count, actor-update count, optimizer settings, response cap, seeds, and 300-step horizon, early collapse occurred in 1/3 PPO runs, 1/3 symmetric-clip GRPO runs, and 3/3 asymmetric-clip DAPO-style runs. This result is more informative than comparing selected historical checkpoints trained with different budgets. It is consistent with asymmetric clipping being less stable in this setting, but it does not establish a general ordering of PPO, GRPO, and DAPO: the sample contains only three seeds, PPO also changes the estimator and adds a critic, and published DAPO includes components deliberately disabled here.
 
-Dynamic sampling cannot be assigned a simple positive or negative effect from these experiments. The original DS/no-DS comparison changes training exposure by a factor of six, while the matched and multi-seed evidence shows collapse with and without DS. Similarly, the group-size experiments increase the number of generated responses from 384 to 768 and 1,536 as $G$ increases, so group size is confounded with sampling budget. These findings are best interpreted as comparisons of complete recipes unless the varied factor and compute exposure are explicitly matched.
+The downstream results explain why the failure can be missed. Under standard prompts, flexible four-benchmark accuracy is essentially identical for the base model and all three recipes. Under the training-format think prompt, collapsed checkpoints degrade sharply. The standard prompt therefore elicits residual capabilities that the think prompt suppresses, while the think prompt exposes the reward-compatible answer-only behavior learned during training. Neither condition alone is sufficient: standard-only evaluation understates the behavioral collapse, whereas think-only evaluation confounds model quality with an unusual wrapper that already changes the base model.
 
-The transfer evidence is narrower than the preliminary preprint~\cite{lian2025comparative} implied. Under format-tolerant scoring, selected successful runs modestly improve GSM8K but do not consistently improve MATH, BBH, or MMLU-Pro. Much of the large strict-score gain is learned answer formatting. The prompt-only control strengthens that conclusion: an explicit final-line contract raised base-model strict accuracy by 25.2 points while lowering tolerant accuracy by 5.2 points. At the largest sampled $k$, successful models and the base model have similar empirical coverage, a pattern consistent with RL changing which existing behaviors are sampled first but not proving equal latent capability. This does not make the gain useless---better pass@1 can be operationally valuable---but it is different from evidence of a broad new reasoning capability.
+Strict scores provide a second warning. Matched training raises strict standard-prompt accuracy without raising flexible accuracy, and the prompt-only intervention raises strict GSM8K accuracy by 25.2 points while lowering flexible correctness. The historical pass@$k$ curves also converge at larger $k$. Together, these observations support probability and presentation changes more strongly than acquisition of broad new reasoning capability. The operational benefit of improved pass@1 or format compliance can still be real, but it should not be described as general reasoning transfer.
 
-Several limitations constrain the conclusions. All runs use one 1.5B-parameter model and one narrow arithmetic training domain. Most full-length recipes have one seed. Only one targeted current-environment DS replay used the legacy default seed pair, so it rules out deterministic environment failure but cannot identify the causal random stream, exclude every residual reconstruction difference, or estimate a failure probability. BBH and MMLU-Pro use a custom zero-shot protocol rather than every benchmark's conventional few-shot setting. Checkpoints are evaluated at different steps, and some configurations differ in trainer code, response cap, reward, batch construction, and update count. The format intervention is a prompt-only control and does not isolate what a format-only supervised update would do. Item-level paired tests quantify uncertainty over benchmark items for a fixed checkpoint but not over stochastic training. Full multi-seed runs in one frozen environment, a predetermined checkpoint rule, and compute-matched ablations are required before making causal or algorithm-ranking claims.
+The historical evidence is supportive rather than primary. The 22-run screen shows that short-response collapse occurs across dynamic-sampling, no-DS, reward, and KL variants. The reconstructed legacy replay shows that the current software environment does not deterministically cause the dynamic-sampling failures. The single-seed KL sweeps show that regularization can preserve response length in some configurations but do not identify a transferable safe coefficient. These results reinforce configuration and run sensitivity without resolving the stochastic mechanism.
 
-These findings suggest four practical safeguards. First, report format-tolerant correctness beside strict answer-marker scores. Second, inspect reward components and group-standardized advantages so that small format credits cannot silently dominate otherwise homogeneous groups. Third, report collapse frequency across seeds before claiming recipe superiority, using a predetermined checkpoint rule where possible. Fourth, complement pass@1 with pass@$k$ and explicit scorer audits to distinguish probability redistribution from evidence of expanded empirical solution coverage.
+Several limitations remain. All experiments use one 1.5B-parameter model and one arithmetic training domain. Three seeds per matched recipe give only descriptive estimates, and no item-level significance test can substitute for more independent training runs. The collapse definition uses response length as an operational screen rather than a direct measure of reasoning quality. The think prompt is intentionally diagnostic and nonstandard. BBH and MMLU-Pro use custom zero-shot prompts. Flexible GSM8K scoring relies partly on a last-number fallback whose independent human audit remains incomplete. Finally, actor exposure is matched, but PPO consumes additional compute for critic optimization.
+
+Four reporting practices follow directly. First, publish every seed and use a predetermined checkpoint. Second, report marker-independent correctness beside strict scores. Third, evaluate both conventional prompts and the training-format prompt when a reward can create template-specific shortcuts. Fourth, treat response length, reward, and pass@1 as complementary diagnostics rather than interchangeable measures of reasoning.
 
 \section{Conclusion}\label{sec:conclusion}
 
-Countdown RL produced large in-domain changes but did not yield uniform general-reasoning improvement in Qwen2.5-1.5B-Instruct. Early short-response collapse was the modal screen outcome. A targeted healthy DS replay in the current environment rules out a deterministic environment explanation for the five matched DS failures, while both DS and no-DS evidence show run-level variation; reward changes, overlong filtering, and KL regularization also failed to prevent collapse uniformly. Among selected non-collapsed checkpoints, the clearest downstream effect was a modest GSM8K pass@1 increase and substantially better answer-format compliance; a prompt-only intervention reproduced a 25.2-point strict-score gain without a tolerant-accuracy gain. MATH, BBH, and MMLU-Pro did not improve consistently. The defensible conclusion is not that one named algorithm is best or that one random stream has been isolated, but that configuration, stochasticity, training exposure, and evaluation protocol jointly determine the apparent outcome.
+In a matched nine-run Countdown experiment, PPO and symmetric-clip GRPO each collapsed in one of three seeds, while the asymmetric-clip DAPO-style recipe collapsed in all three. Standard-prompt flexible accuracy remained at the base-model level for every recipe, but think-prompt accuracy exposed large losses in the collapsed group-relative runs. Strict-score gains were largely attributable to answer-format compliance, as confirmed by a prompt-only control. Historical screens and KL sweeps show that the phenomenon is common but configuration-dependent. The central conclusion is therefore methodological: RLVR recipes should be compared with matched multi-seed runs, explicit collapse accounting, marker-independent scoring, and prompt-robust evaluation. These data do not justify a universal algorithm ranking, but they do show that standard single-prompt evaluation can conceal severe reward-compatible behavioral collapse.
 
 \authorcontributions{Conceptualization, Y.L.; methodology, Y.L.; software, Y.L.; validation, Y.L.; formal analysis, Y.L.; investigation, Y.L.; data curation, Y.L.; writing---original draft preparation, Y.L.; writing---review and editing, Y.L.; visualization, Y.L.; project administration, Y.L. The author has read and agreed to the published version of the manuscript.}
 
@@ -418,14 +309,7 @@ content hash was not recorded.
 \end{sloppypar}
 
 \noindent\textbf{Checkpoint content identifiers.}
-In \path{eval/CHECKPOINT_MANIFEST.json}, each aggregate is the SHA-256 of a canonical list containing every
-relative file path, byte count, and file SHA-256 in the merged Hugging Face directory. The aggregate identifiers
-are \path{4adfe72afb42a58da13e5e7adc4c6b5281da07e3ab31a60d6db39796b2160752} for DS step 300,
-\path{e1a6abf1c9debe0928f670ed804b4152a506a1c0e79f32fd0c7006b12cfe392d} for original no-DS step 300,
-\path{679f16c43306f74cd0c94444c4e6c2f8472acccba062d11f2c469c8c5713ab4b} for strong-KL GRPO step 250, and
-\path{d67441ed7d3f8378ebc839c0eb9c613109c335debbbd1e822cbf0851534203bf} for PPO step 520. Each directory
-contains nine files totaling 3,570,094,814 bytes. The manifest preserves individual file hashes so a public
-checkpoint deposit can be verified independently.
+The machine-readable manifest at \path{eval/CHECKPOINT_MANIFEST.json} records all nine matched step-300 checkpoints and the four historical checkpoints used in secondary analyses. For each merged Hugging Face directory, it gives every relative file path, byte count, file SHA-256, and an aggregate SHA-256 over the canonical file list. Each directory contains nine files totaling 3,570,094,814 bytes. This permits an independently deposited checkpoint to be verified without printing 13 long identifiers in the article.
 
 \noindent\textbf{Exact prompt strings.}
 Braced fields denote item-specific substitutions. The standard GSM8K user content was:
@@ -496,15 +380,101 @@ checks the archived files offline and can reconstruct the three revision-pinned 
 
 \noindent\textbf{Scorer precedence.}
 For GSM8K, strict scoring selects the last occurring explicit marker among \texttt{\#\#\#\#},
-\texttt{\textbackslash boxed\{\}}, and \texttt{<answer>}. Tolerant scoring accepts a correct strict marker; otherwise it
+\texttt{\textbackslash boxed\{\}}, and \texttt{<answer>}. Flexible scoring accepts a correct strict marker; otherwise it
 uses the last numeric string only when the response did not end by length truncation. For MATH, strict scoring
-symbolically verifies the last explicit \texttt{\textbackslash boxed\{\}} or \texttt{<answer>} content, while tolerant
+symbolically verifies the last explicit \texttt{\textbackslash boxed\{\}} or \texttt{<answer>} content, while flexible
 scoring applies the same symbolic verifier to expressions parsed from a completed, non-length-truncated response.
-For BBH and MMLU-Pro, strict scoring selects the last recognized final-answer marker and tolerant scoring
+For BBH and MMLU-Pro, strict scoring selects the last recognized final-answer marker and flexible scoring
 otherwise selects the last parenthesized option letter only for completed, non-length-truncated responses;
 BBH additionally applies task-specific normalization for Dyck-language and word-sorting answers. The saved
-per-item files contain the raw response, extracted strict and tolerant predictions, correctness flags, and
+per-item files contain the raw response, extracted strict and flexible predictions, correctness flags, and
 finish reason so that extraction can be re-audited without regenerating model responses.
+
+A planned independent audit of 40 GSM8K records, concentrated on base-model responses credited only by the last-number fallback, was not completed. We therefore report no human agreement or fallback-error estimate; flexible GSM8K accuracy should be interpreted as conditional on this deterministic extraction rule.
+
+\section{Complete Matched Benchmark Results}\label{app:matched_full}
+
+Tables~\ref{tab:matched_flexible_full} and~\ref{tab:matched_strict_full} report every matched seed and both prompt conditions. These values underlie the four-benchmark means in Table~\ref{tab:matched_outcomes}; no seed or benchmark was omitted.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Flexible accuracy (\%) for the complete matched comparison. Std. denotes the benchmark-specific standard prompt; Think denotes the Countdown training wrapper.}
+\label{tab:matched_flexible_full}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{MATH} & \multicolumn{2}{c}{BBH} & \multicolumn{2}{c}{MMLU-Pro} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Model & Std. & Think & Std. & Think & Std. & Think & Std. & Think \\
+\midrule
+Base & 72.3 & 51.9 & 55.3 & 49.5 & 35.4 & 37.4 & 33.1 & 27.5 \\
+PPO s7 & 72.9 & 71.3 & 55.6 & 46.1 & 35.1 & 40.5 & 33.1 & 27.1 \\
+PPO s8 & 73.3 & 72.9 & 55.4 & 47.6 & 35.2 & 42.3 & 33.8 & 28.5 \\
+PPO s9 & 70.5 & 57.3 & 54.3 & 34.2 & 37.2 & 31.5 & 32.2 & 21.8 \\
+GRPO s7 & 73.2 & 55.6 & 55.0 & 39.4 & 34.4 & 37.7 & 33.4 & 18.6 \\
+GRPO s8 & 73.9 & 65.5 & 54.9 & 42.4 & 35.9 & 36.7 & 33.5 & 24.6 \\
+GRPO s9 & 73.1 & 7.1 & 54.6 & 11.1 & 34.2 & 34.5 & 33.7 & 20.1 \\
+DAPO-style s7 & 73.2 & 13.0 & 54.0 & 11.4 & 33.7 & 33.7 & 33.3 & 15.5 \\
+DAPO-style s8 & 73.4 & 8.3 & 54.6 & 15.5 & 34.5 & 36.1 & 33.9 & 25.6 \\
+DAPO-style s9 & 73.4 & 15.2 & 54.6 & 13.3 & 34.2 & 32.2 & 34.0 & 20.3 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\caption{Strict accuracy (\%) for the complete matched comparison.}
+\label{tab:matched_strict_full}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{MATH} & \multicolumn{2}{c}{BBH} & \multicolumn{2}{c}{MMLU-Pro} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Model & Std. & Think & Std. & Think & Std. & Think & Std. & Think \\
+\midrule
+Base & 33.4 & 48.4 & 55.1 & 47.4 & 35.2 & 36.2 & 33.1 & 27.5 \\
+PPO s7 & 59.4 & 71.2 & 55.5 & 44.2 & 34.9 & 40.4 & 33.1 & 27.1 \\
+PPO s8 & 51.9 & 72.7 & 55.4 & 47.0 & 34.7 & 42.0 & 33.8 & 28.5 \\
+PPO s9 & 55.5 & 56.4 & 54.1 & 32.3 & 37.1 & 31.5 & 32.2 & 21.8 \\
+GRPO s7 & 56.8 & 55.6 & 55.0 & 38.3 & 34.2 & 37.7 & 33.4 & 18.6 \\
+GRPO s8 & 53.8 & 65.5 & 54.9 & 41.7 & 35.7 & 36.7 & 33.5 & 24.5 \\
+GRPO s9 & 62.5 & 7.1 & 54.6 & 10.9 & 34.0 & 34.5 & 33.7 & 20.1 \\
+DAPO-style s7 & 56.6 & 12.8 & 53.9 & 10.8 & 33.5 & 33.7 & 33.3 & 15.5 \\
+DAPO-style s8 & 48.9 & 8.0 & 54.5 & 15.1 & 34.1 & 36.1 & 33.9 & 25.6 \\
+DAPO-style s9 & 50.1 & 15.1 & 54.6 & 12.5 & 33.9 & 32.2 & 34.0 & 20.3 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\section{Secondary Historical Analyses}\label{app:secondary}
+
+\noindent\textbf{Standardized format reward.}
+For $G=8$, seven rewards of 0 and one format-only reward of 0.1 give a mean of 0.0125. The Verl implementation uses the default Bessel-corrected sample standard deviation, $s\approx0.0354$, so the format-only response receives advantage $(0.1-0.0125)/(0.0354+\epsilon_A)\approx2.47$ when $\epsilon_A$ is negligible. This calculation shows how a small format credit can become an order-one update signal; it does not identify the cause of collapse.
+
+\noindent\textbf{KL and response length.}
+In a single-seed GRPO sweep with $G=2$, KL coefficients at or below 0.005 collapsed to approximately 20-token responses within 12 steps, whereas coefficients 0.0075 and 0.01 recovered to approximately 1,000 tokens and coefficient 0.04 remained at 270--420 tokens. A separate DAPO-style $G=2$ sweep also collapsed with KL off or $10^{-6}$ and survived with $10^{-4}$ or 0.0075. Because rewards, response limits, rollout budgets, and other settings differed, these values are recipe-specific diagnostics rather than recommended thresholds.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{paper_figs/fig6_grpo_kl_dynamics.pdf}
+\caption{Historical single-seed GRPO diagnostics across KL-loss coefficients. Runs with $\beta\le0.005$ collapsed rapidly; stronger-KL runs retained or recovered response length. The comparison is exploratory because each coefficient has one seed.}
+\label{fig:grpo_kl_appendix}
+\end{figure}
+
+\noindent\textbf{Historical collapse screen.}
+The complete 22-run table in Appendix~\ref{app:complete_results} includes dynamic sampling, matched-exposure no-DS, correctness-only reward with overlong filtering (A1), and A1 with KL 0.01. Sixteen runs met the primary endpoint. The five current-environment dynamic-sampling runs collapsed near step 20, while a reconstructed legacy-configuration replay in the same environment remained healthy through step 100 (mean 1,527 tokens; 47.2\% validation accuracy). The replay rules out deterministic environment failure but does not isolate the responsible random stream or residual configuration difference.
+
+\noindent\textbf{Pass@$k$.}
+For MATH-500, flexible pass@1 ranged from 54.1\% to 55.2\% and pass@64 from 90.8\% to 92.2\% across the base, healthy DS, original no-DS, and strong-KL GRPO checkpoints. For GSM8K, pass@1 ranged from 70.4\% to 73.9\% and pass@32 from 96.3\% to 97.1\%. These selected historical checkpoints use a different sampling protocol and are not part of the matched method comparison.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{paper_figs/fig4_passk.pdf}
+\caption{Historical flexible pass@$k$ curves for fixed checkpoints on MATH-500 and GSM8K. Convergence at large $k$ is descriptive and does not prove equal latent solution support.}
+\label{fig:passk_appendix}
+\end{figure}
 
 \section{Systematically Selected Collapse-Screen Outputs}\label{app:collapse_examples}
 
@@ -538,7 +508,7 @@ A1 + KL 0.01 & 4 & 100 & 173 & 0.0 & Longer explanation after recovery, but the 
 \end{tabular}
 \end{table}
 
-\section{Complete Collapse Screen and Exploratory Grids}\label{app:complete_results}
+\section{Complete Collapse Screen}\label{app:complete_results}
 
 Table~\ref{tab:all_screen_runs} reports every run in the fixed 22-run screen rather than only representative outcomes. Event step is the first sustained short-response window; a dash denotes right-censoring at step 100. The length and accuracy columns average available observations over steps 90--100.
 
@@ -579,40 +549,6 @@ A1 + KL 0.01 & 5 & Current & 30 & Collapsed & 18.5 & 22.8 \\
 A1 + KL 0.01 & 6 & Current & 30 & Collapsed & 20.7 & 23.5 \\
 \bottomrule
 \end{tabular}}
-\end{table}
-
-\begin{table}[H]
-\centering
-\scriptsize
-\caption{Archived exploratory PPO and GRPO grids. Panel A reports the mean standard-prompt, format-tolerant accuracy across GSM8K, MATH, BBH, and MMLU-Pro. Panel B reports strict accuracy and the range of median think-prompt response lengths across the four benchmarks. Each row is one training run; these incomplete grids do not isolate components or estimate seed variance.}
-\label{tab:exploratory_grid}
-\begin{tabular}{lcccc}
-\toprule
-\multicolumn{5}{l}{\textit{Panel A: PPO reference recipes}} \\
-Actor LR & Entropy & KL-loss setting & Step & Four-task mean (\%) \\
-\midrule
-$10^{-6}$ & 0 & Off & 520 & 41.2 \\
-$3\times10^{-6}$ & 0 & Off & 520 & 19.5 \\
-$3\times10^{-6}$ & 0.001 & Off & 520 & 5.9 \\
-$3\times10^{-6}$ & 0.001 & Enabled, coefficient 0 & 520 & 18.6 \\
-$3\times10^{-6}$ & 0.001 & Enabled, coefficient 0.001 & 520 & 23.3 \\
-\bottomrule
-\end{tabular}
-
-\vspace{0.6em}
-
-\begin{tabular}{lccccr}
-\toprule
-\multicolumn{6}{l}{\textit{Panel B: GRPO KL sweep ($G=2$, step 250)}} \\
-KL coefficient & GSM8K std. & GSM8K think & MATH std. & MATH think & Think median chars \\
-\midrule
-Off & 44.0 & 11.1 & 52.9 & 15.8 & 20--22 \\
-0.001 & 49.6 & 9.8 & 54.6 & 14.6 & 20--22 \\
-0.005 & 47.2 & 9.6 & 54.3 & 15.9 & 20--22 \\
-0.01 & 56.5 & 72.9 & 56.0 & 52.5 & 741--1895 \\
-0.04 & 69.5 & 57.7 & 55.3 & 51.7 & 729--1671 \\
-\bottomrule
-\end{tabular}
 \end{table}
 
 \reftitle{References}

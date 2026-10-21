@@ -5,14 +5,14 @@ think-prompt collapse seen in low-KL GRPO. All rungs share one setup; each rung 
 
 | Rung | Script | Clip (low / high) | Dynamic sampling | Prompts generated / trained per step | Updates per step | Status |
 |---|---|---|---|---|---|---|
-| 1 | `rung1_grpo_clip0.2_noDS.sh` | 0.2 / 0.2 | off | 32 / 32 | 1 | to train |
-| 2 | `rung2_clip0.28_noDS.sh` | 0.2 / 0.28 | off | 32 / 32 | 1 | to train |
-| 3 | existing run `DAPO_new/f8h77wol` (DS) | 0.2 / 0.28 | on | 192+ / 32 (first 32 non-tied groups) | 1 | done; checkpoint `global_step_300` only |
-| 1b (optional) | `rung1b_grpo_clip0.2_noDS_resp2048.sh` | 0.2 / 0.2 | off | 32 / 32 | 1 | response cap 2048 instead of 4096 |
+| 1 | `rung1_grpo_clip0.2_noDS.sh` | 0.2 / 0.2 | off | 32 / 32 | 8 | to train |
+| 2 | `rung2_clip0.28_noDS.sh` | 0.2 / 0.28 | off | 32 / 32 | 8 | to train |
+| 3 | existing run `DAPO_new/f8h77wol` (DS) | 0.2 / 0.28 | on | 192+ / 32 (first 32 non-tied groups) | 8 | done; checkpoint `global_step_300` only |
+| 1b (optional) | `rung1b_grpo_clip0.2_noDS_resp2048.sh` | 0.2 / 0.2 | off | 32 / 32 | 8 | response cap 2048 instead of 4096 |
 
 Comparisons:
-- **Rung 2 vs. rung 3** = dynamic sampling only (same trained prompts, responses and updates per step). This
-  replaces the confounded DS vs. old no-DS comparison (old no-DS trained 192 prompts and 6 updates per step).
+- **Rung 2 vs. rung 3** = dynamic sampling only (same trained prompts, responses and actor updates per step). This
+  replaces the confounded DS vs. old no-DS comparison (old no-DS trained 192 prompts and 48 actor updates per step).
 - **Rung 1 vs. rung 2** = clip-higher only.
 - **Rung 1 vs. rung 1b** = response cap only (4096 vs. 2048, the PPO/GRPO value).
 
@@ -30,6 +30,7 @@ prompt cap 2048 (truncation left), GRPO advantages with std normalization, KL lo
 entropy 0, clip_c 10, token-mean loss, grad clip 1.0, 1 PPO epoch, mini-batch 32, lr 1e-6, warmup 10,
 weight decay 0.1, rollout temperature 1.0 / top-p 1.0, validation top-p 0.7 sampled, `dapo` reward manager,
 overlong buffer off, sequence parallel 4, dynamic batch size, FSDP param/optimizer offload, vLLM TP 4.
+Verl expands the 32 prompt groups into 256 response sequences before the actor update; mini-batch 32 therefore yields 8 actor optimizer steps per outer training step, not one.
 
 Reward: `reward_sep2025.py` wraps `countdown.compute_score_sep2025` (0.9 correct + 0.1 format; returns `acc`
 for the DS filter). This is the reward the Sep-2025 DAPO runs used; the current default `countdown.compute_score`

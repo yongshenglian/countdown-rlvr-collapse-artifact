@@ -1,0 +1,10 @@
+recipe,seed,step300_countdown_accuracy,step300_reward,step300_format_valid,step300_response_tokens,mean_response_tokens_steps90_100,early_collapse
+PPO,7,0.557,0.560,0.589,1455.246,1374.059,no
+PPO,8,0.535,0.545,0.636,1371.914,446.984,no
+PPO,9,0.015,0.104,0.904,468.785,16.297,yes
+GRPO,7,0.520,0.568,1.000,1720.508,267.820,no
+GRPO,8,0.591,0.628,0.961,1239.270,725.031,no
+GRPO,9,0.259,0.333,1.000,22.348,22.435,yes
+DAPO-style,7,0.258,0.332,1.000,54.238,55.566,yes
+DAPO-style,8,0.248,0.323,1.000,60.027,54.713,yes
+DAPO-style,9,0.271,0.344,1.000,46.926,50.970,yes

@@ -5,12 +5,12 @@
 # (DAPO_new/f8h77wol, Qwen2.5-1.5B-G8-acc-filtering-tokenlevel-bsz-32-0910), which is rung 3.
 # A rung script sets only: EXP_NAME, CLIP_HIGH, FILTER, GEN_BSZ (and optionally MAX_RESP).
 #
-# Shared setup (all rungs):  32 prompts trained per step, 8 responses each, 1 optimizer update per step
-#   (mini-batch 32), 4096-token response cap, Sep-2025 reward (0.9 + 0.1 format), KL off, entropy 0,
-#   lr 1e-6 with 10 warmup steps, constant after, 520 steps, token-mean loss.
+# Shared setup (all rungs):  32 prompts trained per step, 8 responses each, 8 actor optimizer updates per step
+#   (256 response sequences / response mini-batch 32), 4096-token response cap, Sep-2025 reward (0.9 + 0.1 format), KL off, entropy 0,
+#   lr 1e-6 with 10 warmup steps, constant after, a fixed requested horizon, token-mean loss.
 set -xeuo pipefail
 
-PROJECT=DAPO_ablation
+PROJECT=${PROJECT:-DAPO_ablation}
 # Optional second/third training seed. verl 0.2 has two seeds: data.seed (prompt shuffling, default 1) and
 # actor_rollout_ref.rollout.seed (vLLM sampling, default 0); the original runs set neither. SEED sets both.
 SEED=${SEED:-}
@@ -78,7 +78,7 @@ ${ENV_BIN}/ray job submit --address="${RAY_ADDRESS}" --no-wait --runtime-env="${
   actor_rollout_ref.actor.optim.lr=1e-6 \
   actor_rollout_ref.actor.optim.lr_warmup_steps=10 \
   actor_rollout_ref.actor.optim.weight_decay=0.1 \
-  actor_rollout_ref.actor.optim.total_training_steps=520 \
+  actor_rollout_ref.actor.optim.total_training_steps=${TOTAL_STEPS} \
   actor_rollout_ref.model.path=${MODEL_PATH} \
   actor_rollout_ref.model.use_remove_padding=True \
   actor_rollout_ref.model.enable_gradient_checkpointing=True \

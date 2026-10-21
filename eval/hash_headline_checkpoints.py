@@ -9,6 +9,15 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 CHECKPOINTS = {
+    "matched_ppo_s7_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s7_step300"),
+    "matched_ppo_s8_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s8_step300"),
+    "matched_ppo_s9_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s9_step300"),
+    "matched_grpo_s7_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s7_step300"),
+    "matched_grpo_s8_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s8_step300"),
+    "matched_grpo_s9_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s9_step300"),
+    "matched_dapo_s7_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s7_step300"),
+    "matched_dapo_s8_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s8_step300"),
+    "matched_dapo_s9_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s9_step300"),
     "DS_step300": Path("/mnt/sdb/verl/DAPO_new/merged_hf/DS_step300"),
     "noDS_step300": Path("/mnt/sdb/verl/DAPO_new/merged_hf/noDS_step300"),
     "GRPO_n2_kl4e-2_step250": Path(

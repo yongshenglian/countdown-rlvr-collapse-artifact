@@ -3,20 +3,21 @@
 This repository contains the manuscript source, compact results, training
 configurations, evaluation code, and reproducibility records for:
 
-> Yongsheng Lian, *Short-Response Collapse in Countdown RLVR: Training
-> Instability, Format Effects, and Limited Transfer*.
+> Yongsheng Lian, *Short-Response Collapse in Countdown RLVR: A Matched
+> Study of PPO, GRPO, and Asymmetric Clipping*.
 
-The study examines Qwen2.5-1.5B-Instruct fine-tuning on Countdown using a
-DAPO-style collapse screen, with selected PPO- and GRPO-style checkpoints as
-observational references. It reports training stability, prompt-format effects,
-held-out transfer, and pass@k behavior.
+The primary study compares nine 300-step Countdown runs of PPO, symmetric-clip
+GRPO, and asymmetric-clip DAPO-style training under matched actor-side exposure.
+A historical collapse screen, prompt-format control, held-out transfer evaluation,
+and pass@k analysis provide secondary evidence.
 
 ## Release status
 
 This public repository is the compact reproducibility artifact. The DOI-bearing
 `v1.0.0` release will be created after the final consistency checks and Zenodo
-integration are complete. The targeted dynamic-sampling replay has completed
-successfully and is reported separately from the original 22-run screen. Until
+integration are complete. The matched nine-run comparison and targeted
+dynamic-sampling replay have completed successfully; both are reported alongside
+the original 22-run screen. Until
 the DOI is minted, the default branch is a transparent pre-release snapshot
 rather than the archival version cited by the paper.
 

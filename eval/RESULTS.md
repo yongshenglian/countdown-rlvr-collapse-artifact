@@ -1,6 +1,6 @@
 # Downstream evaluation of Countdown-trained checkpoints
 
-Generated 2026-10-12 by `make_results_md.py` from the saved responses. Do not edit by hand; rerun the script after adding models.
+Generated 2026-10-19 by `make_results_md.py` from the saved responses. Do not edit by hand; rerun the script after adding models.
 
 ## 0. Summary
 
@@ -18,28 +18,37 @@ All models ranked by average strict accuracy (%) over the 4 benchmarks x 2 promp
 | 8 | rungC_step300 | Ablation rung 2 + masked uninformative groups: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 55.0 | 75.0 | 55.6 | 52.6 | 35.1 | 40.6 | 33.1 | 26.5 | 46.7 | 44.7 | 48.7 |
 | 9 | GRPO_n2_kl4e-2_step250 | GRPO n=2, KL 0.04 (step 250) | 69.5 | 57.7 | 55.3 | 51.7 | 35.0 | 37.5 | 33.9 | 29.7 | 46.3 | 48.4 | 44.1 |
 | 10 | rungD_step300 | Ablation rung 2 + batch-level advantage normalisation: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 59.4 | 70.1 | 56.1 | 45.8 | 35.1 | 40.4 | 33.2 | 26.9 | 45.9 | 46.0 | 45.8 |
-| 11 | rung2s2_step300 | Ablation rung 2, seed 2: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 47.1 | 70.6 | 55.0 | 47.4 | 34.4 | 40.7 | 33.3 | 28.8 | 44.7 | 42.5 | 46.9 |
-| 12 | PPO_klF_ent0_lr1e-6_step520 | PPO lr 1e-06, KL off, entropy 0, mini 16 (step 520) | 62.2 | 62.4 | 46.2 | 42.3 | 24.3 | 36.4 | 31.4 | 27.0 | 41.5 | 41.0 | 42.0 |
-| 13 | base | Base Qwen2.5-1.5B-Instruct | 33.4 | 48.4 | 55.1 | 47.4 | 35.2 | 36.2 | 33.1 | 27.5 | 39.5 | 39.2 | 39.9 |
-| 14 | PPO_step400 | PPO lr 1e-06, KL off, entropy 0, mini 64 (step 400) | 40.1 | 50.0 | 53.6 | 28.0 | 35.6 | 36.1 | 33.1 | 25.3 | 37.7 | 40.6 | 34.9 |
-| 15 | GRPO_n4_kl1e-6_eqR_step520 | GRPO n=4, KL 1e-06, equal 0.5/0.5 reward (step 520) | 66.4 | 18.7 | 53.8 | 18.4 | 35.2 | 34.1 | 33.7 | 24.2 | 35.5 | 47.3 | 23.8 |
-| 16 | GRPO_n8_kl1e-3_step520 | GRPO n=8, KL 0.001 (step 520) | 63.5 | 11.0 | 52.7 | 15.9 | 35.8 | 36.0 | 33.3 | 25.4 | 34.2 | 46.3 | 22.1 |
-| 17 | GRPO_n2_kl5e-3_step520 | GRPO n=2, KL 0.005 (step 520) | 56.1 | 11.2 | 53.9 | 16.6 | 35.7 | 33.1 | 33.6 | 25.6 | 33.2 | 44.8 | 21.6 |
-| 18 | rung2_step300 | Ablation rung2: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 61.5 | 5.9 | 54.1 | 14.5 | 35.5 | 36.5 | 33.0 | 24.2 | 33.2 | 46.0 | 20.3 |
-| 19 | GRPO_n4_kl1e-6_step520 | GRPO n=4, KL 1e-06 (step 520) | 51.1 | 12.0 | 53.4 | 15.5 | 34.3 | 35.0 | 33.4 | 25.4 | 32.5 | 43.0 | 22.0 |
-| 20 | GRPO_n2_kl1e-3_step250 | GRPO n=2, KL 0.001 (step 250) | 49.6 | 9.8 | 54.6 | 14.6 | 35.4 | 35.4 | 33.0 | 25.2 | 32.2 | 43.1 | 21.2 |
-| 21 | GRPO_n4_kl1e-3_step520 | GRPO n=4, KL 0.001 (step 520) | 50.0 | 10.4 | 52.1 | 15.6 | 34.4 | 35.3 | 33.5 | 25.7 | 32.1 | 42.5 | 21.8 |
-| 22 | GRPO_n2_kl1e-3_step520 | GRPO n=2, KL 0.001 (step 520) | 45.3 | 11.0 | 55.2 | 15.0 | 35.2 | 35.7 | 33.6 | 25.0 | 32.0 | 42.3 | 21.7 |
-| 23 | GRPO_n2_kl5e-3_step250 | GRPO n=2, KL 0.005 (step 250) | 47.2 | 9.6 | 54.3 | 15.9 | 36.0 | 34.8 | 33.2 | 25.1 | 32.0 | 42.6 | 21.3 |
-| 24 | GRPO_n2_noKL_step250 | GRPO n=2, KL off (step 250) | 44.0 | 11.1 | 52.9 | 15.8 | 34.6 | 35.4 | 33.1 | 25.7 | 31.6 | 41.2 | 22.0 |
-| 25 | rung1_step300 | Ablation rung1: clip 0.2/0.2, no DS, 32 prompts/step (step 300) | 56.1 | 5.2 | 53.7 | 11.7 | 33.7 | 35.2 | 33.1 | 20.5 | 31.1 | 44.2 | 18.1 |
-| 26 | DSs2_step200 | DAPO w/ DS, training seed 2 (collapsed; step 200) | 39.2 | 9.9 | 54.4 | 14.7 | 34.9 | 35.7 | 32.7 | 24.7 | 30.8 | 40.3 | 21.3 |
-| 27 | GRPO_n2_noKL_step520 | GRPO n=2, KL off (step 520) | 38.4 | 8.3 | 52.3 | 16.1 | 34.6 | 36.0 | 33.7 | 25.7 | 30.6 | 39.7 | 21.5 |
-| 28 | rungA1s2_step300 | Ablation rung 2 + correctness-only reward + overlong filtering, seed 2: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 37.7 | 8.0 | 55.0 | 13.4 | 34.6 | 34.7 | 33.1 | 23.7 | 30.0 | 40.1 | 19.9 |
-| 29 | PPO_kl1e-3_ent1e-3_lr3e-6_step520 | PPO lr 3e-06, KL 0.001, entropy 0.001, mini 16 (step 520) | 32.8 | 28.4 | 12.3 | 7.8 | 28.1 | 29.8 | 19.8 | 15.9 | 21.8 | 23.2 | 20.5 |
-| 30 | PPO_kl0_ent1e-3_lr3e-6_step520 | PPO lr 3e-06, KL on, coef 0, entropy 0.001, mini 16 (step 520) | 20.4 | 21.6 | 11.9 | 7.5 | 22.9 | 33.8 | 18.5 | 20.5 | 19.6 | 18.4 | 20.8 |
-| 31 | PPO_klF_ent0_lr3e-6_step520 | PPO lr 3e-06, KL off, entropy 0, mini 16 (step 520) | 28.7 | 25.3 | 12.1 | 10.7 | 18.0 | 20.9 | 18.6 | 11.4 | 18.2 | 19.3 | 17.1 |
-| 32 | PPO_klF_ent1e-3_lr3e-6_step520 | PPO lr 3e-06, KL off, entropy 0.001, mini 16 (step 520) | 1.0 | 1.4 | 2.6 | 2.1 | 5.7 | 25.7 | 1.6 | 13.9 | 6.7 | 2.7 | 10.7 |
+| 11 | matched_ppo_s8_step300 | matched_ppo_s8_step300 | 51.9 | 72.7 | 55.4 | 47.0 | 34.7 | 42.0 | 33.8 | 28.5 | 45.7 | 43.9 | 47.5 |
+| 12 | matched_ppo_s7_step300 | matched_ppo_s7_step300 | 59.4 | 71.2 | 55.5 | 44.2 | 34.9 | 40.4 | 33.1 | 27.1 | 45.7 | 45.7 | 45.7 |
+| 13 | rung2s2_step300 | Ablation rung 2, seed 2: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 47.1 | 70.6 | 55.0 | 47.4 | 34.4 | 40.7 | 33.3 | 28.8 | 44.7 | 42.5 | 46.9 |
+| 14 | matched_grpo_s8_step300 | matched_grpo_s8_step300 | 53.8 | 65.5 | 54.9 | 41.7 | 35.7 | 36.7 | 33.5 | 24.5 | 43.3 | 44.5 | 42.1 |
+| 15 | PPO_klF_ent0_lr1e-6_step520 | PPO lr 1e-06, KL off, entropy 0, mini 16 (step 520) | 62.2 | 62.4 | 46.2 | 42.3 | 24.3 | 36.4 | 31.4 | 27.0 | 41.5 | 41.0 | 42.0 |
+| 16 | matched_grpo_s7_step300 | matched_grpo_s7_step300 | 56.8 | 55.6 | 55.0 | 38.3 | 34.2 | 37.7 | 33.4 | 18.6 | 41.2 | 44.9 | 37.6 |
+| 17 | matched_ppo_s9_step300 | matched_ppo_s9_step300 | 55.5 | 56.4 | 54.1 | 32.3 | 37.1 | 31.5 | 32.2 | 21.8 | 40.1 | 44.7 | 35.5 |
+| 18 | base | Base Qwen2.5-1.5B-Instruct | 33.4 | 48.4 | 55.1 | 47.4 | 35.2 | 36.2 | 33.1 | 27.5 | 39.5 | 39.2 | 39.9 |
+| 19 | PPO_step400 | PPO lr 1e-06, KL off, entropy 0, mini 64 (step 400) | 40.1 | 50.0 | 53.6 | 28.0 | 35.6 | 36.1 | 33.1 | 25.3 | 37.7 | 40.6 | 34.9 |
+| 20 | GRPO_n4_kl1e-6_eqR_step520 | GRPO n=4, KL 1e-06, equal 0.5/0.5 reward (step 520) | 66.4 | 18.7 | 53.8 | 18.4 | 35.2 | 34.1 | 33.7 | 24.2 | 35.5 | 47.3 | 23.8 |
+| 21 | GRPO_n8_kl1e-3_step520 | GRPO n=8, KL 0.001 (step 520) | 63.5 | 11.0 | 52.7 | 15.9 | 35.8 | 36.0 | 33.3 | 25.4 | 34.2 | 46.3 | 22.1 |
+| 22 | GRPO_n2_kl5e-3_step520 | GRPO n=2, KL 0.005 (step 520) | 56.1 | 11.2 | 53.9 | 16.6 | 35.7 | 33.1 | 33.6 | 25.6 | 33.2 | 44.8 | 21.6 |
+| 23 | rung2_step300 | Ablation rung2: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 61.5 | 5.9 | 54.1 | 14.5 | 35.5 | 36.5 | 33.0 | 24.2 | 33.2 | 46.0 | 20.3 |
+| 24 | GRPO_n4_kl1e-6_step520 | GRPO n=4, KL 1e-06 (step 520) | 51.1 | 12.0 | 53.4 | 15.5 | 34.3 | 35.0 | 33.4 | 25.4 | 32.5 | 43.0 | 22.0 |
+| 25 | GRPO_n2_kl1e-3_step250 | GRPO n=2, KL 0.001 (step 250) | 49.6 | 9.8 | 54.6 | 14.6 | 35.4 | 35.4 | 33.0 | 25.2 | 32.2 | 43.1 | 21.2 |
+| 26 | matched_grpo_s9_step300 | matched_grpo_s9_step300 | 62.5 | 7.1 | 54.6 | 10.9 | 34.0 | 34.5 | 33.7 | 20.1 | 32.2 | 46.2 | 18.1 |
+| 27 | GRPO_n4_kl1e-3_step520 | GRPO n=4, KL 0.001 (step 520) | 50.0 | 10.4 | 52.1 | 15.6 | 34.4 | 35.3 | 33.5 | 25.7 | 32.1 | 42.5 | 21.8 |
+| 28 | matched_dapo_s8_step300 | matched_dapo_s8_step300 | 48.9 | 8.0 | 54.5 | 15.1 | 34.1 | 36.1 | 33.9 | 25.6 | 32.0 | 42.8 | 21.2 |
+| 29 | GRPO_n2_kl1e-3_step520 | GRPO n=2, KL 0.001 (step 520) | 45.3 | 11.0 | 55.2 | 15.0 | 35.2 | 35.7 | 33.6 | 25.0 | 32.0 | 42.3 | 21.7 |
+| 30 | GRPO_n2_kl5e-3_step250 | GRPO n=2, KL 0.005 (step 250) | 47.2 | 9.6 | 54.3 | 15.9 | 36.0 | 34.8 | 33.2 | 25.1 | 32.0 | 42.6 | 21.3 |
+| 31 | matched_dapo_s9_step300 | matched_dapo_s9_step300 | 50.1 | 15.1 | 54.6 | 12.5 | 33.9 | 32.2 | 34.0 | 20.3 | 31.6 | 43.1 | 20.0 |
+| 32 | GRPO_n2_noKL_step250 | GRPO n=2, KL off (step 250) | 44.0 | 11.1 | 52.9 | 15.8 | 34.6 | 35.4 | 33.1 | 25.7 | 31.6 | 41.2 | 22.0 |
+| 33 | matched_dapo_s7_step300 | matched_dapo_s7_step300 | 56.6 | 12.8 | 53.9 | 10.8 | 33.5 | 33.7 | 33.3 | 15.5 | 31.3 | 44.3 | 18.2 |
+| 34 | rung1_step300 | Ablation rung1: clip 0.2/0.2, no DS, 32 prompts/step (step 300) | 56.1 | 5.2 | 53.7 | 11.7 | 33.7 | 35.2 | 33.1 | 20.5 | 31.1 | 44.2 | 18.1 |
+| 35 | DSs2_step200 | DAPO w/ DS, training seed 2 (collapsed; step 200) | 39.2 | 9.9 | 54.4 | 14.7 | 34.9 | 35.7 | 32.7 | 24.7 | 30.8 | 40.3 | 21.3 |
+| 36 | GRPO_n2_noKL_step520 | GRPO n=2, KL off (step 520) | 38.4 | 8.3 | 52.3 | 16.1 | 34.6 | 36.0 | 33.7 | 25.7 | 30.6 | 39.7 | 21.5 |
+| 37 | rungA1s2_step300 | Ablation rung 2 + correctness-only reward + overlong filtering, seed 2: clip 0.2/0.28, no DS, 32 prompts/step (step 300) | 37.7 | 8.0 | 55.0 | 13.4 | 34.6 | 34.7 | 33.1 | 23.7 | 30.0 | 40.1 | 19.9 |
+| 38 | PPO_kl1e-3_ent1e-3_lr3e-6_step520 | PPO lr 3e-06, KL 0.001, entropy 0.001, mini 16 (step 520) | 32.8 | 28.4 | 12.3 | 7.8 | 28.1 | 29.8 | 19.8 | 15.9 | 21.8 | 23.2 | 20.5 |
+| 39 | PPO_kl0_ent1e-3_lr3e-6_step520 | PPO lr 3e-06, KL on, coef 0, entropy 0.001, mini 16 (step 520) | 20.4 | 21.6 | 11.9 | 7.5 | 22.9 | 33.8 | 18.5 | 20.5 | 19.6 | 18.4 | 20.8 |
+| 40 | PPO_klF_ent0_lr3e-6_step520 | PPO lr 3e-06, KL off, entropy 0, mini 16 (step 520) | 28.7 | 25.3 | 12.1 | 10.7 | 18.0 | 20.9 | 18.6 | 11.4 | 18.2 | 19.3 | 17.1 |
+| 41 | PPO_klF_ent1e-3_lr3e-6_step520 | PPO lr 3e-06, KL off, entropy 0.001, mini 16 (step 520) | 1.0 | 1.4 | 2.6 | 2.1 | 5.7 | 25.7 | 1.6 | 13.9 | 6.7 | 2.7 | 10.7 |
 
 **What can be claimed about transfer** (standard prompts, flexible scoring so that answer formatting does not count; section 3.9)
 
@@ -65,8 +74,8 @@ Limits: the full downstream evaluations generally use one training seed per sett
 **Key findings**
 
 - **These are comparisons of complete training recipes, not a single controlled setting.** DAPO, GRPO and PPO differ in response cap, responses and updates per step, reward, n, KL, clip-high, warmup, trainer code and evaluated step (section 2, 'Which comparisons are controlled').
-- **Highest average among the legacy headline checkpoints: DAPO w/o DS (step 300)**, and highest on GSM8K. Its gap over the original DS checkpoint cannot be attributed to dynamic sampling: no-DS trained on 192 prompts and made 6 updates per step, whereas DS trained on 32 prompts and made 1 update. The completed matched comparison is reported separately in section 3.10 and remains subject to seed and environment caveats. Strong-KL GRPO (KL 0.01 / 0.04) is significantly better than DAPO w/o DS on MATH and worse on GSM8K.
-- **Controlled dynamic-sampling test (ablation rung 2 vs. DS, both 32 prompts and 1 update per step, step 300; section 3.10):** without DS the model collapses into short answers on Countdown within 50 steps (mean response 54 tokens vs. 2,577 with DS; Countdown validation 25% vs. 65%). The old no-DS run avoided this only by training on 6x more prompts per step. On the benchmarks, DS makes little difference under standard prompts (GSM8K +4.6 strict but +1.3 flexible, n.s.; MATH +1.0, p = 0.10; BBH and MMLU-Pro 0) and a large one under the Countdown-style think prompt (GSM8K 74.4 vs. 5.9, MATH 46.5 vs. 14.5), where rung 2 writes a minimal think block (median about 100 characters). **Seed caveat:** a second training seed of rung 2 (`rung2s2`) dipped early (155 tokens at step 25) but then recovered (about 1,000 tokens, Countdown 51% at step 300 and 62% at step 495, vs. DS 67% and 72%). **A second seed of DS itself (`DSs2`) also collapsed**, to about 20-token answers by step 25 (Countdown 26% at step 100, 35% at step 240); it ended at step 245 because DS needed up to 3 generation rounds per step and used up the 2 epochs of data. So the collapse is seed-dependent with and without DS (1 of 2 seeds each): DS does not reliably prevent it.
+- **Highest average among the legacy headline checkpoints: DAPO w/o DS (step 300)**, and highest on GSM8K. Its gap over the original DS checkpoint cannot be attributed to dynamic sampling: no-DS trained on 192 prompts and made 48 actor updates per step, whereas DS trained on 32 prompts and made 8 actor updates. The completed matched comparison is reported separately in section 3.10 and remains subject to seed and environment caveats. Strong-KL GRPO (KL 0.01 / 0.04) is significantly better than DAPO w/o DS on MATH and worse on GSM8K.
+- **Controlled dynamic-sampling test (ablation rung 2 vs. DS, both 32 prompts and 8 actor updates per step, step 300; section 3.10):** without DS the model collapses into short answers on Countdown within 50 steps (mean response 54 tokens vs. 2,577 with DS; Countdown validation 25% vs. 65%). The old no-DS run avoided this only by training on 6x more prompts per step. On the benchmarks, DS makes little difference under standard prompts (GSM8K +4.6 strict but +1.3 flexible, n.s.; MATH +1.0, p = 0.10; BBH and MMLU-Pro 0) and a large one under the Countdown-style think prompt (GSM8K 74.4 vs. 5.9, MATH 46.5 vs. 14.5), where rung 2 writes a minimal think block (median about 100 characters). **Seed caveat:** a second training seed of rung 2 (`rung2s2`) dipped early (155 tokens at step 25) but then recovered (about 1,000 tokens, Countdown 51% at step 300 and 62% at step 495, vs. DS 67% and 72%). **A second seed of DS itself (`DSs2`) also collapsed**, to about 20-token answers by step 25 (Countdown 26% at step 100, 35% at step 240); it ended at step 245 because DS needed up to 3 generation rounds per step and used up the 2 epochs of data. So the collapse is seed-dependent with and without DS (1 of 2 seeds each): DS does not reliably prevent it.
 - **Clip-higher alone does not prevent the collapse (ablation rung 1 vs. rung 2, no DS, 32 prompts/step):** rung 1 (clip 0.2) collapses like rung 2 (clip 0.28): mean response 47 vs. 54 tokens, Countdown validation 27% vs. 25% at step 300. Benchmark differences are small: under standard prompts GSM8K +5.4 strict for rung 2 but -0.8 flexible (format again), BBH +1.8, MATH and MMLU-Pro ~0; under the think prompt rung 2 is 1-4 points higher. Clip-higher did not help; with one seed each, rung 1 and rung 2 seed 1 both collapsed, while rung 2 seed 2 recovered (see the seed caveat above).
 - **Early collapse is the usual outcome, and no recipe prevents it (collapse screen, section 3.13).** Collapsed (mean response < 100 tokens at steps 90-100) in 16 of 22 runs: DS 5/6, A1 5/6, A1 + KL 0.01 3/4, no DS 3/6; differences between recipes are not significant at these sample sizes, and KL 0.01 does not fix it. Collapses happen within about 25 steps, are seed-dependent, do not need the format credit (A1 has none), and are tied to the Countdown prompt (collapsed models stay at base level under standard prompts). The healthy DS and A1 runs used for the single-run comparisons are therefore the exceptions; DS seed 1 is also the only DS run from the original environment (see 3.13).
 - **Single-run comparison of options (A-D, A1 seed 1; section 3.11).** On their first seed every option avoided the early collapse; given the result above this may be luck. In-domain at step 495, masked groups (C, 70%) and batch-level normalisation (D, 69%) end within 2-3 points of DS (72%); correctness-only reward (A) reaches 69% at step 300 but collapses after step 400 as truncated responses rise to 59-63%; adding overlong filtering (A1) removes that collapse (69% at step 515). On the benchmarks at step 300 the options match DS within noise on MATH, BBH and MMLU-Pro under standard prompts; A, A1, B and C score significantly higher than DS on MATH with the think prompt (+2 to +6); GSM8K standard-prompt strict differences are mostly answer format. A1 seed 1 was the closest to DS overall (no significant loss on any benchmark and prompt, at about one-sixth of DS's generation per step), but A1 seed 2 collapsed.
@@ -253,63 +262,63 @@ Second source for the settings: the Hydra config saved when each run was launche
 
 ### What one training step means in each recipe
 
-Steps are not comparable across recipes. Trained prompts per step follow from the trainer code: with DS off, the DAPO trainer trains on the whole generated batch (`batch = new_batch`, `recipe/dapo/src/dapo_ray_trainer.py` line 170), so `train_batch_size=32` is ignored; with DS on it cuts the kept groups to `train_batch_size` (lines 215-216). Both are confirmed by the logged token counts (1,536 sequences per step without DS, 256 with DS, at every step). Optimizer updates per step = trained prompts / mini-batch x PPO epochs (PPO also updates its critic, not counted).
+Steps are not comparable across recipes. Trained prompts per step follow from the trainer code: with DS off, the DAPO trainer trains on the whole generated batch (`batch = new_batch`, `recipe/dapo/src/dapo_ray_trainer.py` line 170), so `train_batch_size=32` is ignored; with DS on it cuts the kept groups to `train_batch_size` (lines 215-216). Both are confirmed by the logged token counts (1,536 sequences per step without DS, 256 with DS, at every step). Actor optimizer updates per step = trained prompts x rollout n / response mini-batch x PPO epochs (PPO also updates its critic, not counted).
 
 | model | step | prompts generated / step | prompts trained / step | responses trained / step | updates / step | prompts trained at eval step | updates at eval step |
 |---|---|---|---|---|---|---|---|
-| DS_step300 | 300 | 200.3 | 32 | 256 | 1 | 9600 | 300 |
-| noDS_step300 | 300 | 192.0 | 192 | 1536 | 6 | 57600 | 1800 |
-| noDS_step100 | 100 | 192.0 | 192 | 1536 | 6 | 19200 | 600 |
-| noDS_step200 | 200 | 192.0 | 192 | 1536 | 6 | 38400 | 1200 |
-| noDS_step400 | 400 | 192.0 | 192 | 1536 | 6 | 76800 | 2400 |
-| noDS_step500 | 500 | 192.0 | 192 | 1536 | 6 | 96000 | 3000 |
-| noDS_step520 | 520 | 192.0 | 192 | 1536 | 6 | 99840 | 3120 |
-| rung2_step100 | 100 | 32.0 | 32 | 256 | 1 | 3200 | 100 |
-| rung2_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rung2_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rung1_step100 | 100 | 32.0 | 32 | 256 | 1 | 3200 | 100 |
-| rung1_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rung1_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rung2s2_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rung2s2_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rungA_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rungA_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rungB_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rungB_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rungC_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rungC_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rungD_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rungD_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rungA1_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rungA1_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| rungA1s2_step300 | 300 | 32.0 | 32 | 256 | 1 | 9600 | 300 |
-| rungA1s2_step520 | 520 | 32.0 | 32 | 256 | 1 | 16640 | 520 |
-| DSs2_step200 | 200 | 204.5 | 32 | 256 | 1 | 6400 | 200 |
+| DS_step300 | 300 | 200.3 | 32 | 256 | 8 | 9600 | 2400 |
+| noDS_step300 | 300 | 192.0 | 192 | 1536 | 48 | 57600 | 14400 |
+| noDS_step100 | 100 | 192.0 | 192 | 1536 | 48 | 19200 | 4800 |
+| noDS_step200 | 200 | 192.0 | 192 | 1536 | 48 | 38400 | 9600 |
+| noDS_step400 | 400 | 192.0 | 192 | 1536 | 48 | 76800 | 19200 |
+| noDS_step500 | 500 | 192.0 | 192 | 1536 | 48 | 96000 | 24000 |
+| noDS_step520 | 520 | 192.0 | 192 | 1536 | 48 | 99840 | 24960 |
+| rung2_step100 | 100 | 32.0 | 32 | 256 | 8 | 3200 | 800 |
+| rung2_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rung2_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rung1_step100 | 100 | 32.0 | 32 | 256 | 8 | 3200 | 800 |
+| rung1_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rung1_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rung2s2_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rung2s2_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rungA_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rungA_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rungB_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rungB_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rungC_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rungC_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rungD_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rungD_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rungA1_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rungA1_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| rungA1s2_step300 | 300 | 32.0 | 32 | 256 | 8 | 9600 | 2400 |
+| rungA1s2_step520 | 520 | 32.0 | 32 | 256 | 8 | 16640 | 4160 |
+| DSs2_step200 | 200 | 204.5 | 32 | 256 | 8 | 6400 | 1600 |
 | PPO_step400 | 400 | 192.0 | 192 | 192 | 3 | 76800 | 1200 |
 | PPO_klF_ent0_lr1e-6_step520 | 520 | 192.0 | 192 | 192 | 12 | 99840 | 6240 |
 | PPO_klF_ent0_lr3e-6_step520 | 520 | 192.0 | 192 | 192 | 12 | 99840 | 6240 |
 | PPO_klF_ent1e-3_lr3e-6_step520 | 520 | 192.0 | 192 | 192 | 12 | 99840 | 6240 |
 | PPO_kl0_ent1e-3_lr3e-6_step520 | 520 | 192.0 | 192 | 192 | 12 | 99840 | 6240 |
 | PPO_kl1e-3_ent1e-3_lr3e-6_step520 | 520 | 192.0 | 192 | 192 | 12 | 99840 | 6240 |
-| GRPO_n2_noKL_step250 | 250 | 192.0 | 192 | 384 | 3 | 48000 | 750 |
-| GRPO_n2_kl1e-3_step250 | 250 | 192.0 | 192 | 384 | 3 | 48000 | 750 |
-| GRPO_n2_kl5e-3_step250 | 250 | 192.0 | 192 | 384 | 3 | 48000 | 750 |
-| GRPO_n2_kl4e-2_step250 | 250 | 192.0 | 192 | 384 | 3 | 48000 | 750 |
-| GRPO_n2_noKL_step520 | 520 | 192.0 | 192 | 384 | 3 | 99840 | 1560 |
-| GRPO_n2_kl1e-3_step520 | 520 | 192.0 | 192 | 384 | 3 | 99840 | 1560 |
-| GRPO_n2_kl5e-3_step520 | 520 | 192.0 | 192 | 384 | 3 | 99840 | 1560 |
-| GRPO_n2_kl1e-2_step250 | 250 | 192.0 | 192 | 384 | 3 | 48000 | 750 |
-| GRPO_n2_kl4e-2_step520 | 520 | 192.0 | 192 | 384 | 3 | 99840 | 1560 |
-| GRPO_n4_kl1e-3_step520 | 520 | 192.0 | 192 | 768 | 3 | 99840 | 1560 |
-| GRPO_n8_kl1e-3_step520 | 520 | 192.0 | 192 | 1536 | 3 | 99840 | 1560 |
-| GRPO_n4_kl1e-6_step520 | 520 | 192.0 | 192 | 768 | 3 | 99840 | 1560 |
-| GRPO_n4_kl1e-6_eqR_step520 | 520 | 192.0 | 192 | 768 | 3 | 99840 | 1560 |
+| GRPO_n2_noKL_step250 | 250 | 192.0 | 192 | 384 | 6 | 48000 | 1500 |
+| GRPO_n2_kl1e-3_step250 | 250 | 192.0 | 192 | 384 | 6 | 48000 | 1500 |
+| GRPO_n2_kl5e-3_step250 | 250 | 192.0 | 192 | 384 | 6 | 48000 | 1500 |
+| GRPO_n2_kl4e-2_step250 | 250 | 192.0 | 192 | 384 | 6 | 48000 | 1500 |
+| GRPO_n2_noKL_step520 | 520 | 192.0 | 192 | 384 | 6 | 99840 | 3120 |
+| GRPO_n2_kl1e-3_step520 | 520 | 192.0 | 192 | 384 | 6 | 99840 | 3120 |
+| GRPO_n2_kl5e-3_step520 | 520 | 192.0 | 192 | 384 | 6 | 99840 | 3120 |
+| GRPO_n2_kl1e-2_step250 | 250 | 192.0 | 192 | 384 | 6 | 48000 | 1500 |
+| GRPO_n2_kl4e-2_step520 | 520 | 192.0 | 192 | 384 | 6 | 99840 | 3120 |
+| GRPO_n4_kl1e-3_step520 | 520 | 192.0 | 192 | 768 | 12 | 99840 | 6240 |
+| GRPO_n8_kl1e-3_step520 | 520 | 192.0 | 192 | 1536 | 24 | 99840 | 12480 |
+| GRPO_n4_kl1e-6_step520 | 520 | 192.0 | 192 | 768 | 12 | 99840 | 6240 |
+| GRPO_n4_kl1e-6_eqR_step520 | 520 | 192.0 | 192 | 768 | 12 | 99840 | 6240 |
 
 ### Which comparisons are controlled
 
-- **Original DAPO w/ DS vs. w/o DS: not controlled.** Without DS the trainer used all 192 generated prompts (1,536 responses, 6 updates per step); with DS it retained 32 prompts (256 responses, 1 update). The original benchmark gap therefore cannot be attributed to filtering. The completed matched comparison uses 32 prompts and one update per step in both conditions (section 3.10), but it has limited seed replication and the matched no-DS run was trained in a later software environment (`../ablation/README.md`).
+- **Original DAPO w/ DS vs. w/o DS: not controlled.** Without DS the trainer used all 192 generated prompts (1,536 responses, 48 actor updates per step); with DS it retained 32 prompts (256 responses, 8 actor updates). The original benchmark gap therefore cannot be attributed to filtering. The completed matched comparison uses 32 prompts and eight actor updates per step in both conditions (section 3.10), but it has limited seed replication and the matched no-DS run was trained in a later software environment (`../ablation/README.md`).
 - **GRPO KL sweep (n = 2, lr 1e-6, mini-batch 64):** only the KL coefficient differs. Step-matched at 250 for all five coefficients (section 3.7); the KL 0.01 run exists only at step 250.
-- **GRPO group size (n = 2 / 4 / 8 at KL 0.001):** prompts and updates per step are equal (192, 3), but responses per step grow with n (384 / 768 / 1,536), so group size and sample budget change together.
+- **GRPO group size (n = 2 / 4 / 8 at KL 0.001):** prompts per step are equal (192), but responses and actor updates grow with n; responses are 384 / 768 / 1,536 and actor updates are 6 / 12 / 24, so group size and sample budget change together.
 - **GRPO reward (equal 0.5/0.5 vs. standard, n = 4, KL 1e-6): not controlled.** The equal-reward run (`checkagain`) was trained with `/home/lian/verl_fork` = verl 0.5.0.dev, the others with `/home/lian/verl` = verl 0.2.0.dev; 135 source files differ, including `trainer/ppo/core_algos.py`, `workers/actor/dp_actor.py` and `trainer/ppo/ray_trainer.py`.
 - **PPO (October runs, mini-batch 16): not a full grid.** Learning rate is compared only with KL off and entropy 0; entropy only at lr 3e-6 with KL off; KL only at lr 3e-6 with entropy 0.001. 'KL off' and 'KL on, coefficient 0' should be equivalent but differ by up to about 20 points, so KL and entropy differences at 3e-6 are within seed noise. The learning-rate effect holds up because all four 3e-6 runs collapse (rough replicates). PPO_step400 is not part of these sweeps (mini-batch 64, Sep reward, step 400).
 - **Across families (DAPO vs. GRPO vs. PPO): complete recipes, not controlled.** They differ in response cap (4,096 vs. 2,048), responses and updates per step (table above), reward, n, KL, clip-high (0.28 vs. 0.2), learning-rate warmup (10 vs. none), trainer code (`recipe/dapo` vs. `main_ppo`), critic (PPO) and the evaluated step.
@@ -403,6 +412,15 @@ Checkpoint paths:
 | GRPO_n8_kl1e-3_step520 | 63.5 | 11.0 | 52.7 | 15.9 | 35.8 | 36.0 | 33.3 | 25.4 | 34.2 | 46.3 | 22.1 |
 | GRPO_n4_kl1e-6_step520 | 51.1 | 12.0 | 53.4 | 15.5 | 34.3 | 35.0 | 33.4 | 25.4 | 32.5 | 43.0 | 22.0 |
 | GRPO_n4_kl1e-6_eqR_step520 | 66.4 | 18.7 | 53.8 | 18.4 | 35.2 | 34.1 | 33.7 | 24.2 | 35.5 | 47.3 | 23.8 |
+| matched_ppo_s7_step300 | 59.4 | 71.2 | 55.5 | 44.2 | 34.9 | 40.4 | 33.1 | 27.1 | 45.7 | 45.7 | 45.7 |
+| matched_ppo_s8_step300 | 51.9 | 72.7 | 55.4 | 47.0 | 34.7 | 42.0 | 33.8 | 28.5 | 45.7 | 43.9 | 47.5 |
+| matched_ppo_s9_step300 | 55.5 | 56.4 | 54.1 | 32.3 | 37.1 | 31.5 | 32.2 | 21.8 | 40.1 | 44.7 | 35.5 |
+| matched_grpo_s7_step300 | 56.8 | 55.6 | 55.0 | 38.3 | 34.2 | 37.7 | 33.4 | 18.6 | 41.2 | 44.9 | 37.6 |
+| matched_grpo_s8_step300 | 53.8 | 65.5 | 54.9 | 41.7 | 35.7 | 36.7 | 33.5 | 24.5 | 43.3 | 44.5 | 42.1 |
+| matched_grpo_s9_step300 | 62.5 | 7.1 | 54.6 | 10.9 | 34.0 | 34.5 | 33.7 | 20.1 | 32.2 | 46.2 | 18.1 |
+| matched_dapo_s7_step300 | 56.6 | 12.8 | 53.9 | 10.8 | 33.5 | 33.7 | 33.3 | 15.5 | 31.3 | 44.3 | 18.2 |
+| matched_dapo_s8_step300 | 48.9 | 8.0 | 54.5 | 15.1 | 34.1 | 36.1 | 33.9 | 25.6 | 32.0 | 42.8 | 21.2 |
+| matched_dapo_s9_step300 | 50.1 | 15.1 | 54.6 | 12.5 | 33.9 | 32.2 | 34.0 | 20.3 | 31.6 | 43.1 | 20.0 |
 
 ### 3.2 Ranking by average strict accuracy over all 4 benchmarks x 2 prompts
 
@@ -418,28 +436,37 @@ Checkpoint paths:
 | 8 | rungC_step300 | 46.7 | 44.7 | 48.7 |
 | 9 | GRPO_n2_kl4e-2_step250 | 46.3 | 48.4 | 44.1 |
 | 10 | rungD_step300 | 45.9 | 46.0 | 45.8 |
-| 11 | rung2s2_step300 | 44.7 | 42.5 | 46.9 |
-| 12 | PPO_klF_ent0_lr1e-6_step520 | 41.5 | 41.0 | 42.0 |
-| 13 | base | 39.5 | 39.2 | 39.9 |
-| 14 | PPO_step400 | 37.7 | 40.6 | 34.9 |
-| 15 | GRPO_n4_kl1e-6_eqR_step520 | 35.5 | 47.3 | 23.8 |
-| 16 | GRPO_n8_kl1e-3_step520 | 34.2 | 46.3 | 22.1 |
-| 17 | GRPO_n2_kl5e-3_step520 | 33.2 | 44.8 | 21.6 |
-| 18 | rung2_step300 | 33.2 | 46.0 | 20.3 |
-| 19 | GRPO_n4_kl1e-6_step520 | 32.5 | 43.0 | 22.0 |
-| 20 | GRPO_n2_kl1e-3_step250 | 32.2 | 43.1 | 21.2 |
-| 21 | GRPO_n4_kl1e-3_step520 | 32.1 | 42.5 | 21.8 |
-| 22 | GRPO_n2_kl1e-3_step520 | 32.0 | 42.3 | 21.7 |
-| 23 | GRPO_n2_kl5e-3_step250 | 32.0 | 42.6 | 21.3 |
-| 24 | GRPO_n2_noKL_step250 | 31.6 | 41.2 | 22.0 |
-| 25 | rung1_step300 | 31.1 | 44.2 | 18.1 |
-| 26 | DSs2_step200 | 30.8 | 40.3 | 21.3 |
-| 27 | GRPO_n2_noKL_step520 | 30.6 | 39.7 | 21.5 |
-| 28 | rungA1s2_step300 | 30.0 | 40.1 | 19.9 |
-| 29 | PPO_kl1e-3_ent1e-3_lr3e-6_step520 | 21.8 | 23.2 | 20.5 |
-| 30 | PPO_kl0_ent1e-3_lr3e-6_step520 | 19.6 | 18.4 | 20.8 |
-| 31 | PPO_klF_ent0_lr3e-6_step520 | 18.2 | 19.3 | 17.1 |
-| 32 | PPO_klF_ent1e-3_lr3e-6_step520 | 6.7 | 2.7 | 10.7 |
+| 11 | matched_ppo_s8_step300 | 45.7 | 43.9 | 47.5 |
+| 12 | matched_ppo_s7_step300 | 45.7 | 45.7 | 45.7 |
+| 13 | rung2s2_step300 | 44.7 | 42.5 | 46.9 |
+| 14 | matched_grpo_s8_step300 | 43.3 | 44.5 | 42.1 |
+| 15 | PPO_klF_ent0_lr1e-6_step520 | 41.5 | 41.0 | 42.0 |
+| 16 | matched_grpo_s7_step300 | 41.2 | 44.9 | 37.6 |
+| 17 | matched_ppo_s9_step300 | 40.1 | 44.7 | 35.5 |
+| 18 | base | 39.5 | 39.2 | 39.9 |
+| 19 | PPO_step400 | 37.7 | 40.6 | 34.9 |
+| 20 | GRPO_n4_kl1e-6_eqR_step520 | 35.5 | 47.3 | 23.8 |
+| 21 | GRPO_n8_kl1e-3_step520 | 34.2 | 46.3 | 22.1 |
+| 22 | GRPO_n2_kl5e-3_step520 | 33.2 | 44.8 | 21.6 |
+| 23 | rung2_step300 | 33.2 | 46.0 | 20.3 |
+| 24 | GRPO_n4_kl1e-6_step520 | 32.5 | 43.0 | 22.0 |
+| 25 | GRPO_n2_kl1e-3_step250 | 32.2 | 43.1 | 21.2 |
+| 26 | matched_grpo_s9_step300 | 32.2 | 46.2 | 18.1 |
+| 27 | GRPO_n4_kl1e-3_step520 | 32.1 | 42.5 | 21.8 |
+| 28 | matched_dapo_s8_step300 | 32.0 | 42.8 | 21.2 |
+| 29 | GRPO_n2_kl1e-3_step520 | 32.0 | 42.3 | 21.7 |
+| 30 | GRPO_n2_kl5e-3_step250 | 32.0 | 42.6 | 21.3 |
+| 31 | matched_dapo_s9_step300 | 31.6 | 43.1 | 20.0 |
+| 32 | GRPO_n2_noKL_step250 | 31.6 | 41.2 | 22.0 |
+| 33 | matched_dapo_s7_step300 | 31.3 | 44.3 | 18.2 |
+| 34 | rung1_step300 | 31.1 | 44.2 | 18.1 |
+| 35 | DSs2_step200 | 30.8 | 40.3 | 21.3 |
+| 36 | GRPO_n2_noKL_step520 | 30.6 | 39.7 | 21.5 |
+| 37 | rungA1s2_step300 | 30.0 | 40.1 | 19.9 |
+| 38 | PPO_kl1e-3_ent1e-3_lr3e-6_step520 | 21.8 | 23.2 | 20.5 |
+| 39 | PPO_kl0_ent1e-3_lr3e-6_step520 | 19.6 | 18.4 | 20.8 |
+| 40 | PPO_klF_ent0_lr3e-6_step520 | 18.2 | 19.3 | 17.1 |
+| 41 | PPO_klF_ent1e-3_lr3e-6_step520 | 6.7 | 2.7 | 10.7 |
 
 ### 3.3 Flexible accuracy (%)
 
@@ -477,6 +504,15 @@ Checkpoint paths:
 | GRPO_n8_kl1e-3_step520 | 35.8 | 36.0 | 72.0 | 11.0 | 52.8 | 16.0 | 33.3 | 25.4 |
 | GRPO_n4_kl1e-6_step520 | 34.4 | 35.0 | 67.6 | 12.0 | 53.5 | 15.6 | 33.4 | 25.4 |
 | GRPO_n4_kl1e-6_eqR_step520 | 35.4 | 34.1 | 72.3 | 24.0 | 53.8 | 19.2 | 33.7 | 24.2 |
+| matched_ppo_s7_step300 | 35.1 | 40.5 | 72.9 | 71.3 | 55.6 | 46.1 | 33.1 | 27.1 |
+| matched_ppo_s8_step300 | 35.2 | 42.3 | 73.3 | 72.9 | 55.4 | 47.6 | 33.8 | 28.5 |
+| matched_ppo_s9_step300 | 37.2 | 31.5 | 70.5 | 57.3 | 54.3 | 34.2 | 32.2 | 21.8 |
+| matched_grpo_s7_step300 | 34.4 | 37.7 | 73.2 | 55.6 | 55.0 | 39.4 | 33.4 | 18.6 |
+| matched_grpo_s8_step300 | 35.9 | 36.7 | 73.9 | 65.5 | 54.9 | 42.4 | 33.5 | 24.6 |
+| matched_grpo_s9_step300 | 34.2 | 34.5 | 73.1 | 7.1 | 54.6 | 11.1 | 33.7 | 20.1 |
+| matched_dapo_s7_step300 | 33.7 | 33.7 | 73.2 | 13.0 | 54.0 | 11.4 | 33.3 | 15.5 |
+| matched_dapo_s8_step300 | 34.5 | 36.1 | 73.4 | 8.3 | 54.6 | 15.5 | 33.9 | 25.6 |
+| matched_dapo_s9_step300 | 34.2 | 32.2 | 73.4 | 15.2 | 54.6 | 13.3 | 34.0 | 20.3 |
 
 ### 3.4 Responses cut off at 8192 tokens (%)
 
@@ -514,6 +550,15 @@ Checkpoint paths:
 | GRPO_n8_kl1e-3_step520 | 2.7 | 0.7 | 0.2 | 0.0 | 4.7 | 0.2 | 2.5 | 0.0 |
 | GRPO_n4_kl1e-6_step520 | 2.3 | 0.9 | 0.2 | 0.0 | 3.6 | 0.0 | 2.7 | 0.0 |
 | GRPO_n4_kl1e-6_eqR_step520 | 3.8 | 1.1 | 0.2 | 0.7 | 4.1 | 3.0 | 3.1 | 0.5 |
+| matched_ppo_s7_step300 | 3.1 | 4.9 | 0.4 | 1.3 | 4.3 | 7.4 | 3.9 | 8.7 |
+| matched_ppo_s8_step300 | 2.8 | 5.4 | 0.3 | 1.4 | 4.9 | 8.8 | 4.3 | 9.3 |
+| matched_ppo_s9_step300 | 3.9 | 6.7 | 0.4 | 5.4 | 4.2 | 13.9 | 3.2 | 9.0 |
+| matched_grpo_s7_step300 | 3.3 | 3.5 | 0.7 | 1.5 | 4.1 | 8.5 | 4.1 | 5.1 |
+| matched_grpo_s8_step300 | 3.1 | 1.7 | 0.4 | 0.5 | 4.1 | 3.6 | 3.4 | 3.3 |
+| matched_grpo_s9_step300 | 3.7 | 0.5 | 0.4 | 0.0 | 3.9 | 0.0 | 3.1 | 0.0 |
+| matched_dapo_s7_step300 | 3.5 | 1.2 | 0.5 | 0.2 | 4.3 | 0.5 | 3.0 | 0.0 |
+| matched_dapo_s8_step300 | 3.5 | 0.9 | 0.5 | 0.0 | 4.5 | 1.1 | 3.3 | 0.1 |
+| matched_dapo_s9_step300 | 3.3 | 0.4 | 0.3 | 0.8 | 4.1 | 1.2 | 3.3 | 0.0 |
 
 ### 3.5 Difference from base model (strict, points) and McNemar p
 
@@ -550,6 +595,15 @@ Checkpoint paths:
 | GRPO_n8_kl1e-3_step520 | +0.6 (p=0.349) | -0.2 (p=0.757) | +30.2 (p=<0.001) | -37.5 (p=<0.001) | -2.5 (p=<0.001) | -31.5 (p=<0.001) | +0.2 (p=0.584) | -2.1 (p=<0.001) |
 | GRPO_n4_kl1e-6_step520 | -0.8 (p=0.190) | -1.2 (p=0.095) | +17.7 (p=<0.001) | -36.5 (p=<0.001) | -1.7 (p=0.003) | -31.9 (p=<0.001) | +0.3 (p=0.429) | -2.0 (p=<0.001) |
 | GRPO_n4_kl1e-6_eqR_step520 | +0.0 (p=0.960) | -2.1 (p=0.002) | +33.1 (p=<0.001) | -29.8 (p=<0.001) | -1.4 (p=0.017) | -29.0 (p=<0.001) | +0.6 (p=0.126) | -3.3 (p=<0.001) |
+| matched_ppo_s7_step300 | -0.3 (p=0.667) | +4.2 (p=<0.001) | +26.1 (p=<0.001) | +22.7 (p=<0.001) | +0.4 (p=0.466) | -3.1 (p=<0.001) | +0.1 (p=0.884) | -0.4 (p=0.390) |
+| matched_ppo_s8_step300 | -0.5 (p=0.449) | +5.8 (p=<0.001) | +18.5 (p=<0.001) | +24.3 (p=<0.001) | +0.2 (p=0.685) | -0.4 (p=0.590) | +0.8 (p=0.048) | +1.0 (p=0.017) |
+| matched_ppo_s9_step300 | +1.9 (p=0.003) | -4.8 (p=<0.001) | +22.1 (p=<0.001) | +8.0 (p=<0.001) | -1.1 (p=0.076) | -15.1 (p=<0.001) | -0.9 (p=0.038) | -5.7 (p=<0.001) |
+| matched_grpo_s7_step300 | -0.9 (p=0.127) | +1.5 (p=0.043) | +23.4 (p=<0.001) | +7.1 (p=<0.001) | -0.2 (p=0.782) | -9.0 (p=<0.001) | +0.4 (p=0.361) | -8.8 (p=<0.001) |
+| matched_grpo_s8_step300 | +0.6 (p=0.351) | +0.5 (p=0.522) | +20.5 (p=<0.001) | +17.1 (p=<0.001) | -0.3 (p=0.628) | -5.6 (p=<0.001) | +0.4 (p=0.256) | -3.0 (p=<0.001) |
+| matched_grpo_s9_step300 | -1.2 (p=0.048) | -1.7 (p=0.017) | +29.2 (p=<0.001) | -41.4 (p=<0.001) | -0.6 (p=0.340) | -36.5 (p=<0.001) | +0.6 (p=0.133) | -7.3 (p=<0.001) |
+| matched_dapo_s7_step300 | -1.7 (p=0.005) | -2.5 (p=<0.001) | +23.3 (p=<0.001) | -35.6 (p=<0.001) | -1.2 (p=0.027) | -36.5 (p=<0.001) | +0.3 (p=0.482) | -12.0 (p=<0.001) |
+| matched_dapo_s8_step300 | -1.0 (p=0.094) | -0.1 (p=0.856) | +15.5 (p=<0.001) | -40.4 (p=<0.001) | -0.7 (p=0.249) | -32.3 (p=<0.001) | +0.8 (p=0.043) | -1.9 (p=<0.001) |
+| matched_dapo_s9_step300 | -1.2 (p=0.041) | -4.0 (p=<0.001) | +16.8 (p=<0.001) | -33.4 (p=<0.001) | -0.6 (p=0.300) | -34.8 (p=<0.001) | +0.9 (p=0.023) | -7.2 (p=<0.001) |
 
 ### 3.6 DAPO w/o DS vs. w/ DS (paired, strict)
 
@@ -637,7 +691,7 @@ The base model already writes `\boxed{}` in 95% of MATH responses (Qwen2.5-Instr
 
 ### 3.10 Controlled dynamic-sampling test: ablation rung 2 vs. DS
 
-Rung 2 has the DS run's exact settings (KL off, entropy 0, clip 0.2/0.28, lr 1e-6, n = 8, 4,096-token cap, Sep reward) and the same trained batch (32 prompts, 1 update per step); only dynamic sampling is off (`../ablation/README.md`). The old no-DS run is shown for reference (192 prompts, 6 updates per step).
+Rung 2 has the DS run's exact settings (KL off, entropy 0, clip 0.2/0.28, lr 1e-6, n = 8, 4,096-token cap, Sep reward) and the same trained batch (32 prompts, 8 actor updates per step); only dynamic sampling is off (`../ablation/README.md`). The old no-DS run is shown for reference (192 prompts, 48 actor updates per step).
 
 Training curves (Countdown):
 

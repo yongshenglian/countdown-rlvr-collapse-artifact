@@ -11,6 +11,16 @@ import re
 
 MODELS = {
     "base": "Qwen/Qwen2.5-1.5B-Instruct",
+    # Step-matched PPO/GRPO/DAPO-style comparison (seeds 7--9, all at step 300).
+    "matched_ppo_s7_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s7_step300",
+    "matched_ppo_s8_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s8_step300",
+    "matched_ppo_s9_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s9_step300",
+    "matched_grpo_s7_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s7_step300",
+    "matched_grpo_s8_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s8_step300",
+    "matched_grpo_s9_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s9_step300",
+    "matched_dapo_s7_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s7_step300",
+    "matched_dapo_s8_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s8_step300",
+    "matched_dapo_s9_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s9_step300",
     "noDS_step300": "/mnt/sdb/verl/DAPO_new/merged_hf/noDS_step300",
     "DS_step300": "/mnt/sdb/verl/DAPO_new/merged_hf/DS_step300",
     # improved PPO, /home/lian/verl/checkpoints/PPO_Countdown_R1_0923/ppo_qwen2.5_1.5b-train192-mini32/global_step_400
