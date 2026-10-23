@@ -3,13 +3,14 @@
 This repository contains the manuscript source, compact results, training
 configurations, evaluation code, and reproducibility records for:
 
-> Yongsheng Lian, *Short-Response Collapse in Countdown RLVR: A Matched
+> Yongsheng Lian, *Response-Length Instability in Countdown RLVR: A Matched
 > Study of PPO, GRPO, and Asymmetric Clipping*.
 
 The primary study compares nine 300-step Countdown runs of PPO, symmetric-clip
 GRPO, and asymmetric-clip DAPO-style training under matched actor-side exposure.
-A historical collapse screen, prompt-format control, held-out transfer evaluation,
-and pass@k analysis provide secondary evidence.
+The 22-run configuration screen, prompt-format and prompt-component controls,
+evaluation on benchmarks not used during fine-tuning, and pass@k analysis provide
+complementary evidence.
 
 ## Release status
 

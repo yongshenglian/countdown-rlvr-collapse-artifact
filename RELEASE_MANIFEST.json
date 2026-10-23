@@ -1,7 +1,7 @@
 {
   "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
-  "aggregate_sha256": "84973f1a515694fc3260eee66d555f61471bec5399bc8791d123647cd7871dd4",
-  "file_count": 246,
+  "aggregate_sha256": "f5cccc33c07e62b7cf0023d613ccdd619b08e73875b7b705ad01b6b339a91a71",
+  "file_count": 252,
   "files": [
     {
       "bytes": 205,
@@ -79,9 +79,9 @@
       "sha256": "bd354c471d571a64d56841c8de528b3710543b9717e823c6a69875575aea1bd5"
     },
     {
-      "bytes": 2705,
+      "bytes": 2762,
       "path": "README.md",
-      "sha256": "dea13eab503b0aff62fc15b8fcc2ceb9a2683083f2ce728c4d9afd34474de22d"
+      "sha256": "417829633152bc72841a3205aef4ccfa8473f234a9b4ea07ec2f11e5a6244443"
     },
     {
       "bytes": 10622,
@@ -454,6 +454,16 @@
       "sha256": "b5f25b10367ce8fe4af5f2788db5647607191c318726a5ce383d422852cb4811"
     },
     {
+      "bytes": 5170,
+      "path": "eval/eval_gsm8k_prompt_ablation.py",
+      "sha256": "23b37632241122948b9d43c1f6e027e7290ac63325605fe8474114e422e33a6e"
+    },
+    {
+      "bytes": 2898,
+      "path": "eval/eval_gsm8k_prompt_open_tag_ablation.py",
+      "sha256": "3b39c6cd6372e5ea809ca1b862b8c60b873b32f64ef5177c9ef9df4232dda047"
+    },
+    {
       "bytes": 4071,
       "path": "eval/eval_math.py",
       "sha256": "dd7b87bdc241f53a7726059304a7b6ed307e8a031bde8878146508ca33afcf1e"
@@ -789,6 +799,16 @@
       "sha256": "7780cd67ba5852e3ac3b248f13c7f356e66b61fbb05af6fb9fa58040a52e9a93"
     },
     {
+      "bytes": 8912,
+      "path": "eval/results_prompt_ablation/gsm8k/summary_by_checkpoint.csv",
+      "sha256": "bce851ec492ac89800066c74444d272f39a121db9e4e3d1aad404bfd874526ef"
+    },
+    {
+      "bytes": 8336,
+      "path": "eval/results_prompt_ablation/gsm8k/summary_by_group.csv",
+      "sha256": "d635e7d4e7e03058547c49d45df2a14671d85ee57807e5bcf385250dd86dec56"
+    },
+    {
       "bytes": 1323,
       "path": "eval/run_all.sh",
       "sha256": "3f2996d9bc788a773052abefebd122f7981c49ae006a2e84c5e0c939e26e5663"
@@ -894,6 +914,11 @@
       "sha256": "3f3be5489f6cd56d6e198b6ada42bd6f66a8b7f6d5d6149306dfb73f45f1a640"
     },
     {
+      "bytes": 1822,
+      "path": "eval/run_gsm8k_prompt_ablation.sh",
+      "sha256": "408299d7bf5edfa2e88ba43b49d59be1eb7bd810f134369c62bb70df82a40a98"
+    },
+    {
       "bytes": 1675,
       "path": "eval/run_jobs.sh",
       "sha256": "0177077053a4e193275facc879c5f74fe233227fe0d07478c515243ac066dbc8"
@@ -932,6 +957,11 @@
       "bytes": 67845,
       "path": "eval/scorer_audit_sample.jsonl",
       "sha256": "ccff82d9b18ffca660208ea17fd787ce68091ab540110a8eb4d336d785893d11"
+    },
+    {
+      "bytes": 5334,
+      "path": "eval/summarize_gsm8k_prompt_ablation.py",
+      "sha256": "84023e88d63de849b7bf431e5beba7e6631b6ab8fafc057018d7cf0eb440719f"
     },
     {
       "bytes": 1500,
@@ -1039,34 +1069,34 @@
       "sha256": "2e08c66570188233fe328770a992b1da79db72d630f9a4734a02817e30d588b2"
     },
     {
-      "bytes": 15476,
+      "bytes": 17824,
       "path": "ppo_comparison_revised.aux",
-      "sha256": "4fa6fcb53aab97a7d825b32bcd2c04327e95850eeff2316efd0f01960cdb8493"
+      "sha256": "99e5a391ee9b5cd3066a168fc168fe5346f72481ae4939323aedee3e4d861706"
     },
     {
-      "bytes": 50054,
+      "bytes": 51779,
       "path": "ppo_comparison_revised.log",
-      "sha256": "285fbbe4ff3187ce41d8ba53670d5837edfe11ebb9a2632f8fa5c74eace95e47"
+      "sha256": "d333bd51d6a849013a45041c177144a8f80c7b1077dd547158073d42786eea19"
     },
     {
-      "bytes": 4373,
+      "bytes": 4755,
       "path": "ppo_comparison_revised.out",
-      "sha256": "db98f94873a672dd44cc34aafb21882e9cf57110eeba089bac53a790ca146401"
+      "sha256": "f88cc5e31d0db15117e0c06e7754b4d2bbc8a56a36d0a6d010c57e35a6941f92"
     },
     {
-      "bytes": 215317,
+      "bytes": 245297,
       "path": "ppo_comparison_revised.pdf",
-      "sha256": "8a9b8d88d904475becf2ee3c73e34df9e5806f41764ac8e379a28183621aa4df"
+      "sha256": "507f6c1e430513c4d234f82e2666593ada8afa4a8567e996ebfcf11361708d57"
     },
     {
-      "bytes": 54026,
+      "bytes": 77146,
       "path": "ppo_comparison_revised.tex",
-      "sha256": "8ffc668bbaaaaa3932d44d6bcc6c0bcda1133ee2df3858bbaebf92dab36d83d8"
+      "sha256": "6e5b0e6c70556ab116b52321a473329da788461219177ac85c312169bd4430c0"
     },
     {
-      "bytes": 6687,
+      "bytes": 8176,
       "path": "references_cited.tex",
-      "sha256": "dfed3d4309969451d0aef4d7dc44e16a900fdaa2e77fc8a0dfc7487efb94aee0"
+      "sha256": "b4062a454ea7439248e6e7948b74b5b82bd9ad23e1b9bca952250db10e0d28d9"
     },
     {
       "bytes": 5975,
@@ -1236,5 +1266,5 @@
   ],
   "root_name": "public_artifact",
   "schema_version": 1,
-  "total_bytes": 87455954
+  "total_bytes": 87547527
 }
