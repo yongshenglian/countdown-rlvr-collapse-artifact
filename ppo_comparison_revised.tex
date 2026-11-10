@@ -124,7 +124,7 @@ DAPO-style & as GRPO, clip 0.2/0.28, no dynamic sampling \\
 \subsection{Training Diagnostics and Checkpoint Selection}
 
 We monitor response length to detect departures from the requested worked-solution format. A run is \emph{early short} when its mean length over steps 90--100, rounded to the nearest token, is at most 100 generated tokens. A later increase above this threshold is \emph{response-length recovery}, not necessarily accuracy recovery. With ten runs per method, a difference between two methods can arise from seed-to-seed variation alone. Before the first run, we therefore fixed three questions:
-\begin{itemize}
+\begin{itemize}[leftmargin=2.5em,labelwidth=2em]
 \item[Q1.] Does widening the upper clip bound change response shortening? This compares DAPO-style training with GRPO, which differ only in that bound.
 \item[Q2.] Do critic-based advantages change response shortening? This compares PPO with GRPO, which differ in how advantages are estimated.
 \item[Q3.] Do the methods end with different Countdown accuracy at step 300?
