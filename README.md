@@ -15,9 +15,8 @@ with sampled pass@k.
 
 ## Release status
 
-This public repository is the compact reproducibility artifact. A DOI-bearing
-archived release is planned. Until it exists, the default branch is a
-pre-release snapshot rather than the archival version cited by the paper.
+Archived on Zenodo: [10.5281/zenodo.24095520](https://doi.org/10.5281/zenodo.24095520)
+(this DOI always resolves to the latest version).
 
 ## Where the 30-run results are
 

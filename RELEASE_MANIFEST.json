@@ -1,6 +1,6 @@
 {
   "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
-  "aggregate_sha256": "49ffe8b7a227988d8a91ef85988189b4cf16aef8229c30b26aeaae776c391cb2",
+  "aggregate_sha256": "c4677e657ee419d1e9fcf82f311c2aa4121c2ab346da3fe440d02fa0db082e87",
   "file_count": 376,
   "files": [
     {
@@ -9,14 +9,14 @@
       "sha256": "964f6b7e3b5d2a708eb40352f4faa3d08adb8a3862519dc0457fbcbe3717e6db"
     },
     {
-      "bytes": 656,
+      "bytes": 724,
       "path": ".zenodo.json",
-      "sha256": "24f5085fabb1b163ed94c64f29167aa0c8bdfc150dac5c7d49c4f6f9473a0981"
+      "sha256": "7c6327cbd1bc7a54af70df390d948c862da122d13774d3e33c6c0774de611c54"
     },
     {
-      "bytes": 544,
+      "bytes": 575,
       "path": "CITATION.cff",
-      "sha256": "df685a486aca59d9bb2c5f6ed836d115d80f8dc809b0a91054392196178bf5b6"
+      "sha256": "ca1c0d62c679f0538728d860973537a088556514d561f0452bf3379e00cf7958"
     },
     {
       "bytes": 143363,
@@ -79,9 +79,9 @@
       "sha256": "bd354c471d571a64d56841c8de528b3710543b9717e823c6a69875575aea1bd5"
     },
     {
-      "bytes": 3846,
+      "bytes": 3761,
       "path": "README.md",
-      "sha256": "232d515d59f287ad6b7c2e2e58d23a6f39f340e35b80d24597f4a84f5e176c78"
+      "sha256": "a8d0c79ca396037129ef4cd9b9f34f334a5275582c2e5e5782471ce7fdde4bdc"
     },
     {
       "bytes": 10622,
@@ -1644,14 +1644,14 @@
       "sha256": "2e08c66570188233fe328770a992b1da79db72d630f9a4734a02817e30d588b2"
     },
     {
-      "bytes": 270633,
+      "bytes": 270784,
       "path": "ppo_comparison_revised.pdf",
-      "sha256": "5b0bfaf18671f527035b34f7c8af6b24f3c5b9d6bbefb2f1bf4e1075a05c5b82"
+      "sha256": "45547da26089bc98734ed4a3ae477ef3e3e03b695c8b7455fbd36b1602259acf"
     },
     {
-      "bytes": 62741,
+      "bytes": 62778,
       "path": "ppo_comparison_revised.tex",
-      "sha256": "8f8114ac7e576c5c59416d538891c74ac0c1628d208d9b35bfc4f76deeb0ddfa"
+      "sha256": "0eb39907d1a2c9794c2e2bb368ee9a4ba88c0ce9be3ee96c451da369340427e4"
     },
     {
       "bytes": 9911,
@@ -1886,5 +1886,5 @@
   ],
   "root_name": "public_artifact",
   "schema_version": 1,
-  "total_bytes": 91244885
+  "total_bytes": 91245087
 }

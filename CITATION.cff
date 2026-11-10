@@ -7,6 +7,7 @@ authors:
     given-names: Yongsheng
     affiliation: University of Louisville
     email: yongsheng.lian@louisville.edu
+doi: "10.5281/zenodo.24095520"
 repository-code: "https://github.com/yongshenglian/countdown-rlvr-collapse-artifact"
 license: Apache-2.0
 keywords:
