@@ -1,43 +1,57 @@
-# Countdown RLVR Collapse and Transfer Artifact
+# Countdown RLVR Evaluation Artifact
 
-This repository contains the manuscript source, compact results, training
-configurations, evaluation code, and reproducibility records for:
+This repository contains the manuscript source, supplementary materials,
+compact results, training configurations, evaluation code, and reproducibility
+records for:
 
-> Yongsheng Lian, *Response-Length Instability in Countdown RLVR: A Matched
-> Study of PPO, GRPO, and Asymmetric Clipping*.
+> Yongsheng Lian, *What Standard Evaluation Misses in Small-Model RLVR:
+> Evidence from 30 Countdown Training Runs*.
 
-The primary study compares nine 300-step Countdown runs of PPO, symmetric-clip
-GRPO, and asymmetric-clip DAPO-style training under matched actor-side exposure.
-The 22-run configuration screen, prompt-format and prompt-component controls,
-evaluation on benchmarks not used during fine-tuning, and pass@k analysis provide
-complementary evidence.
+Qwen2.5-1.5B-Instruct was trained on Countdown in 30 runs: ten seeds (7--16)
+each of PPO, GRPO, and DAPO-style training (GRPO with a wider upper clip), with
+eight sequential actor updates per step. Every step-300 checkpoint is evaluated
+under standard and training-style prompts, with strict and flexible scoring, and
+with sampled pass@k.
 
 ## Release status
 
-This public repository is the compact reproducibility artifact. The DOI-bearing
-`v1.0.0` release will be created after the final consistency checks and Zenodo
-integration are complete. The matched nine-run comparison and targeted
-dynamic-sampling replay have completed successfully; both are reported alongside
-the original 22-run screen. Until
-the DOI is minted, the default branch is a transparent pre-release snapshot
-rather than the archival version cited by the paper.
+This public repository is the compact reproducibility artifact. A DOI-bearing
+archived release is planned. Until it exists, the default branch is a
+pre-release snapshot rather than the archival version cited by the paper.
+
+## Where the 30-run results are
+
+| Paper content | Files |
+| --- | --- |
+| Training protocol and analysis plan | `replication/ACTIVE_CLIP_PROTOCOL.md`, `replication/submit_active_clip_ppo.sh`, `replication/patches/experiment_b_logging.patch` |
+| Per-run outcomes (window mean, early short, step-300 entropy and Countdown accuracy) | `replication/b_run_registry.csv` |
+| Training trajectories (Figure 1) | `eval/revision_20261109/training_trajectories.csv` |
+| Bootstrap intervals and coverage summary | `eval/revision_20261109/countdown_intervals.json`, `coverage_summary.json`, `math_coverage.csv` |
+| Greedy benchmarks, standard and think prompts (Tables S1--S3) | `eval/results_4090/<benchmark>/summary.csv` |
+| GSM8K think-prompt component controls | `eval/results_4090_prompt_ablation/gsm8k/summary.csv` |
+| Countdown under the training wrapper and a plain prompt | `eval/results_countdown_prompt/scored.csv` |
+| Sampled pass@k (Table S4) and five base-model sampling runs | `eval/results_passk_b/`, `eval/revision_20261109/base_math_repeats/` |
+| GSM8K scorer sensitivity | `eval/revision_20261109/gsm8k_scorer_sensitivity.csv`, `gsm8k_scorer_groups.csv` |
+| Compact summaries above | `eval/summarize_b_runs.py` |
+
+The folder name `results_4090` is historical; the generations in it were
+produced as described in Supplementary Note S1.
 
 ## Contents
 
-- `ppo_comparison_revised.tex` and `ppo_comparison_revised.pdf`: manuscript
-  source and compiled paper.
-- `ablation/`: launch configurations, collapse-screen data, and analysis.
-- `eval/`: evaluation/scoring code, compact summaries, manifests, and vendored
-  evaluation inputs needed for offline checks.
-- `replication/`: frozen protocol, execution record, scripts, and compact
-  trajectories.
+- `ppo_comparison_revised.tex`/`.pdf` and `supplementary_materials.tex`/`.pdf`:
+  manuscript and supplementary materials.
+- `eval/`: evaluation and scoring code, compact summaries, manifests, and
+  vendored evaluation inputs needed for offline checks.
+- `replication/`: protocols, launch scripts, and compact training records.
+- `ablation/`, `replication/results/`, `eval/results/`, `eval/results_8k/`,
+  `eval/results_passk/`: records from earlier versions of the study, kept for
+  provenance; the current manuscript does not use them.
 - `environment/`: package snapshots, source patches, and provenance records.
 - `paper_figs/`: publication figures and generation scripts.
 
 Except for four base-model records needed to verify the exact benchmark inputs,
-raw generations and model checkpoints are intentionally excluded from normal
-Git history because of their size. Their hashes and access locations will be
-recorded in the DOI-bearing release metadata where redistribution permits.
+raw generations and model checkpoints are excluded because of their size.
 
 ## Verification
 
@@ -46,7 +60,8 @@ python -m pip install -r eval/requirements-scorers.txt
 python eval/verify_dataset_manifest.py
 python eval/test_scorers.py
 (cd replication && python -m unittest test_eval_checkpoint_diagnostics.py)
-tectonic ppo_comparison_revised.tex --keep-logs --keep-intermediates
+tectonic ppo_comparison_revised.tex
+tectonic supplementary_materials.tex
 ```
 
 Some training and evaluation commands require Verl, vLLM, GPUs, and model

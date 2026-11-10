@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this artifact, please cite the archived release and associated article."
-title: "Countdown RLVR Collapse and Transfer Artifact"
+title: "Countdown RLVR Evaluation Artifact"
 type: software
 authors:
   - family-names: Lian
@@ -13,5 +13,6 @@ keywords:
   - reinforcement learning with verifiable rewards
   - GRPO
   - DAPO
-  - training collapse
+  - PPO
+  - evaluation
   - reasoning transfer

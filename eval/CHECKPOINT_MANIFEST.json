@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_utc": "2026-10-21T01:21:24+00:00",
+  "generated_utc": "2026-11-02T23:16:40+00:00",
   "base_model": {
     "repository": "Qwen/Qwen2.5-1.5B-Instruct",
     "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306"
@@ -492,6 +492,654 @@
         }
       ]
     },
+    "matched_ppo_s10_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s10_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "280c781846d882b2e589019002664665a399aa41abcda2bf61dd7c3f0a1ad293",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "86d619f48f2b2cf424dbe0f56bf8a2d6d70d2cb02ee1e5f620940e42cfaf9d77"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_ppo_s11_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s11_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "3ca8b2c60b685c5e3de855cc6d304315196b7d6abbac7fe969378931fa6a3c50",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "71e64a9fad946bc586b20fe291db86ebe30d2789d86040ca95cc96d6ea596f6d"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_ppo_s12_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s12_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "80ea9ae4010df2cf72ef28838d5d6f0124c4f9e21acb2b73d99465cd84cc7ee1",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "2c0f4d5d53b5a8458b2ab79ba7fa8c1700067ec29c07f757bb0ebc31385ac63a"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_ppo_s13_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s13_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "e3e577054d6b577054313231f478e0a84ff90936c783e123c37f0cc059016934",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "80bf777f50a9c2b020523935c6f5e4b74a3b59f16173bfc453de2be513573fd0"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_grpo_s10_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s10_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "e8f4831db0a8a1d989c95954ecab752088c5ecf46c8e38933d5783a7974bfcc2",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "c82cb20c798101a2e2241518b7160299177c3e2004e897ca595b62c0eac46644"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_grpo_s11_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s11_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "9452b2ceefe83537ae384585495b545214dfbf3c721f010810cff4f32a2e202b",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "5a45f2b817f10f517df1d1ab21d4f32e9fcd029a3bed73ec0c5d8d793605d3be"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_grpo_s12_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s12_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "ff98a36fc5876ffe05ce16f2f0a517d2af4f039653dc64c4550c05ff8207a6ea",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "be270344fca38a90df212577c5046b32f580695928b4eaf7a0d005233ca1aae2"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_grpo_s13_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s13_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "b1b7208d61ca62c386b6f0895cbcbc74e35b1794ca761a9cf6ccfcdcf99ec423",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "30d2733cb0a5e4f1c54dfac3c2263de921668df51bf5eb0a5152e8d52c6bcae4"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_dapo_s10_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s10_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "b1b470b0beffa9eb746dc1ef273c80f50484e9e68babaa22d1d2f258a687a140",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "f8b85e76c15f037154bf1a362cd884de53b59e0dedd933f34bb5d6a47d72dea3"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_dapo_s11_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s11_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "4ee7e90c84eb62e941e809df60ceb1cb3cd68497b08ee0fc482e4ff1cab28575",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "ad81f6fd0097d39aaab4be2e52e71e78bda84707da047368719caefb368230be"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_dapo_s12_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s12_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "109e00add17477cfa06a7665baeb85bbebc9d2a6f129802ae79786096daa7079",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "5fe412ba15db7c7d86d84b91af87f641a18d8e96924d6ffb90c919a72d8d1424"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "matched_dapo_s13_step300": {
+      "local_path": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s13_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "0569a6f06187e4c36e9c30763a0a2ef457aec25505d5fa6377fd1871bed6579a",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "bb3907f10dd03edd41fc2a3d2625998ff61e594114dc9fa2da2609a4857e10dd"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
     "DS_step300": {
       "local_path": "/mnt/sdb/verl/DAPO_new/merged_hf/DS_step300",
       "file_count": 9,
@@ -685,6 +1333,1626 @@
           "path": "model.safetensors",
           "bytes": 3554214752,
           "sha256": "d3b420600d56e0926ee69b835ed86af274cbc62b1687cbd7d8a4bf73f92d4cb3"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s7_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s7_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "aaaf06fbce6638b2bcc25d375ddb2be5303f6afa1a9ad3d77ebf6a191a849310",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "f5a801df29ba335eb338b2276f9340a5a134a4c349bd35a7bc9ff2b07b2385e0"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s7_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s7_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "5f4617e0ca99116501781d2426a4a9b092ac54caf606a3dc85d738a70dafe7fa",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "c3c49314e7468ca1db13297fba17f09a018ae98804bcea1711920c3629aaa34e"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s7_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s7_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "d30b1036f827f787d354780702937ea619eacf186fed75c848b47d2a6118a5b4",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "4158a82a5f6dc9b4d91958f7da98977bb093fe165aac5b1e5296701dc289192f"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s8_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s8_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "93e6107faa6865de9e335516725e2fb6b56223b8a191dd7569bb2e24f26e0f3c",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "2922b1dfccb9408e3c718a4445ce9f5dab1b981ea29428a0b3921de0207ab387"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s8_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s8_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "b43496c86c67fbaa49767a3764664128b10bfe9587cc8f68f8cc74d95080ab04",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "a6785d9c45706b1f694aa9c0ae4040be587e5d33da7c441445e2650a72e15410"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s8_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s8_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "780dc638b8a9feefbb543348bd3e3d9bf0c17d4b609a531b5bf31633d3360352",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "2ae408098f2a13483e1d70d26a45bfceb700c086d5f4353d07b2ec9c08d4833a"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s9_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s9_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "05a17d076d89604f440b2743f938e49b9d761c6bc66c7cc8ce6e5f9b1b98a9d0",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "f9a920dae8de3764571a9bc2339e4412c2487d357c21d8e021d5a7ddb8d0b8fe"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s9_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s9_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "51f127db64310f89ef2923297e5c7342562fe02345cd54704f4fe746b74ce0d4",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "545721cd6d7a6747f5d3ee040c937a1e2f95d5831757aac12d2b40c5916af0e9"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s9_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s9_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "63ed05ec306adfe61b5e1e42a64688a695faee86a6e566a0fe082cbca97611fa",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "1e4e7d5c52662b0bdccab5b1906641ef312feb496abc12b3fd19ce6dfeeb61f3"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s10_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s10_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "7a252c191347f013ba8a43634e5b7ff5fdd451ec04ff72c7fb847aeea58d2650",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "38223421c7809118244cf25311f604d56e863a6cb6e21a877f395e3ffec9af54"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s10_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s10_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "83f6686cd41bcad6711e3efc754188a2a52f84e26d2a1a5d211699d9aa38e842",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "2f3e3e0588b115df3f723e52418f23adba5bc871f1e8f3173f14cc231a036094"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s10_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s10_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "0ff12486a0822f7b036982651e8976b2c42c4660a905928f1543af9ae84fa53a",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "ed72fd4cae999842bc201572a5c413ecab8026beaea8edc3633979ba06d27309"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s11_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s11_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "79b96cef834f0ae140f1a29a9293b3c4472d6841f2a82985a94342bf1703159c",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "08646cd5ab879e55c3b58ac90e89c300996e2497e414adb245e739bc6ea4f060"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s11_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s11_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "329b005b73219d299f824ea120a8beb80251a5c9e61ff1a914f46bf742a7496a",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "4c71ca9033be840cc9e4e81c82cd6989176f54e3c084cc87bdc08e2a99cdb4d4"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s11_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s11_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "95c50d645d163dbae1fb7d719a8b7d14e771307102d8145f49aa96d1f57fc9bb",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "f6c0f9b13a5959c7cf254e7969fa5f62c14fdc3cbe248a95e32efab24deafc03"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s12_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s12_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "60893754cc18eb0042999bab50f0741ce41648dea380f1745227ad12b865ab7f",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "3080d2a999262d0d34f703a1d24e736a2dcaa91841fe8157745fc34888c1a86a"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s12_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s12_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "ac00086cbdbf34b71b2dc4e7425de5d0e34aed07fd596be942588e86270d639f",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "5989e4dfc1719e9f40144e5f51c224d615e57cfc11584d23efebf5af95315cc8"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s12_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s12_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "6c6f4c31fd47b930bb9f1e12b6b96652824733873864a10f056fd05a8e6bad80",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "0c07a527a27e52dd48c7cccb415cccb6d0d0f9037a60c324ec5a198c974e3f8e"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s13_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s13_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "30cd2bca7279d78650aee25b98ed7b8b74faa49e9bdaddeae77323a160322fd9",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "df2ca711cead75b463555df3e4f2a0936871e5b55084342b02b93237cf455ffc"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s13_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s13_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "9c588b117640c1c2b14916868f9c861140efcdbd29bd2bc76f9fca2ff16e4a12",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "77555011e2c82799f3be40ebea8b8666cfd2b151c2c933b28e50e8f2a758b9b0"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s13_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s13_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "2c3ac187bf78c65b949adce33e9e59971c6cfb7dda22040106989edec30c91fb",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "cf394cb9aef0209a81b3634b6505a9b0dd45ac293a893dcaf352746f983f4f82"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s14_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s14_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "d409a1d7ece7bc0dc029af7a531ba8e8361cbab0c3a87a6c7c737f4516099387",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "3ffe515438fc3ba28a610abbcf63adac012afc71702d91ed6b3584624763311e"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s14_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s14_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "00bfc794ab3ec33514875aee3aa6a99189fc0758b1bdeb92d141e33117ea3c4c",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "e30aa397ddc6dac3a1206bcad34f4b49527b9002ee93c6a791f5ac0e9c5b9898"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s14_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s14_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "ad7950df644d8535d74bd8f684a5faa96e421ce6e1d4d44cc7ad13b19edbc3d9",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "4af72f696033688624e8fce6bc6aab5871b8ee157a7837099346285e17195155"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s15_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s15_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "47f439567e09cf8f6b271d375f9f1949dcbd8cf22faacd60232eeff7ed601591",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "2a35675d4029ae1c463e78df39cec01e30a903c29bd2ce75c794f1fce3fd74ac"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s15_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s15_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "201b7c4bb218c2a8741a3e0898e0aefe95c19628511f9f0d76f80aa3ed35adb6",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "c23f27e75a351557a1264b77d596cf87f55053156805e345434813873af42cbb"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s15_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s15_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "0c2f5f6155abdd0f65c9f89a2ab46e2c2d56bb9ebcde08ec980ea3b468af12f2",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "84d16cee4a94fe281220e95f5ff9608d5a5fd4a57631cd6a5ba6d4eee519072c"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_ppo_s16_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_ppo_s16_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "f87fa4e37a8878857db55098e38a68927a1753b8bf2686d218d54ff1ce0ac29a",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "ec8d24808e147241b1182688e4321ccf9f0198b37c16bd3d1d0663c77064d548"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_grpo_s16_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_grpo_s16_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "7adb707aa56fe83c73e843e46d29b920076a01d0b749bfc8298da29679da1589",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "961e5711f2b48604562559bce6d7a7d55aee8b0d0c98e302c848faf2d74dcfb4"
+        },
+        {
+          "path": "special_tokens_map.json",
+          "bytes": 613,
+          "sha256": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd"
+        },
+        {
+          "path": "tokenizer.json",
+          "bytes": 11421896,
+          "sha256": "9c5ae00e602b8860cbd784ba82a8aa14e8feecec692e7076590d014d7b7fdafa"
+        },
+        {
+          "path": "tokenizer_config.json",
+          "bytes": 7336,
+          "sha256": "57fea41fa99fce34f91450643e48b3bfbb078c32c6831a3c06834f122c200510"
+        },
+        {
+          "path": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        }
+      ]
+    },
+    "b_dapo_s16_step300": {
+      "local_path": "/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_dapo_s16_step300",
+      "file_count": 9,
+      "total_bytes": 3570094814,
+      "aggregate_sha256": "70627b863c238af4fd875ad022da8d044c65b32ce64128ada5b0449fc699c1a6",
+      "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
+      "files": [
+        {
+          "path": "added_tokens.json",
+          "bytes": 605,
+          "sha256": "58b54bbe36fc752f79a24a271ef66a0a0830054b4dfad94bde757d851968060b"
+        },
+        {
+          "path": "config.json",
+          "bytes": 684,
+          "sha256": "b768b31ad2124f86cb3bbb98ab445cc383aaf639eb6ce86fe0bac653aad1bc9e"
+        },
+        {
+          "path": "generation_config.json",
+          "bytes": 242,
+          "sha256": "06e1ee0294f5bc32d5f8a072a9631fe5305d3d5fc4b1315242228f3b685c55cc"
+        },
+        {
+          "path": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        {
+          "path": "model.safetensors",
+          "bytes": 3554214752,
+          "sha256": "d8e09ea4803986dfb0a4cfbec913bcd514e3c0dfa55c692a3b499b1f6ea16353"
         },
         {
           "path": "special_tokens_map.json",

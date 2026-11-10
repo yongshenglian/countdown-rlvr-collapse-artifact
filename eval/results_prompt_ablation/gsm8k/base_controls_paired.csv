@@ -1,0 +1,15 @@
+reference,comparison,reference_only_correct,comparison_only_correct,net_accuracy_points,exact_mcnemar_p
+think,standard,107,376,20.3942380591,4.1660539154e-36
+think,think_no_example,90,191,7.6573161486,1.6428249752e-09
+think,think_example17,71,65,-0.4548900682,0.6682658523
+think,think_no_open_tag,143,335,14.5564821835,8.1432273470e-19
+think,think_no_prefill,106,358,19.1053828658,5.1307500765e-33
+think,clean_tags,127,341,16.2244124337,1.1459656353e-23
+standard,think,376,107,-20.3942380591,4.1660539154e-36
+standard,think_no_example,283,115,-12.7369219105,1.8882708775e-17
+standard,think_example17,383,108,-20.8491281274,4.1864872662e-37
+standard,think_no_open_tag,193,116,-5.8377558757,1.3954027872e-05
+standard,think_no_prefill,137,120,-1.2888551933,0.3182552710
+standard,clean_tags,183,128,-4.1698256255,0.0021477204
+old_standard,new_standard,40,39,-0.0758150114,1.0
+old_think,new_think,48,46,-0.1516300227,0.9179230673

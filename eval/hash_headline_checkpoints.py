@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -18,6 +19,18 @@ CHECKPOINTS = {
     "matched_dapo_s7_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s7_step300"),
     "matched_dapo_s8_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s8_step300"),
     "matched_dapo_s9_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s9_step300"),
+    "matched_ppo_s10_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s10_step300"),
+    "matched_ppo_s11_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s11_step300"),
+    "matched_ppo_s12_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s12_step300"),
+    "matched_ppo_s13_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s13_step300"),
+    "matched_grpo_s10_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s10_step300"),
+    "matched_grpo_s11_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s11_step300"),
+    "matched_grpo_s12_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s12_step300"),
+    "matched_grpo_s13_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s13_step300"),
+    "matched_dapo_s10_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s10_step300"),
+    "matched_dapo_s11_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s11_step300"),
+    "matched_dapo_s12_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s12_step300"),
+    "matched_dapo_s13_step300": Path("/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s13_step300"),
     "DS_step300": Path("/mnt/sdb/verl/DAPO_new/merged_hf/DS_step300"),
     "noDS_step300": Path("/mnt/sdb/verl/DAPO_new/merged_hf/noDS_step300"),
     "GRPO_n2_kl4e-2_step250": Path(
@@ -26,6 +39,9 @@ CHECKPOINTS = {
     "PPO_klF_ent0_lr1e-6_step520": Path(
         "/mnt/sdb/verl/DAPO_new/merged_hf/PPO_klF_ent0_lr1e-6_step520"
     ),
+    # Experiment B (active clip), seeds 7-16.
+    **{f"b_{m}_s{s}_step300": Path(f"/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_{m}_s{s}_step300")
+       for s in range(7, 17) for m in ("ppo", "grpo", "dapo")},
 }
 OUTPUT = HERE / "CHECKPOINT_MANIFEST.json"
 
@@ -64,6 +80,9 @@ def manifest_directory(path: Path) -> dict:
 
 
 def main() -> None:
+    # --new-only keeps the existing entries and hashes only checkpoints the manifest does not list yet.
+    new_only = "--new-only" in sys.argv[1:]
+    old = json.loads(OUTPUT.read_text())["checkpoints"] if new_only and OUTPUT.exists() else {}
     payload = {
         "schema_version": 1,
         "generated_utc": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
@@ -74,6 +93,9 @@ def main() -> None:
         "checkpoints": {},
     }
     for name, path in CHECKPOINTS.items():
+        if name in old and old[name]["local_path"] == str(path):
+            payload["checkpoints"][name] = old[name]
+            continue
         print(f"Hashing {name}: {path}", flush=True)
         payload["checkpoints"][name] = manifest_directory(path)
     OUTPUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

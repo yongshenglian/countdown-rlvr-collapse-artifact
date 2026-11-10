@@ -1,0 +1,20 @@
+{
+  "base": {
+    "pass1_mean": 53.950625,
+    "pass64_mean": 91.64,
+    "pass64_min": 90.8,
+    "pass64_max": 92.2
+  },
+  "early_short": {
+    "n": 18,
+    "pass1_median": 50.128125,
+    "pass64_median": 90.0,
+    "below_base_min": 12
+  },
+  "not_early_short": {
+    "n": 12,
+    "pass1_median": 53.8671875,
+    "pass64_median": 89.7,
+    "below_base_min": 10
+  }
+}

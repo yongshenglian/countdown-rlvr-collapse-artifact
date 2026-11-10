@@ -98,62 +98,59 @@ def collapse_figure():
 
 
 def passk_figure():
-    df = pd.read_csv(ROOT / "eval" / "results_passk" / "summary.csv")
+    """Flexible pass@k of the 30 experiment-B checkpoints minus the same-machine base model."""
+    df = pd.read_csv(ROOT / "eval" / "results_passk_b" / "summary.csv")
     df = df[df["metric"] == "flexible"].copy()
-    order = [
-        "base",
-        "DS_step300",
-        "noDS_step300",
-        "GRPO_n2_kl4e-2_step250",
-        "PPO_klF_ent0_lr1e-6_step520",
-    ]
-    labels = {
-        "base": "Base",
-        "DS_step300": "DS, step 300",
-        "noDS_step300": "Original no-DS, step 300",
-        "GRPO_n2_kl4e-2_step250": "GRPO KL 0.04, step 250",
-        "PPO_klF_ent0_lr1e-6_step520": r"PPO lr $10^{-6}$, step 520",
-    }
-    colors = ["#000000", "#D55E00", "#0072B2", "#009E73", "#CC79A7"]
-    markers = ["o", "s", "^", "D", "v"]
+    # Early-short runs: rounded mean response length over steps 90-100 <= 100 tokens.
+    short = {f"ppo_s{s}" for s in [8, 10, 16]} | {f"grpo_s{s}" for s in [8, 9, 10, 12, 14, 15, 16]} \
+        | {f"dapo_s{s}" for s in [8, 9, 10, 12, 13, 14, 15, 16]}
+    methods = {"ppo": ("PPO", "o"), "grpo": ("GRPO", "s"), "dapo": ("DAPO-style", "^")}
+    group_colors = {True: "#D55E00", False: "#0072B2"}
+    ylim = (-22, 4)
 
-    fig, axes = plt.subplots(1, 2, figsize=(7.15, 2.65), sharey=False)
+    fig, axes = plt.subplots(1, 2, figsize=(7.15, 2.65), sharey=True)
     for ax, bench, title, xmax in zip(
         axes,
         ["math500", "gsm8k"],
         ["(a) MATH-500", "(b) GSM8K"],
         [64, 32],
     ):
-        for model, color, marker in zip(order, colors, markers):
-            part = df[(df["bench"] == bench) & (df["model"] == model)].sort_values("k")
-            ax.plot(
-                part["k"],
-                part["pass_at_k"],
-                label=labels[model],
-                color=color,
-                marker=marker,
-                ms=3.5,
-                lw=1.4,
-            )
+        part = df[df["bench"] == bench]
+        base = part[part["model"] == "base"].set_index("k")["pass_at_k"]
+        for method, (_, marker) in methods.items():
+            for seed in range(7, 17):
+                run = f"{method}_s{seed}"
+                curve = part[part["model"] == f"b_{run}_step300"].set_index("k")["pass_at_k"]
+                delta = (curve - base).sort_index()
+                if delta.min() < ylim[0]:  # off-scale run: give its range instead of compressing the axis
+                    ax.annotate(f"Not drawn: {methods[method][0]} s{seed},\n{delta.min():.1f} to {delta.max():.1f}",
+                                xy=(0.97, 0.04), xycoords="axes fraction", ha="right", fontsize=6.5,
+                                color=group_colors[run in short])
+                    continue
+                ax.plot(
+                    delta.index,
+                    delta.values,
+                    color=group_colors[run in short],
+                    marker=marker,
+                    ms=2.4,
+                    lw=0.8,
+                    alpha=0.6,
+                )
+        ax.axhline(0, color=INK, lw=1.0)
         ax.set_xscale("log", base=2)
         ticks = [1, 2, 4, 8, 16, 32] + ([64] if xmax == 64 else [])
         ax.set_xticks(ticks, [str(k) for k in ticks])
         ax.set_xlim(0.85, xmax * 1.12)
         ax.set_xlabel("Number of samples, k")
-        ax.set_ylabel("Format-tolerant pass@k (%)")
-        ax.set_title(title, loc="left")
-    axes[0].set_ylim(42, 96)
-    axes[1].set_ylim(55, 100)
-    handles, legend_labels = axes[1].get_legend_handles_labels()
-    fig.legend(
-        handles,
-        legend_labels,
-        loc="lower center",
-        ncol=3,
-        frameon=False,
-        bbox_to_anchor=(0.5, -0.04),
-    )
-    fig.tight_layout(rect=(0, 0.16, 1, 1), w_pad=1.6)
+        ax.set_title(f"{title}: base pass@1 {base[1]:.1f}%, pass@{xmax} {base[xmax]:.1f}%", loc="left")
+    axes[0].set_ylabel("Flexible pass@k minus base\n(percentage points)")
+    axes[0].set_ylim(*ylim)
+    handles = [
+        Line2D([], [], color=group_colors[True], lw=1.4, label="Early-short-response run"),
+        Line2D([], [], color=group_colors[False], lw=1.4, label="Other run"),
+    ] + [Line2D([], [], color="#666666", marker=m, lw=0, ms=3.5, label=name) for name, m in methods.values()]
+    fig.legend(handles=handles, loc="lower center", ncol=5, frameon=False, bbox_to_anchor=(0.5, -0.02))
+    fig.tight_layout(rect=(0, 0.1, 1, 1), w_pad=1.6)
     save(fig, "fig4_passk")
 
 

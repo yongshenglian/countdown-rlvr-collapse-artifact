@@ -1,0 +1,265 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{booktabs,graphicx,float,amsmath,url}
+\renewcommand{\thetable}{S\arabic{table}}
+\title{Supplementary Materials for ``What Standard Evaluation Misses in Small-Model RLVR: Evidence from 30 Countdown Training Runs''}
+\author{Yongsheng Lian}
+\date{}
+\begin{document}
+\maketitle
+Tables S1--S3 report greedy benchmark accuracy for the base model and every one of the 30 step-300 checkpoints, for every seed, method, benchmark, and prompt; no seed or benchmark was omitted. Table S4 reports sampled pass@$k$ for every checkpoint. A dagger marks early-short runs (mean response length over steps 90--100 at most 100 tokens). Prompts, scorers, and sampling settings are described in the article; Supplementary Notes S1--S4 follow the tables.
+
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Flexible accuracy (\%) for the base model and all 30 step-300 checkpoints. Std. denotes the benchmark-specific standard prompt; Think denotes the Countdown-style think prompt. $^\dagger$Early-short run.}
+\label{tab:matched_flexible_full}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{MATH} & \multicolumn{2}{c}{BBH} & \multicolumn{2}{c}{MMLU-Pro} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Model & Std. & Think & Std. & Think & Std. & Think & Std. & Think \\
+\midrule
+Base & 72.8 & 51.6 & 55.3 & 49.9 & 35.3 & 36.5 & 32.8 & 27.2 \\
+\midrule
+PPO s7 & 70.4 & 70.7 & 53.3 & 45.2 & 34.9 & 40.5 & 32.5 & 27.3 \\
+PPO s8$^\dagger$ & 48.3 & 0.0 & 55.0 & 0.0 & 32.0 & 0.0 & 29.5 & 0.0 \\
+PPO s9 & 74.1 & 71.2 & 54.0 & 48.1 & 33.6 & 37.8 & 32.7 & 25.4 \\
+PPO s10$^\dagger$ & 44.0 & 0.0 & 8.8 & 0.0 & 20.1 & 0.0 & 9.7 & 0.0 \\
+PPO s11 & 74.0 & 68.4 & 54.4 & 43.0 & 32.9 & 38.1 & 31.7 & 25.7 \\
+PPO s12 & 71.9 & 71.9 & 52.4 & 49.1 & 34.2 & 36.9 & 32.7 & 25.3 \\
+PPO s13 & 74.6 & 72.2 & 53.7 & 50.2 & 31.8 & 39.3 & 33.9 & 30.1 \\
+PPO s14 & 74.8 & 21.5 & 54.9 & 10.3 & 31.3 & 7.1 & 32.3 & 6.1 \\
+PPO s15 & 73.2 & 65.6 & 54.6 & 48.9 & 31.4 & 37.2 & 32.6 & 24.5 \\
+PPO s16$^\dagger$ & 69.0 & 0.2 & 52.5 & 0.9 & 23.1 & 0.4 & 31.1 & 0.2 \\
+\midrule
+GRPO s7 & 72.3 & 68.2 & 54.2 & 49.7 & 31.9 & 39.1 & 32.7 & 25.1 \\
+GRPO s8$^\dagger$ & 55.5 & 7.4 & 38.7 & 14.8 & 33.0 & 35.2 & 29.6 & 24.9 \\
+GRPO s9$^\dagger$ & 71.5 & 34.0 & 53.3 & 35.4 & 35.8 & 31.4 & 33.4 & 19.6 \\
+GRPO s10$^\dagger$ & 63.2 & 4.2 & 52.0 & 13.6 & 33.4 & 35.1 & 32.2 & 18.3 \\
+GRPO s11 & 73.0 & 64.6 & 55.3 & 51.1 & 32.9 & 38.1 & 32.3 & 22.0 \\
+GRPO s12$^\dagger$ & 71.3 & 7.1 & 53.1 & 19.2 & 34.3 & 34.5 & 32.2 & 22.0 \\
+GRPO s13 & 75.0 & 72.8 & 54.5 & 41.2 & 24.9 & 39.3 & 33.5 & 28.9 \\
+GRPO s14$^\dagger$ & 74.0 & 70.7 & 54.1 & 49.8 & 33.4 & 41.6 & 32.1 & 25.6 \\
+GRPO s15$^\dagger$ & 73.7 & 10.5 & 53.6 & 16.4 & 35.7 & 34.8 & 32.9 & 24.9 \\
+GRPO s16$^\dagger$ & 66.0 & 5.7 & 51.2 & 11.3 & 33.9 & 33.9 & 33.5 & 18.6 \\
+\midrule
+DAPO-style s7 & 73.2 & 71.3 & 52.5 & 48.7 & 36.0 & 42.3 & 32.0 & 26.7 \\
+DAPO-style s8$^\dagger$ & 68.1 & 8.7 & 52.0 & 15.9 & 34.7 & 35.9 & 31.1 & 20.3 \\
+DAPO-style s9$^\dagger$ & 73.5 & 6.2 & 52.9 & 11.7 & 36.9 & 34.4 & 32.3 & 15.1 \\
+DAPO-style s10$^\dagger$ & 70.1 & 13.0 & 46.9 & 17.0 & 32.5 & 36.4 & 30.6 & 25.4 \\
+DAPO-style s11 & 73.2 & 65.8 & 54.5 & 39.7 & 29.6 & 35.5 & 30.0 & 19.7 \\
+DAPO-style s12$^\dagger$ & 69.7 & 11.3 & 53.1 & 18.2 & 34.7 & 36.0 & 32.9 & 23.6 \\
+DAPO-style s13$^\dagger$ & 71.7 & 12.9 & 52.5 & 18.8 & 35.7 & 28.7 & 33.4 & 16.1 \\
+DAPO-style s14$^\dagger$ & 74.8 & 7.9 & 54.0 & 12.8 & 33.6 & 34.8 & 33.4 & 12.1 \\
+DAPO-style s15$^\dagger$ & 73.5 & 66.8 & 53.9 & 47.2 & 33.2 & 39.0 & 31.3 & 24.2 \\
+DAPO-style s16$^\dagger$ & 58.7 & 23.9 & 45.2 & 20.5 & 32.8 & 34.7 & 29.9 & 24.8 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Strict accuracy (\%) for the base model and all 30 step-300 checkpoints. $^\dagger$Early-short run.}
+\label{tab:matched_strict_full}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{MATH} & \multicolumn{2}{c}{BBH} & \multicolumn{2}{c}{MMLU-Pro} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Model & Std. & Think & Std. & Think & Std. & Think & Std. & Think \\
+\midrule
+Base & 33.3 & 48.3 & 55.3 & 47.8 & 35.0 & 35.1 & 32.8 & 27.2 \\
+\midrule
+PPO s7 & 59.7 & 70.7 & 53.2 & 43.8 & 34.8 & 40.5 & 32.5 & 27.3 \\
+PPO s8$^\dagger$ & 36.2 & 0.0 & 54.9 & 0.0 & 31.9 & 0.0 & 29.4 & 0.0 \\
+PPO s9 & 68.2 & 71.2 & 54.0 & 46.4 & 33.5 & 37.8 & 32.6 & 25.4 \\
+PPO s10$^\dagger$ & 42.6 & 0.0 & 8.4 & 0.0 & 20.1 & 0.0 & 9.7 & 0.0 \\
+PPO s11 & 73.2 & 68.3 & 54.4 & 42.6 & 32.9 & 38.1 & 31.7 & 25.7 \\
+PPO s12 & 68.6 & 71.9 & 52.4 & 48.3 & 34.1 & 36.9 & 32.7 & 25.3 \\
+PPO s13 & 71.1 & 72.2 & 53.7 & 48.8 & 31.3 & 39.2 & 33.9 & 30.1 \\
+PPO s14 & 73.7 & 21.3 & 54.8 & 10.1 & 31.1 & 7.1 & 32.3 & 6.1 \\
+PPO s15 & 72.4 & 65.6 & 54.5 & 48.1 & 31.2 & 37.2 & 32.6 & 24.5 \\
+PPO s16$^\dagger$ & 67.6 & 0.2 & 52.5 & 0.8 & 22.9 & 0.4 & 31.1 & 0.2 \\
+\midrule
+GRPO s7 & 69.7 & 67.3 & 54.1 & 49.0 & 31.9 & 39.1 & 32.7 & 25.1 \\
+GRPO s8$^\dagger$ & 27.7 & 7.4 & 37.0 & 14.6 & 32.3 & 35.1 & 29.6 & 24.9 \\
+GRPO s9$^\dagger$ & 54.4 & 33.8 & 53.2 & 33.7 & 35.5 & 31.3 & 33.3 & 19.5 \\
+GRPO s10$^\dagger$ & 43.2 & 4.2 & 51.3 & 12.7 & 32.6 & 35.1 & 32.2 & 18.3 \\
+GRPO s11 & 71.2 & 60.9 & 55.3 & 50.1 & 32.6 & 38.1 & 32.3 & 22.0 \\
+GRPO s12$^\dagger$ & 50.0 & 7.1 & 53.1 & 18.9 & 33.9 & 34.5 & 32.2 & 22.0 \\
+GRPO s13 & 74.5 & 72.5 & 54.5 & 40.6 & 24.8 & 39.3 & 33.5 & 28.9 \\
+GRPO s14$^\dagger$ & 62.7 & 70.7 & 54.0 & 48.5 & 33.1 & 41.6 & 32.1 & 25.5 \\
+GRPO s15$^\dagger$ & 51.5 & 10.5 & 53.6 & 16.0 & 35.3 & 34.8 & 32.9 & 24.9 \\
+GRPO s16$^\dagger$ & 32.9 & 5.6 & 50.4 & 11.1 & 33.6 & 33.9 & 33.5 & 18.6 \\
+\midrule
+DAPO-style s7 & 69.6 & 71.3 & 52.5 & 48.5 & 35.8 & 42.3 & 32.0 & 26.7 \\
+DAPO-style s8$^\dagger$ & 60.3 & 8.7 & 51.8 & 14.4 & 33.0 & 35.9 & 31.0 & 20.3 \\
+DAPO-style s9$^\dagger$ & 58.9 & 6.2 & 52.8 & 11.1 & 36.7 & 34.4 & 32.3 & 15.1 \\
+DAPO-style s10$^\dagger$ & 51.8 & 13.0 & 46.8 & 16.8 & 32.4 & 36.4 & 30.6 & 25.4 \\
+DAPO-style s11 & 70.3 & 65.8 & 54.5 & 39.1 & 29.6 & 35.5 & 30.0 & 19.7 \\
+DAPO-style s12$^\dagger$ & 36.0 & 11.3 & 52.9 & 17.7 & 34.6 & 36.0 & 32.9 & 23.6 \\
+DAPO-style s13$^\dagger$ & 55.3 & 12.8 & 52.5 & 16.1 & 35.5 & 28.7 & 33.4 & 16.0 \\
+DAPO-style s14$^\dagger$ & 71.4 & 7.8 & 54.0 & 11.5 & 33.1 & 34.8 & 33.4 & 12.1 \\
+DAPO-style s15$^\dagger$ & 73.2 & 66.7 & 53.9 & 46.2 & 33.2 & 39.0 & 31.3 & 24.2 \\
+DAPO-style s16$^\dagger$ & 35.0 & 17.5 & 42.9 & 19.1 & 29.6 & 34.7 & 29.9 & 24.8 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Model- and checkpoint-level GSM8K flexible accuracy (\%) for the post hoc prompt-component controls. Standard is the conventional GSM8K prompt; Original denotes the Countdown-style think prompt. $^\dagger$Early-short run.}
+\label{tab:prompt_ablation_full}
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrr}
+\toprule
+Model/checkpoint & Standard & Original & \shortstack{No\\example} & \shortstack{Example\\17} & \shortstack{No opening\\tag} & \shortstack{No assistant\\prefill} & \shortstack{Clean\\tags} \\
+\midrule
+Base & 72.8 & 51.6 & 58.5 & 51.9 & 66.5 & 70.9 & 68.3 \\
+\midrule
+PPO s7 & 70.4 & 70.7 & 67.9 & 70.4 & 69.1 & 71.5 & 68.2 \\
+PPO s8$^\dagger$ & 48.3 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 14.1 \\
+PPO s9 & 74.1 & 71.2 & 71.7 & 71.1 & 72.7 & 74.5 & 71.7 \\
+PPO s10$^\dagger$ & 44.0 & 0.0 & 0.0 & 0.0 & 0.0 & 2.3 & 26.7 \\
+PPO s11 & 74.0 & 68.4 & 70.0 & 68.1 & 72.9 & 73.2 & 72.3 \\
+PPO s12 & 71.9 & 71.9 & 71.0 & 70.7 & 67.4 & 68.2 & 67.9 \\
+PPO s13 & 74.6 & 72.2 & 72.3 & 72.6 & 71.4 & 71.3 & 70.3 \\
+PPO s14 & 74.8 & 21.5 & 22.5 & 20.3 & 52.9 & 70.7 & 68.8 \\
+PPO s15 & 73.2 & 65.6 & 67.5 & 65.0 & 69.4 & 73.7 & 68.2 \\
+PPO s16$^\dagger$ & 69.0 & 0.2 & 0.2 & 0.2 & 0.0 & 1.2 & 6.4 \\
+\midrule
+GRPO s7 & 72.3 & 68.2 & 70.4 & 68.4 & 67.5 & 71.5 & 68.8 \\
+GRPO s8$^\dagger$ & 55.5 & 7.4 & 12.5 & 7.3 & 46.6 & 46.6 & 42.4 \\
+GRPO s9$^\dagger$ & 71.5 & 34.0 & 49.8 & 35.0 & 48.4 & 45.0 & 43.4 \\
+GRPO s10$^\dagger$ & 63.2 & 4.2 & 5.2 & 4.6 & 5.5 & 9.0 & 8.0 \\
+GRPO s11 & 73.0 & 64.6 & 70.2 & 63.8 & 69.1 & 67.7 & 61.1 \\
+GRPO s12$^\dagger$ & 71.3 & 7.1 & 9.5 & 8.3 & 53.5 & 58.3 & 53.2 \\
+GRPO s13 & 75.0 & 72.8 & 72.9 & 71.7 & 71.2 & 72.4 & 70.5 \\
+GRPO s14$^\dagger$ & 74.0 & 70.7 & 69.6 & 69.9 & 60.5 & 59.7 & 66.4 \\
+GRPO s15$^\dagger$ & 73.7 & 10.5 & 8.9 & 9.2 & 35.1 & 34.3 & 38.7 \\
+GRPO s16$^\dagger$ & 66.0 & 5.7 & 14.3 & 6.5 & 48.1 & 53.5 & 52.3 \\
+\midrule
+DAPO-style s7 & 73.2 & 71.3 & 71.5 & 71.8 & 70.8 & 72.5 & 70.7 \\
+DAPO-style s8$^\dagger$ & 68.1 & 8.7 & 7.4 & 8.6 & 18.8 & 19.5 & 16.7 \\
+DAPO-style s9$^\dagger$ & 73.5 & 6.2 & 20.5 & 6.6 & 16.9 & 13.1 & 21.6 \\
+DAPO-style s10$^\dagger$ & 70.1 & 13.0 & 15.5 & 12.9 & 27.7 & 32.7 & 25.1 \\
+DAPO-style s11 & 73.2 & 65.8 & 66.4 & 64.5 & 67.0 & 68.7 & 61.7 \\
+DAPO-style s12$^\dagger$ & 69.7 & 11.3 & 44.9 & 11.7 & 23.4 & 31.6 & 30.8 \\
+DAPO-style s13$^\dagger$ & 71.7 & 12.9 & 13.6 & 13.6 & 18.5 & 14.9 & 22.0 \\
+DAPO-style s14$^\dagger$ & 74.8 & 7.9 & 41.6 & 8.3 & 8.3 & 9.3 & 13.7 \\
+DAPO-style s15$^\dagger$ & 73.5 & 66.8 & 69.6 & 65.8 & 73.3 & 66.9 & 60.0 \\
+DAPO-style s16$^\dagger$ & 58.7 & 23.9 & 33.1 & 23.8 & 31.8 & 34.9 & 21.5 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{table}[p]
+\centering
+\scriptsize
+\caption{Sampled pass@$k$ (\%) under standard prompts for the base model and all 30 step-300 checkpoints. Cap: share of samples that reached the 4,096-token limit. Base: the reference sampling run; four further MATH-500 sampling runs of the base model with other random seeds follow it. Lost/gained: MATH-500 items solved at least once in the reference run but never by the model, and the reverse. $^\dagger$Early-short run.}
+\label{tab:passk_b_full}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{4}{c}{MATH-500 ($n=64$)} & \multicolumn{4}{c}{GSM8K ($n=32$)} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+Model & Flex.\ @1 & Flex.\ @64 & Cap & Lost/gained & Flex.\ @1 & Flex.\ @32 & Strict @1 & Cap \\
+\midrule
+Base & 53.9 & 92.2 & 2.3 & 461 solved & 70.6 & 95.9 & 37.1 & 0.2 \\
+Base, sampling run 2 & 53.9 & 90.8 & 2.3 & 12/5 & & & & \\
+Base, sampling run 3 & 54.0 & 91.8 & 2.4 & 10/8 & & & & \\
+Base, sampling run 4 & 53.9 & 92.2 & 2.3 & 7/7 & & & & \\
+Base, sampling run 5 & 54.0 & 91.2 & 2.4 & 8/3 & & & & \\
+\midrule
+PPO s7 & 52.9 & 89.2 & 4.5 & 23/8 & 69.9 & 95.8 & 58.4 & 0.5 \\
+PPO s8$^\dagger$ & 52.0 & 91.0 & 1.2 & 16/10 & 49.4 & 95.2 & 38.9 & 1.1 \\
+PPO s9 & 53.9 & 89.6 & 5.3 & 18/5 & 73.5 & 96.2 & 67.9 & 0.8 \\
+PPO s10$^\dagger$ & 8.0 & 73.6 & 78.5 & 95/2 & 19.5 & 88.0 & 18.2 & 71.7 \\
+PPO s11 & 54.2 & 89.4 & 5.9 & 22/8 & 73.4 & 96.4 & 72.1 & 0.9 \\
+PPO s12 & 53.4 & 90.2 & 5.1 & 17/7 & 70.8 & 95.9 & 66.9 & 0.7 \\
+PPO s13 & 53.9 & 91.6 & 5.7 & 14/11 & 73.4 & 96.5 & 68.4 & 0.6 \\
+PPO s14 & 54.6 & 89.8 & 3.2 & 17/5 & 73.6 & 96.5 & 71.8 & 0.5 \\
+PPO s15 & 54.3 & 91.2 & 5.2 & 12/7 & 73.1 & 96.1 & 71.9 & 0.8 \\
+PPO s16$^\dagger$ & 47.1 & 89.6 & 4.6 & 22/9 & 64.5 & 96.6 & 63.0 & 2.2 \\
+\midrule
+GRPO s7 & 52.7 & 89.4 & 5.1 & 20/6 & 72.1 & 96.6 & 68.6 & 0.6 \\
+GRPO s8$^\dagger$ & 37.8 & 88.0 & 2.7 & 26/5 & 50.9 & 95.1 & 26.6 & 0.6 \\
+GRPO s9$^\dagger$ & 53.3 & 90.2 & 2.4 & 18/8 & 69.8 & 96.4 & 54.5 & 0.2 \\
+GRPO s10$^\dagger$ & 49.7 & 89.8 & 2.0 & 22/10 & 61.6 & 96.6 & 44.2 & 0.5 \\
+GRPO s11 & 54.4 & 89.0 & 3.0 & 22/6 & 72.9 & 96.6 & 69.8 & 0.6 \\
+GRPO s12$^\dagger$ & 52.3 & 90.8 & 2.7 & 14/7 & 69.6 & 96.8 & 53.7 & 0.3 \\
+GRPO s13 & 54.0 & 90.4 & 7.6 & 16/7 & 72.4 & 96.6 & 71.9 & 2.9 \\
+GRPO s14$^\dagger$ & 53.9 & 90.2 & 2.3 & 17/7 & 72.0 & 96.5 & 62.2 & 0.4 \\
+GRPO s15$^\dagger$ & 52.4 & 88.6 & 3.1 & 24/6 & 71.2 & 96.5 & 45.8 & 0.3 \\
+GRPO s16$^\dagger$ & 49.2 & 90.8 & 2.2 & 15/8 & 63.8 & 96.8 & 31.5 & 0.2 \\
+\midrule
+DAPO-style s7 & 51.6 & 88.8 & 6.1 & 23/6 & 71.4 & 96.2 & 67.4 & 0.7 \\
+DAPO-style s8$^\dagger$ & 48.7 & 91.0 & 1.5 & 14/8 & 65.8 & 96.7 & 56.1 & 0.2 \\
+DAPO-style s9$^\dagger$ & 49.9 & 90.4 & 2.1 & 19/10 & 70.0 & 96.4 & 55.2 & 0.3 \\
+DAPO-style s10$^\dagger$ & 42.7 & 89.2 & 4.0 & 22/7 & 68.2 & 97.0 & 51.5 & 0.3 \\
+DAPO-style s11 & 52.0 & 90.0 & 6.5 & 20/9 & 71.6 & 96.2 & 67.2 & 3.0 \\
+DAPO-style s12$^\dagger$ & 50.3 & 91.0 & 2.2 & 15/9 & 69.4 & 97.2 & 42.3 & 0.2 \\
+DAPO-style s13$^\dagger$ & 52.9 & 87.4 & 1.8 & 28/4 & 70.2 & 96.9 & 55.9 & 0.2 \\
+DAPO-style s14$^\dagger$ & 52.6 & 90.8 & 2.3 & 13/6 & 71.4 & 97.0 & 66.0 & 0.3 \\
+DAPO-style s15$^\dagger$ & 54.5 & 89.8 & 3.7 & 19/7 & 73.1 & 97.0 & 72.8 & 0.5 \\
+DAPO-style s16$^\dagger$ & 42.3 & 88.2 & 1.5 & 28/8 & 57.2 & 92.8 & 37.2 & 0.1 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+
+\clearpage
+\section*{Supplementary Note S1. Evaluation Environment and Data Identifiers}
+\noindent\textbf{Chat wrapping and stopping.} Each benchmark prompt below was passed as the content of one user message to the Qwen tokenizer's
+\texttt{apply\_chat\_template} method with \texttt{add\_generation\_prompt=True}. Greedy evaluation used
+vLLM with bfloat16 weights, seed 0, temperature 0, an 8,192-token generation limit, a 10,240-token context,
+and the model's default EOS stopping behavior. Pass@$k$ used the same wrapping with seed 0, temperature
+0.6, top-$p=0.95$, and a 4,096-token cap. All training runs and the base model used Qwen model snapshot
+\texttt{989aa7980e4cf806f80c7fef2b1adb7bc71aa306}.
+
+\noindent\textbf{Hardware and software.} The base model and all 30 step-300 checkpoints were evaluated on NVIDIA H100 NVL GPUs (driver 575.57.08) with
+vLLM 0.10.0, PyTorch 2.7.1+cu128, and Transformers 4.53.2, using one packaged set of frozen prompt files and
+one model per GPU. Generation ran on the cluster; scoring ran on the original workstation with the unchanged
+scorers. Every returned output file is checked against the SHA-256 recorded when it was generated. Countdown prompts were generated for the base model and all checkpoints on one two-RTX-4090 workstation with the same vLLM, PyTorch, and Transformers versions. The base model and all 30 checkpoints were sampled on one workstation with four RTX A6000 GPUs and vLLM 0.10.0; outputs were scored on the original machine with the unchanged scorer. Re-sampling the base model on the same hardware keeps the hardware and software common within each model--base contrast. Sampled pass@1 is an average over stochastic outputs, not the greedy accuracy reported in the main benchmark tables.
+
+\noindent\textbf{Checkpoint identifiers.} The manifest \path{eval/CHECKPOINT_MANIFEST.json} identifies the 30 step-300 checkpoints by per-file and aggregate SHA-256 hashes; the evaluation package verifies every file against these hashes before generation.
+
+\noindent\textbf{Dataset identifiers.} GSM8K used the 1,319-item test parquet distributed with the local Verl data preparation. Its upstream revision
+was not retained, but the exact evaluated file is vendored as \path{eval/data/gsm8k_test.parquet} with SHA-256
+\path{f284e0ad015991d0059d265051a3c0915c5c1def15a8c01ac9a9142eeb87a180}. Exact comparison of every saved
+input/reference row with locally cached immutable snapshots recovered the other revisions: MATH used all seven
+test configurations from \texttt{EleutherAI/hendrycks\_math} at
+\path{21a5633873b6a120296cce3e2df9d5550074f4a3} (5,000/5,000 rows); BBH used all 27 test configurations from
+\texttt{SaylorTwift/bbh} at \path{b5306be6f827cfafbb545ff5a51f96916029b0fd} (6,511/6,511 rows); and MMLU-Pro
+used the test split of \texttt{TIGER-Lab/MMLU-Pro} at
+\path{dd36ce4b34827164989f100331f82c5a29741747} (12,032/12,032 rows). The MATH-500 pass@$k$ subset is an exact
+500-item subset of that pinned MATH snapshot and is preserved as \path{eval/data/math500.jsonl}, SHA-256
+\path{200806fb17234213e909649c09a14ce01ef836b32d3bcb1a261fcf96cda4470f}. The machine-readable manifest
+\path{eval/DATASET_MANIFEST.json} records canonical input digests, and \path{eval/verify_dataset_manifest.py}
+checks the archived files offline and can reconstruct the three revision-pinned datasets.
+
+\noindent\textbf{Archived code and outputs.} The prompt builders are archived in \path{eval/eval_gsm8k_prompt_ablation.py} and
+\path{eval/eval_gsm8k_prompt_open_tag_ablation.py}. The variants were generated with the same package,
+hardware, decoding, and 8,192-token limit as the primary prompts, for the base model and all 30 checkpoints. The saved per-item files contain the raw response, extracted strict and flexible predictions, correctness flags, and finish reason so that extraction can be re-audited without regenerating model responses.
+
+\section*{Supplementary Note S2. Additional Prompt Diagnostics}
+For the base model, removing the opening reasoning tag recovered 14.9 percentage points relative to the original wrapper; removing the complete prefill recovered 19.3 points. The latter condition differed from the standard prompt by 1.9 points; this difference cannot be attributed to the remaining prompt differences, because the paired exact McNemar p-value is 0.14, although this is not evidence that the two prompts are equivalent.
+
+Early-short checkpoints failed under the think prompt in two different ways. The 15 early-short GRPO and DAPO-style checkpoints closed the reasoning block almost immediately (median response 13--250 tokens; at most 1.7\% of items reached the 8,192-token limit). The three early-short PPO checkpoints instead produced unbounded output: 96.5--100\% of items reached the limit, so flexible scoring credited almost none. PPO seed 10 also reached the limit on 34.1\% of standard-prompt items, by repeating one word or a short phrase until the limit, which accounts for its low standard-prompt accuracy. Prompt changes interacted with these modes: the clean tag instruction reduced limit-reaching to 8.0\% for PPO seed 10 and 61.3\% for PPO seed 8, and removing the complete prefill reduced it from 68.2\% to 1.3\% for PPO seed 14, a run just above the early-short threshold.
+
+\noindent\textbf{Countdown without the training wrapper.} We also posed the 1,024 Countdown test items as a plain request, without role lines, prefill, or tags, asking for the final equation on a last line \texttt{Answer: <equation>} (prompt in Appendix A of the article), with greedy decoding. Checkpoints that did not shorten early averaged 49.9\% under the training wrapper and 44.4\% under the plain prompt (9 of 12 significantly lower, 2 higher; exact McNemar tests), and early-short checkpoints averaged 26.2\% and 22.6\% (9 of 18 lower, 1 higher). Under the plain prompt, checkpoints that did not shorten early gave a final answer on a median 63.8\% of items, versus 98.2\% under the wrapper. The two largest gains came from explosion checkpoints: PPO seeds 14 and 8 scored 0.0\% under the wrapper, where they produced 8,192 tokens of degenerate text, but 44.1\% and 21.1\% under the plain prompt, so their degeneration was specific to the training wrapper. GRPO seed 8, by contrast, answered every plain-prompt item with ``Okay.'' The base model scored 11.2\% under the wrapper and 1.8\% under the plain prompt.
+
+\section*{Supplementary Note S3. Additional Training Diagnostics}
+\noindent\textbf{Clip fractions around shortening.} In a post hoc analysis aligned on the step at which each early-short run first fell below 100 tokens, the median lower clip fraction rose from 0.07\% of response tokens 11--15 steps earlier to 0.49\% in the preceding five steps and 0.91\% in the following five, while the upper clip fraction stayed at 0.03--0.08\%. In steps 1--5, early-short and other runs did not differ (median 0.015\% each), so this diagnostic accompanied shortening rather than anticipating it. Early-short runs then ended in either entropy regime, from 0.06 nats to more than 5 nats at step 300.
+
+\noindent\textbf{KL loss in resumed runs.} The seven explosion runs were resumed from a checkpoint saved before entropy onset (steps 50--250) and trained to step 300 without KL, with $\beta=0.001$, and with $\beta=0.05$ (the 0.001 arm covers five runs), one run per arm. Onset is the first step after step 20 from which entropy stays above 1 nat for five steps. The resumed no-KL copies did not repeat their originals exactly: onset moved by $-35$ to $+24$ steps, and PPO seed 14 stayed below 1 nat. With $\beta=0.001$, entropy exploded in all five runs (PPO seed 14 only with KL), with onset $-4$ to $+31$ steps from the no-KL copies; the penalty was at most about 0.003, against a mean absolute policy loss of 0.007--0.12. With $\beta=0.05$, onset came 34--105 steps later in five runs, 27 steps earlier in DAPO-style seed 15, and only with KL in PPO seed 14; step-300 entropy was 0.63--3.20 nats, versus 5.14--9.44 for the six no-KL copies whose entropy exploded, and six of seven runs still ended above 1 nat. Responses also shortened, and step-300 Countdown accuracy was 2.8--29.7 points lower in the three group-relative runs.
+
+\section*{Supplementary Note S4. Additional Coverage Details}
+Supplementary Table S4 reports sampled pass@$k$ for every checkpoint. The base model solved 461 of the 500 MATH-500 items at least once in 64 samples. Apart from PPO seed 10, each checkpoint failed on 12--28 of these items in all 64 samples and solved 4--11 items the base model never solved, so the coverage loss is a net change rather than a uniform shift. Item-level counts are noisy, however: resampling the base model with four other seeds lost 7--12 and gained 3--8 of the same items. Sampling used a 4,096-token cap. The base model reached the cap on 2.3\% of MATH-500 samples, and the checkpoints that did not shorten early did so on 3.0--7.6\%; the early-short checkpoints reached it less often (1.2--4.6\%) yet lost similar coverage, so truncation alone does not account for the deficit. PPO seed 10 reached the cap on 78.5\% of MATH-500 and 71.7\% of GSM8K samples, consistent with the repetition seen under greedy decoding.
+
+\end{document}

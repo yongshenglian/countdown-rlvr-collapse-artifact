@@ -13,17 +13,7 @@
 \dateaccepted{}
 \datepublished{}
 
-
-
-
-
-  
-%% Title
-\Title{Response-Length Instability in Countdown RLVR: A Controlled Comparison of PPO, GRPO, and Asymmetric Clipping}
-%%%% Cite as
-%%%% Update your official citation here when published 
-% \thanks{\textit{\underline{Citation}}: 
-% \textbf{Authors. Title. Pages.... DOI:000000/11111.}} 
+\Title{What Standard Evaluation Misses in Small-Model RLVR: Evidence from 30 Countdown Training Runs}
 
 \Author{Yongsheng Lian $^{1}$}
 \AuthorNames{Yongsheng Lian}
@@ -31,136 +21,81 @@
 \corres{Correspondence: yongsheng.lian@louisville.edu}
 
 \abstract{
-Reinforcement learning with verifiable rewards (RLVR) can raise training-task accuracy while degrading the intended behavior. We fine-tune Qwen2.5-1.5B-Instruct on Countdown in a controlled nine-run comparison under a common protocol: PPO, symmetric-clip GRPO, and asymmetric-clip DAPO-style training, with paired seeds 7--9 and common data, reward, rollout count, actor updates, optimizer settings, and response limit. The early-short-response criterion was met in 1/3 PPO runs, 1/3 GRPO runs, and 3/3 asymmetric-clip runs. Across GSM8K, MATH, BBH, and MMLU-Pro, standard-prompt mean flexible accuracy remained near the base model (49.0\%): 49.0\% for PPO, 49.2\% for GRPO, and 48.9\% for DAPO-style training. Under the Countdown-style think prompt, the corresponding means were 43.4\%, 32.8\%, and 20.0\%. On GSM8K, persistent-short and long-response checkpoints both scored 73.3\% with the standard prompt but 10.9\% and 66.3\%, respectively, with the think prompt. Component controls identify the prefilled reasoning cue and literal answer example as triggers. Strict scores rose without flexible-accuracy gains; a prompt-only control raised base-model strict GSM8K accuracy by 25.2 points while lowering flexible accuracy by 5.2 points. A 22-run screen shows that short-response outcomes are frequent but configuration- and run-dependent. For limited budgets, the results support several short seed pilots, joint length-and-accuracy monitoring, flexible scoring, and prompt-robust checkpoint selection.
+Reinforcement learning with verifiable rewards (RLVR) is usually evaluated by validation accuracy and standard-prompt benchmarks. We test what these measures miss in 30 Countdown runs of Qwen2.5-1.5B-Instruct: ten seeds each of PPO, GRPO, and DAPO-style training (GRPO with a wider upper clip). Mean Countdown accuracy rose from below 5\% before training to 36.9--40.4\%, but runs of one method differed by up to 52 points. Eighteen runs shortened their responses early and averaged 26 points below the others. Seven developed a late entropy explosion with degenerate training samples, yet three retained high accuracy under other decoding settings. Early-short and other checkpoints scored 66.5\% and 73.3\% on standard-prompt GSM8K but 16.1\% and 65.3\% with the training prompt. Large strict GSM8K gains mainly reflected formatting: flexible accuracy did not rise, and a format instruction alone produced a similar strict gain in the base model. Finally, 22 of 30 checkpoints solved fewer MATH-500 problems within 64 attempts than the base model in any of five sampling runs, including checkpoints with similar single-attempt accuracy. These finite-budget results do not establish loss of underlying capability. Evaluations should report run-to-run variation, inspect training samples, separate formatting from correctness, and test both prompt robustness and repeated-sampling coverage.
 }
-\keyword{reinforcement learning with verifiable rewards; large language models; PPO; GRPO; response-length dynamics; prompt robustness}
+\keyword{reinforcement learning with verifiable rewards; large language models; evaluation; training stability; prompt robustness; pass@k; PPO; GRPO}
 
 \begin{document}
 
-
-
 \section{Introduction}
 
+Reinforcement learning with verifiable rewards (RLVR) can substantially change the reasoning behavior of large language models (LLMs), as illustrated by OpenAI o1~\cite{openai2024reasoning} and DeepSeek-R1~\cite{guo2025deepseek}. Studies that compare or reproduce RLVR recipes typically judge a trained model by its reward or validation accuracy during training and by benchmark accuracy under a standard prompt afterwards, and many report one training run per configuration, a practice long criticized in deep RL~\cite{henderson2018matters,agarwal2021precipice}. Higher scores on these checks need not imply broadly improved reasoning: gains may depend on output formatting, on the prompt, or on which training run was selected. How much these checks miss has rarely been measured on many independent runs of one recipe.
 
-Reinforcement learning with verifiable rewards (RLVR) has become a prominent approach to eliciting mathematical and symbolic reasoning from large language models (LLMs). Systems such as OpenAI o1~\cite{openai2024reasoning} and DeepSeek-R1~\cite{guo2025deepseek} demonstrate that post-training can substantially change generated reasoning behavior. However, higher task reward does not by itself establish that a model has acquired broadly transferable reasoning capability. An apparent gain can instead arise from better adherence to the required final-answer format, a redistribution of probability toward solutions already available in the base model, or selection of an unusually successful training seed.
-Community reproductions such as TinyZero use Countdown as a small-model R1-Zero-style training task~\cite{pan2025tinyzero}; this motivates auditing whether its apparent reasoning gains are stable and transferable.
-We study response shortening because the Countdown prompt explicitly asks for a worked solution, but the training reward checks only the final equation and the presence of the required tags; it does not assess the reasoning written before the answer. A response with an empty or minimal reasoning section can therefore receive full reward if its tagged equation is correct. In the affected runs, the model changed from responses of roughly 300 tokens to outputs of only a few dozen tokens, often containing little beyond the answer template. Shorter responses are not inherently worse, and response length is not our measure of reasoning. Instead, the abrupt change is a visible flag that the model may have learned this reward-compatible shortcut rather than continuing to provide the requested derivation. We test whether that flag is consequential by separately examining correctness, entropy, format validity, representative outputs, and performance on the same benchmark questions under standard and training-style prompts.
+We measure it on Countdown, a task used in small-model reproductions such as TinyZero~\cite{pan2025tinyzero}. Qwen2.5-1.5B-Instruct was trained in 30 runs: ten seeds each of Proximal Policy Optimization (PPO)~\cite{schulman2017proximalpolicyoptimizationalgorithms}, Group Relative Policy Optimization (GRPO)~\cite{shao2024deepseekmathpushinglimitsmathematical}, and an asymmetric-clipping variant derived from DAPO~\cite{yu2025dapo}, with the model, data, reward, sampling budget, and update schedule held fixed and the analysis plan set before the first run. The training prompt requests a worked solution, but the reward checks only the final equation and tag structure, so a model can earn full reward while omitting the explanation. We therefore track response length and entropy during training. Every final checkpoint is evaluated on four benchmarks not used in training (GSM8K, MATH, BBH, and MMLU-Pro), under both a standard prompt and the training prompt. On GSM8K, additional prompts serve two purposes: variants of the training prompt locate which of its components causes a difference between the two prompts, and a format instruction tests whether strict-score gains reflect formatting rather than correctness (Section~\ref{sec:eval_protocol}). Every answer is scored both strictly, requiring a recognized final-answer format, and flexibly, also accepting a correct answer found by fallback extraction from a completed response. To measure coverage, we draw 64 samples per MATH-500 problem and 32 per GSM8K problem and compute pass@$k$, sampling the base model with five seeds to estimate sampling variation.
 
-A variety of policy-optimization methods have been proposed for LLM post-training. Proximal Policy Optimization (PPO) uses a learned critic and clipped policy updates~\cite{schulman2017proximalpolicyoptimizationalgorithms}. Group Relative Policy Optimization (GRPO) replaces the critic with advantages normalized over responses to the same prompt~\cite{shao2024deepseekmathpushinglimitsmathematical}. Decoupled Clip and Dynamic sAmpling Policy Optimization (DAPO) modifies clipping and loss aggregation and uses dynamic sampling to retain prompts whose response groups contain reward variation~\cite{yu2025dapo}. These methods are usually reported with different models, datasets, reward functions, rollout budgets, and optimization schedules, so comparisons between their published headline scores do not isolate algorithmic effects.
-
-This single-model, single-domain study uses Qwen2.5-1.5B-Instruct and Countdown to ask four focused questions. First, when training exposure and optimization settings are held constant, how often do PPO, symmetric-clip GRPO, and asymmetric-clip group-relative training meet the prespecified early-short-response criterion across paired seeds? Second, does the operational response-length label predict degraded behavior, or merely shorter answers? Third, do accuracy changes on evaluation benchmarks not used during fine-tuning persist under flexible scoring and a change of prompt format? Fourth, how do purpose-specific configuration, regularization, and evaluation controls qualify the controlled comparison?
-
-The important result is not short length by itself. In the controlled experiment, one PPO seed and one symmetric-clip GRPO seed met the early-short-response criterion, as did all three asymmetric-clip DAPO-style seeds. The affected PPO and GRPO seeds were less accurate on Countdown, the task used for training. They were also less accurate when evaluation-benchmark questions were presented in the Countdown training wrapper. However, the same checkpoints retained approximately 49\% mean flexible accuracy when those benchmark questions used their standard prompts. Thus, the model had not uniformly lost its ability to answer the questions; the training-style prompt activated the short-response behavior and associated errors. In a separate 22-run configuration screen, 16 runs met the short-response criterion, while a prompt-only format control shows that the required final-answer format can strongly change the apparent conclusion.
-
-Relative to the preliminary preprint~\cite{lian2025comparative}, this article adds the controlled nine-run comparison, the multi-run configuration screen, flexible rescoring, two-prompt evaluation, a prompt-only format control, pass@$k$ analysis, and reproducibility manifests. The comparison runs address controlled differences among training methods; the other experiment groups address configuration stability, regularization, format sensitivity, and sampled solution coverage.
-
-Section~\ref{sec:related} reviews related RLVR and reproducibility work. Section~\ref{sec:method} describes the three optimization methods, Section~\ref{sec:methods_data} gives the experimental protocols, and Section~\ref{sec:results} reports all experiment groups by purpose. Complete per-seed benchmark tables, exact prompts, response examples, and complete configuration-screen outcomes are provided in the appendices.
-
-
-
-
-
+The study makes four findings:
+\begin{enumerate}
+\item \textbf{Run-to-run variation exceeded differences between method means.} Early shortening was associated with lower Countdown accuracy, but neither shortening nor high entropy invariably predicted a poor final checkpoint. The prespecified tests did not establish differences between methods.
+\item \textbf{Standard prompts hid large differences between checkpoints.} Checkpoints from early-short runs scored close to the others on standard-prompt GSM8K but far lower when the same questions were posed in the training prompt. Prompt-component controls located the failure in the prefilled reasoning tag and the literal answer example, a sensitivity already present in the base model.
+\item \textbf{Strict-score gains on GSM8K were format gains.} Strict accuracy rose by 20--30 points while flexible accuracy did not, and a format instruction alone produced a similar strict gain in the untrained model.
+\item \textbf{Similar single-sample accuracy could coexist with lower coverage.} With 64 samples per problem, 22 of 30 checkpoints solved fewer MATH-500 problems than the base model in any of five sampling runs. This included 10 of the 12 checkpoints that did not shorten early, a group with near-base median single-attempt accuracy.
+\end{enumerate}
+Together, these results separate task learning and formatting changes from prompt robustness and broader reasoning gains, and they lead to concrete evaluation practices (Section~\ref{sec:discussion}).
 
 \section{Related Work}\label{sec:related}
 
-\noindent\textbf{Critic-free optimization and loss normalization.}
-GRPO removes the learned critic used by PPO and estimates advantages from response groups~\cite{shao2024deepseekmathpushinglimitsmathematical}. Subsequent work has shown that implementation details are consequential: REINFORCE++ uses global advantage normalization~\cite{hu2025reinforce++}, while the Dr.\ GRPO analysis identifies response-length bias induced by common GRPO normalization choices and proposes an alternative objective~\cite{liu2025understanding}. DAPO combines asymmetric clipping, dynamic sampling, token-level loss aggregation, and overlong-response handling~\cite{yu2025dapo}. These studies motivate our decision to treat comparisons between named methods as comparisons between complete training configurations unless sampling budget, aggregation, reward, and update exposure are matched.
+Lian~\cite{lian2025comparative} compared PPO, GRPO, and DAPO on Countdown and examined group size, KL regularization, and dynamic sampling. The present study instead asks what standard evaluation misses, using many seeds and controls for prompting, formatting, and coverage.
 
-Henderson et al. document seed- and environment-induced variance~\cite{henderson2018matters}; Engstrom et al. show that code-level optimizations materially change PPO and TRPO behavior~\cite{engstrom2020implementation}; and Agarwal et al. show that few-run aggregate comparisons can carry substantial statistical uncertainty~\cite{agarwal2021precipice}. This literature motivates our separation of benchmark-item uncertainty from training-run uncertainty and our refusal to infer an algorithm ranking from single selected checkpoints.
+\noindent\textbf{Run-to-run variation.}
+The outcome of an RL algorithm comparison can depend on the random seed, on implementation details, and on how many runs are compared. Henderson et al. showed that deep RL results vary with the random seed and the environment~\cite{henderson2018matters}, Engstrom et al. showed that most of PPO's gain in cumulative reward over its predecessor, TRPO, came not from PPO's clipped objective but from implementation details outside the core algorithm, such as reward scaling, learning-rate annealing, and network initialization~\cite{engstrom2020implementation}, and Agarwal et al. showed that results reported from few runs carry large statistical uncertainty~\cite{agarwal2021precipice}. RLVR methods also differ in more than their advantage estimator: Hu et al. normalized advantages globally in REINFORCE++~\cite{hu2025reinforce++}, Liu et al. identified a length bias in common GRPO normalization~\cite{liu2025understanding}, and Yu et al. changed clipping, sampling, loss aggregation, and overlong-response handling in DAPO~\cite{yu2025dapo}. We therefore hold these details fixed across methods and report every run.
 
-\noindent\textbf{Sampling efficiency and distinct failure modes.}
-The open-source TinyZero project used Countdown and multiplication as small-scale R1-Zero reproduction tasks~\cite{pan2025tinyzero}, helping establish the setting audited here. Dynamic sampling excludes homogeneous reward groups so that retained prompts produce a nonzero group-relative learning signal, but it requires a variable number of rollouts~\cite{yu2025dapo}. Its stated purpose is to improve training efficiency and stability, not specifically to prevent short responses. Selective-rollout methods instead attempt to predict and skip uninformative prompts before generation~\cite{zheng2025selectiverollouts}. In DAPO, asymmetric Clip-Higher---not dynamic sampling---is the component explicitly intended to mitigate entropy collapse~\cite{yu2025dapo}. A complementary line of work analyzes entropy collapse and proposes targeted clipping or KL control for high-covariance tokens~\cite{cui2025entropy}. Our study contributes a seed-level screen of a different observable failure mode---abrupt shortening to extremely short responses---and examines how its frequency changes under dynamic sampling, reward changes, overlong filtering, and KL regularization.
+\noindent\textbf{Response length and entropy.}
+RLVR changes both response length and policy entropy, and neither change is good or bad in itself. Liu et al. showed that the design of the objective can drive response length in opposite directions~\cite{liu2026luspo}. Fatemi et al. showed that shorter responses are not necessarily worse: further PPO training of a 1.5B reasoning model more than halved its average response length on four benchmarks while its average accuracy rose slightly, from 57.0\% to 58.4\%~\cite{fatemi2025concise}. Entropy is a separate quantity. Most work targets entropy collapse, the loss of exploration as the policy becomes nearly deterministic: Yu et al. designed DAPO's asymmetric clipping to counter it~\cite{yu2025dapo}, and Cui et al. proposed clipping and KL controls for entropy dynamics~\cite{cui2025entropy}. Wu et al. pointed out that the opposite failure, entropy explosion, in which entropy rises until the policy produces near-random text, has received much less attention~\cite{wu2025quantile}. We therefore monitor length and entropy separately.
 
-\noindent\textbf{Reward validity, elicitation, and generalization.}
-Recent evidence cautions against equating benchmark improvement with newly acquired reasoning. Format, incorrect-label, and random rewards can elicit large gains in Qwen2.5-Math models, while the same signals are less reliable in other model families~\cite{shao2025spurious}. Outcome-only RLVR can also increase accuracy without reliably producing reasoning that is sufficient or causally important for the answer~\cite{yu2026outcomerewards}. Large-$k$ sampling studies report that RLVR often improves pass@1 while failing to expand, and sometimes narrowing, the solution coverage of the base model~\cite{yue2025reasoningcapacity}. Broader evaluations of math-tuned models find uneven generalization beyond the training domain~\cite{huan2025transferability}, and recent multimodal RLVR results show that semantically equivalent prompt changes can expose brittle gains~\cite{zhou2026promptrobustness}. Earlier in-context-learning research found that prompt format, demonstration choice, and example order can move accuracy from near chance to near state of the art while biasing models toward particular answers~\cite{zhao2021calibrate}. Lyu et al. showed that models often copy labels from similar demonstrations, including incorrect labels~\cite{lyu2023zicl}; later work identified neurons associated with copying answers instead of applying the demonstrated relation~\cite{ali2026copybias}. We connect these concerns by jointly reporting flexible scores, strict-format decomposition, performance on evaluation benchmarks not used during fine-tuning, pass@$k$, and prompt-component controls after Countdown training.
+\noindent\textbf{Prompt sensitivity.}
+RLVR-trained LLMs can be highly sensitive to the evaluation prompt. Li et al. showed that evaluating an RL-trained Qwen2.5-7B-Instruct model outside its R1-style training template reduced its MATH-500 accuracy from 73.2\% to 3.2\%~\cite{li2025onedomain}. Zhou et al. found larger losses under rephrased templates in GRPO-trained vision--language models than in their base models, which were not entirely insensitive to those changes~\cite{zhou2026promptrobustness}. Liu et al. showed that the template already strongly changes the behavior of Qwen2.5 base models~\cite{liu2025understanding}. Earlier work on in-context learning found similar effects: Zhao et al. showed that few-shot prompts bias a model toward particular answers~\cite{zhao2021calibrate}, and Lyu et al. and Ali et al. showed that models copy labels from demonstrations~\cite{lyu2023zicl,ali2026copybias}.
+
+\noindent\textbf{Formatting versus correctness.}
+Benchmark gains after RLVR can reflect answer format rather than correctness. Shao et al. showed that format and even spurious rewards can elicit gains in some Qwen2.5-Math models~\cite{shao2025spurious}. Lyu found that, for four 7B SimpleRL model pairs, 82\% of the out-of-domain multiple-choice gain measured under strict answer extraction disappeared when answers outside \texttt{\textbackslash boxed\{\}} were also read~\cite{lyu2026samebox}. Gupta and Tripathi found that, in a vision--language model, a single prompt line reproduced much of the RL gain~\cite{gupta2026formatcompliance}. Yu et al. showed that outcome-only RLVR need not produce causally important written reasoning~\cite{yu2026outcomerewards}.
+
+\noindent\textbf{Coverage and transfer.}
+Single-attempt accuracy can hide changes in how many problems a model can solve. Brown et al. measured coverage, the fraction of problems solved by at least one of many samples, and showed that it keeps rising over several orders of magnitude of samples~\cite{brown2024monkeys}. Yue et al. showed that RLVR-trained models can be more accurate in one attempt yet solve fewer distinct problems than their base models given many attempts~\cite{yue2025reasoningcapacity}, and Zhou proposed that rarely sampled correct solutions on hard questions are not reinforced and become less likely~\cite{zhou2026passkinversion}. Huan et al. found that gains on math need not transfer to other tasks~\cite{huan2025transferability}. Broader benefits therefore have to be measured directly.
+
+Our contribution is to measure these effects together, in the same checkpoints and across many independent runs of one recipe, and to relate them to how each run behaved during training.
 
 \section{Background: Optimization Methods}\label{sec:method}
 
-This section reviews the formulations of PPO, GRPO, and DAPO needed to distinguish the implemented methods; the empirical contribution begins in Section~\ref{sec:results}. Extended derivations are available in Ref.~\cite{lian2025comparative}.
-
-PPO~\cite{schulman2017proximalpolicyoptimizationalgorithms} is widely used for RLHF, where its learned value function adds memory and optimization overhead~\cite{hu2025reinforce++}. GRPO~\cite{shao2024deepseekmathpushinglimitsmathematical} and DAPO~\cite{yu2025dapo} remove the critic in favor of group-relative advantage estimation. We summarize the three objectives to identify the method differences examined empirically.
-
-
-\subsection{Proximal Policy Optimization}
-
-
-PPO replaces TRPO's constrained second-order update~\cite{schulman2015trust} with a first-order clipped surrogate objective~\cite{schulman2017proximalpolicyoptimizationalgorithms}.
-
-
-
+The methods share a clipped policy objective but differ in advantage estimation and clipping bounds. For response $i$ and token $t$, let
+\begin{equation}\label{eq:ratio}
+r_{i,t}=\frac{\pi_\theta(o_{i,t}\mid q,o_{i,<t})}{\pi_{\theta_{\mathrm{old}}}(o_{i,t}\mid q,o_{i,<t})}
+\end{equation}
+be the importance sampling ratio between the updated policy $\pi_\theta$ and the sampling policy $\pi_{\theta_{\mathrm{old}}}$, where $q$ is the prompt and $o_{i,t}$ is the $t$-th token of response $i$, and let $\widehat{A}_{i,t}$ be its estimated advantage. The clipped contribution is
 \begin{equation}\label{eq:ppo_objective}
-\mathcal{J}^{\text{CLIP}}(\theta) = \mathbb{E}_t \Big[ \min \Big( r_t \hat{A}_t,  \text{clip}(r_t, 1-\epsilon, 1+\epsilon)  \hat{A}_t \Big) \Big],  
+\ell_{i,t}=\min\!\left[r_{i,t}\widehat{A}_{i,t},\,
+\operatorname{clip}(r_{i,t},1-\epsilon_{\mathrm{low}},1+\epsilon_{\mathrm{high}})\widehat{A}_{i,t}\right].
 \end{equation}
+All runs average these contributions over generated tokens, excluding padding. PPO and GRPO use symmetric bounds ($\epsilon_{\mathrm{low}}=\epsilon_{\mathrm{high}}=0.2$); the DAPO-style variant increases only the upper width to 0.28.
 
-
-where $r_t = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{\text{old}}}(a_t|s_t)}$ is the likelihood ratio evaluated at the sampled state--action pair $(s_t,a_t)$, $\hat{A}_t = \hat{A}^{\pi_{\theta_{\text{old}}}}(s_t,a_t)$ is the estimated advantage (GAE for the displayed PPO configuration~\cite{schulman2015high}), $\pi_{\theta_{\text{old}}}$ is the pre-update policy, and $\pi_\theta$ is the updated policy. The first argument of $\min$ is the ordinary importance-weighted policy-gradient contribution; $\operatorname{clip}(r_t,1-\epsilon,1+\epsilon)$ truncates the ratio to the displayed interval, where $\epsilon$ is the symmetric clipping width.
-
-For PPO, the generalized advantage estimate is
-\begin{equation}\label{eq:gae}
-\delta_t=R_t+\gamma V_\phi(s_{t+1})-V_\phi(s_t),
-\qquad
-\widehat{A}^{\mathrm{GAE}}_t=\sum_{l=0}^{T-t-1}(\gamma\lambda)^l\delta_{t+l},
-\end{equation}
-where $R_t$ is the immediate reward, $V_\phi$ is the learned value function, $\gamma$ is the reward-discount factor, and $\lambda$ controls the decay of later temporal-difference residuals. We set $\gamma=\lambda=1$, so the estimate uses the undiscounted sum of residuals through the end of the response.
-
-
-\noindent\textbf{Clipping and regularization.}
-Clipping limits extreme likelihood-ratio contributions to the surrogate objective but does not enforce a hard trust-region constraint~\cite{wang2020truly}. More broadly, empirical policy-gradient behavior can depart from the surrogate-based framework used to motivate it~\cite{ilyas2018deep}. In our implementation, the PPO actor minimizes
-\begin{equation}\label{eq:total_ppo_loss}
-L(\theta,\phi)=-\mathcal{J}^{\mathrm{CLIP}}(\theta)+c_1L^{\mathrm{critic}}(\phi)-c_2\mathcal{H}(\pi_\theta),
-\end{equation}
-where $L^{\mathrm{critic}}$ trains the value model and $c_2$ controls the optional entropy bonus. The PPO configuration in the controlled comparison sets both the entropy coefficient and the KL reward penalty to zero. Thus, the reported comparison concerns complete implemented training configurations rather than abstract algorithms.
-
-\subsection{Group Relative Policy Optimization}
-
-For each prompt, GRPO samples $G$ responses and replaces the critic with within-group relative advantages~\cite{shao2024deepseekmathpushinglimitsmathematical}:
+PPO trains a critic, a value network initialized from the same pretrained model, alongside the policy. The critic predicts the expected reward at each token, and generalized advantage estimation (GAE) converts these predictions into token-level advantages~\cite{schulman2015high,schulman2017proximalpolicyoptimizationalgorithms}. With the discount and GAE parameters both set to 1, the unnormalized advantage is the response reward minus the critic's prediction at that token; the implementation then normalizes these advantages over valid response tokens. GRPO instead assigns every token in response $i$ the same group-relative advantage~\cite{shao2024deepseekmathpushinglimitsmathematical}:
 \begin{equation}\label{eq:grpo_advantage}
-\widehat{A}_i=\frac{R_i-\overline{R}}{\operatorname{std}(R_1,\ldots,R_G)+\epsilon_A},
-\qquad \overline{R}=\frac{1}{G}\sum_{j=1}^{G}R_j .
+\widehat{A}_i=\frac{R_i-\overline{R}}{s_R+\epsilon_A},
+\qquad \overline{R}=\frac{1}{G}\sum_{j=1}^{G}R_j,
 \end{equation}
-A conventional GRPO presentation averages the clipped token objective within each response and then across the $G$ responses. That response-normalized form is background and is not the aggregation used in the controlled comparison. All group-relative runs in the controlled comparison use Verl's global \texttt{token-mean} aggregation. Defining the clipped token contribution as $\ell_{i,t}$, their implemented actor objective has the form
-\begin{equation}\label{eq:implemented_token_mean}
-\mathcal{J}_{\mathrm{impl}}(\theta)=
-\mathbb{E}\!\left[\frac{1}{\sum_{i,t}m_{i,t}}\sum_{i,t}m_{i,t}
-\left(\ell_{i,t}-\beta k_{i,t}\right)\right],
-\end{equation}
-where $\ell_{i,t}=\min\!\left(r_{i,t}\widehat{A}_i,\operatorname{clip}(r_{i,t},1-\epsilon,1+\epsilon)\widehat{A}_i\right)$, $m_{i,t}$ masks padding and otherwise selects generated tokens, and $k_{i,t}$ is the Verl per-token low-variance KL estimator when KL loss is enabled. The GRPO and DAPO-style configurations in the controlled comparison set $\beta=0$.
+where $G$ is the number of responses sampled for one prompt, $R_i$ is the response reward, $s_R$ is the sample standard deviation, and $\epsilon_A$ prevents division by zero. Equal rewards produce zero advantage; standardization can also turn a small reward difference into a substantial update signal.
 
-If every reward in a group is identical, Equation~\ref{eq:grpo_advantage} is zero. Conversely, group standardization can amplify a small reward difference, including the 0.1 format credit used here. This supplies a plausible pressure toward reward-bearing shortcuts but is not evidence of a causal mechanism; the implementation-specific calculation is reported with the regularization diagnostics in Section~\ref{sec:diagnostics}.
-
-\subsection{Decoupled Clip and Dynamic Sampling Policy Optimization}
-
-The DAPO-style method uses the implemented token-mean objective in Equation~\ref{eq:implemented_token_mean} with asymmetric ratio clipping. The symmetric GRPO interval is replaced by $[1-\epsilon_{\mathrm{low}},1+\epsilon_{\mathrm{high}}]$. Published DAPO also uses dynamic sampling and overlong-response handling~\cite{yu2025dapo}; those components are disabled in the controlled experiment so that the GRPO--DAPO-style contrast isolates the clipping range.
-
-\subsection{Comparison of Training Methods}
-
-PPO uses generalized advantage estimation and a learned critic; GRPO and DAPO use group-relative outcome advantages. Our controlled comparison fixes data, reward, rollout count, actor updates, optimizer settings, aggregation, response cap, and horizon. PPO differs through its estimator and critic, while the GRPO--DAPO-style contrast isolates symmetric versus asymmetric clipping. We therefore compare the three implemented methods as a whole and do not claim that one component explains every difference.
+Published DAPO combines asymmetric clipping with dynamic sampling, token-level loss aggregation, and overlong-response handling~\cite{yu2025dapo}. Our controlled comparison disables dynamic sampling and overlong shaping and uses token-mean aggregation for every method. Thus, ``DAPO-style'' denotes the asymmetric-clipping variant, not the full published system. Comparing DAPO-style training with GRPO therefore isolates the effect of the upper clip bound, whereas comparing PPO with GRPO changes both the advantage estimator and the use of a critic.
 
 \section{Materials and Methods}\label{sec:methods_data}
 
 We fine-tune Qwen2.5-1.5B-Instruct~\cite{qwen2.5} on Countdown and evaluate on four benchmarks not used during fine-tuning: GSM8K~\cite{cobbe2021gsm8k}, MATH~\cite{hendrycks2021measuringmathematicalproblemsolving}, BBH~\cite{suzgun2022challenging}, and MMLU-Pro~\cite{wang2024mmlupro}.
 
-\subsection{Evaluation Protocol}\label{sec:eval_protocol}
-
-Each benchmark is evaluated with two prompt variants. The \emph{standard prompt} uses the benchmark-specific instruction; the \emph{think prompt} inserts the same item into the Countdown training wrapper and requests \texttt{<think>} and \texttt{<answer>} tags. Standard-prompt results are the primary evaluation of performance beyond Countdown. Think-prompt results test robustness to the training format. We report both prompts separately. Exact prompt strings appear in Appendix~\ref{app:evaluation_details}.
-
-We also examine how the fine-tuned models respond to controlled changes in the evaluation prompt. Prior studies show that LLM accuracy and output behavior can be sensitive to prompt format, demonstration choice, and example content~\cite{zhao2021calibrate,lyu2023zicl}. On GSM8K, we keep the same 1,319 items, model weights, chat wrapping, greedy decoding, 8,192-token limit, and scorers while varying components of the think prompt: deleting its answer example, changing the example's literal answer from 42 to 17, deleting only the prefilled opening \texttt{<think>} tag, deleting the complete embedded assistant prefill, or replacing the embedded transcript with a clean tag instruction. These evaluation-only controls require no additional training; their exact strings appear in Appendix~\ref{app:evaluation_details}.
-
-All main evaluations use vLLM greedy decoding (temperature 0), no repetition penalty, and at most 8,192 output tokens. Each model therefore produces one deterministic response per item. We score responses in two ways. The \emph{strict} scorer accepts only an answer in the required final-answer format, using the last recognized final-answer marker. The \emph{flexible} scorer accepts correct answers from completed, non-truncated responses even when the required final-answer format is absent. Strict accuracy combines correctness with adherence to the required final-answer format; flexible accuracy is the primary approximation to problem correctness.
-
-The complete test sets contain 1,319 GSM8K, 5,000 MATH, 6,511 BBH, and 12,032 MMLU-Pro items. BBH and MMLU-Pro use the stated custom zero-shot protocol rather than their conventional few-shot variants. Dataset revisions, chat wrapping, stopping rules, and scorer precedence are documented in Appendix~\ref{app:evaluation_details}. A deterministic code-and-record audit corrected marker precedence and removed fallback credit from length-truncated responses; the archived outputs were then rescored with regression checks. The remaining limitation of the GSM8K last-number fallback is stated in the appendix.
-
-Pass@$k$ uses a different decoding protocol because it addresses sampled solution coverage rather than greedy pass@1 accuracy: temperature 0.6, top-$p=0.95$, a 4,096-token cap, and 64 samples per MATH-500 item or 32 per GSM8K item. Its estimator and results are reported in Section~\ref{sec:format_coverage}.
-
 \subsection{Training Setup}
 
-All runs initialize from Qwen2.5-1.5B-Instruct and use Countdown as the sole training task~\cite{CountdownTasks3to4}. The frozen scalar reward is 0.9 for a correct final equation plus 0.1 for a recognized reasoning-and-answer tag structure. The correctness check verifies that the equation uses each supplied number exactly once and reaches the target; the format check recognizes the tags but does not assess the content or length of the reasoning span. Thus, an empty or minimal reasoning span followed by a correct tagged equation can score 1.0. A correct format-invalid response scores 0.9, and a formatted but incorrect response scores 0.1. Training uses Verl~\cite{sheng2024hybridflow}, bfloat16 weights, AdamW, one actor epoch per batch, and rollout temperature 1.0 on four NVIDIA RTX A6000 GPUs.
+Countdown requires an equation that uses each supplied number exactly once to reach a target~\cite{CountdownTasks3to4}. The reward is additive: 0.9 for a correct equation and 0.1 for the required \texttt{<think>} and \texttt{<answer>} tag structure. The format check does not assess reasoning content: a correct tagged equation with minimal reasoning can score 1.0, while a formatted but incorrect response scores 0.1. Because GRPO standardizes rewards within each group, this small format credit can carry a large advantage: one format-only response among seven zero-reward responses receives an advantage of about 2.47 (Appendix~\ref{app:training_details}). Training uses Verl~\cite{sheng2024hybridflow}, bfloat16 weights, AdamW, one actor epoch per batch, and rollout temperature 1.0 (Appendix~\ref{app:training_details}).
 
 \subsection{Controlled Comparison of Training Methods}\label{sec:matched_design}
 
-To isolate differences attributable to the optimization method, we train all nine models with a common data, reward, and actor-training protocol. Every method therefore uses the same training data, prompts, reward, software environment, paired data/rollout seeds (7, 8, and 9), and 300-step horizon. Each step samples 32 prompts with eight responses per prompt (256 trajectories) and performs eight actor updates with a response mini-batch of 32. The actor learning rate is $10^{-6}$ with a 10-step warmup and weight decay 0.1; KL loss, KL reward, and entropy regularization are disabled; loss aggregation is global token mean; and responses are capped at 4,096 tokens.
-
-The methods differ only in their defining optimization components. PPO uses generalized advantage estimation ($\gamma=\lambda=1$), a learned critic (learning rate $10^{-5}$, mini-batch 32), and symmetric clipping 0.2/0.2. GRPO uses group-standardized advantages and symmetric clipping 0.2/0.2. The DAPO-style method uses the same group-relative estimator with asymmetric clipping 0.2/0.28. Dynamic sampling and overlong shaping are disabled, so the GRPO--DAPO-style contrast isolates clipping rather than every component of published DAPO.
+We run PPO, GRPO, and DAPO-style training with seeds 7--16, giving 30 runs. The seeds control training-question order and response sampling; the same seed gives each method the same question order, not identical generated responses. All runs share the 50,000-example training set, prompts, reward, and settings in Table~\ref{tab:matched_design}. Each step generates eight responses to each of 32 prompts. The 256 responses are split into eight mini-batches of 32, giving eight sequential actor updates; after the first, the updated policy differs from the sampling policy, so the clip bounds act. The PPO critic uses learning rate $10^{-5}$ and the same mini-batch size; its advantage estimator uses no reward discounting or residual decay (Appendix~\ref{app:training_details}). The protocol and analysis plan were fixed before the first run.
 
 \begin{table}[H]
 \caption{Controlled comparison under a common protocol. Only the final three rows vary by method.}
@@ -176,8 +111,8 @@ Prompts $\times$ responses per step & $32\times8=256$ trajectories \\
 Actor mini-batch / updates per step & 32 responses / 8 \\
 Actor LR / warmup / weight decay & $10^{-6}$ / 10 steps / 0.1 \\
 KL loss / KL reward / entropy & off / off / 0 \\
-Aggregation / response cap & global token mean / 4,096 \\
-Seeds / horizon & paired 7, 8, 9 / 300 steps \\
+Aggregation / response cap & micro-batch token mean / 4,096 \\
+Seeds / horizon & paired 7--16 / 300 steps \\
 \midrule
 PPO & GAE, critic, clip 0.2/0.2 \\
 GRPO & group-standardized advantage, clip 0.2/0.2 \\
@@ -186,176 +121,188 @@ DAPO-style & as GRPO, clip 0.2/0.28, no dynamic sampling \\
 \end{tabular}
 \end{table}
 
-The prespecified early-short-response criterion was a mean generated response length below 100 tokens over steps 90--100. This operational label describes an early response-length state, not a claim that a run remains short thereafter. It is distinct from entropy collapse; because no entropy threshold was prespecified, entropy is reported descriptively and does not define the response-length outcome. The response-length cutoff was not borderline in the 22-run screen: endpoint means were 18.5--61.9 tokens for runs meeting the criterion and 132.2--2,223.7 tokens for the other runs. A later increase above the threshold is described as response-length recovery, which does not by itself imply recovery in accuracy. Every comparison run continued to step 300 regardless of this label, and every seed remained in the analysis. From every run, the final checkpoint at step 300 was evaluated on the complete test sets of all four evaluation benchmarks with both prompts. With three seeds per method, means and sample standard deviations are descriptive. The single-seed KL sweeps and 22-run configuration screen use purpose-specific settings and are reported under their intended questions in Section~\ref{sec:diagnostics}; complete screen outcomes appear in Appendix~\ref{app:complete_results}.
+\subsection{Training Diagnostics and Checkpoint Selection}
+
+We monitor response length to detect departures from the requested worked-solution format. A run is \emph{early short} when its mean length over steps 90--100, rounded to the nearest token, is at most 100 generated tokens. A later increase above this threshold is \emph{response-length recovery}, not necessarily accuracy recovery. With ten runs per method, a difference between two methods can arise from seed-to-seed variation alone. Before the first run, we therefore fixed three questions:
+\begin{itemize}
+\item[Q1.] Does widening the upper clip bound change response shortening? This compares DAPO-style training with GRPO, which differ only in that bound.
+\item[Q2.] Do critic-based advantages change response shortening? This compares PPO with GRPO, which differ in how advantages are estimated.
+\item[Q3.] Do the methods end with different Countdown accuracy at step 300?
+\end{itemize}
+Shortening is measured by the window mean (the primary outcome) and by the early-short rate. We report two-sided tests and Holm-adjust the two primary window-mean comparisons; a nonsignificant result does not establish equivalence. Analyses added after the runs are labeled as such. Policy entropy is monitored separately; the entropy-explosion criterion in Section~\ref{sec:results} was defined after the runs. Every run continues to step 300, and the final checkpoint from every seed is evaluated; neither criterion determines checkpoint selection.
+
+Countdown accuracy measures equation correctness in the last \texttt{<answer>} block; format validity measures the required tag structure, independently of correctness. Both use the held-out 1,024-item test split with one sampled response per item (temperature 1.0, top-$p=0.7$, 4,096-token cap). Unless stated otherwise, reported accuracy is from step 300.
+
+\subsection{Benchmark Evaluation}\label{sec:eval_protocol}
+
+Each checkpoint is evaluated on all 1,319 GSM8K, 5,000 MATH, 6,511 BBH, and 12,032 MMLU-Pro test items. The \emph{standard prompt} uses a benchmark-specific instruction; the \emph{think prompt} places the same question in the Countdown training wrapper, retaining its embedded role labels, reasoning/answer tags, illustrative answer, and assistant prefill. We report both separately. BBH and MMLU-Pro use custom zero-shot prompts, not their conventional few-shot protocols. Exact prompts appear in Appendix~\ref{app:evaluation_details}, and dataset identifiers in Supplementary Note S1.
+
+Greedy evaluation uses vLLM, temperature 0, no repetition penalty, and an 8,192-token output cap, with the base model and all checkpoints on the same hardware. Our \emph{strict} scorer requires a correct answer in a recognized final-answer format. The \emph{flexible} scorer also permits fallback answer extraction from completed responses; length-truncated responses receive no fallback credit. Flexible accuracy is the primary correctness measure, with the extraction limitations stated in Appendix~\ref{app:evaluation_details}.
+
+Five GSM8K prompt controls isolate components of the think prompt: remove the answer example, change its value from 42 to 17, remove the opening reasoning tag, remove the complete assistant prefill, or replace the embedded transcript with a clean tag instruction. Questions, model weights, chat wrapping, decoding, and scorers remain fixed, and the controls require no retraining.
+
+Two further controls distinguish formatting from correctness and sampled solution coverage. A prompt-only instruction enforces the final-answer format without changing the base model. Pass@$k$ estimates the probability of at least one correct answer in $k$ sampled responses~\cite{brown2024monkeys}, using 64 samples per MATH-500 item and 32 per GSM8K item. The base model was sampled with five seeds to measure sampling variation; it and all 30 checkpoints share the same sampling environment, temperature 0.6, top-$p=0.95$, and 4,096-token cap; the estimator and implementation details are in Appendix~\ref{app:evaluation_details}.
 
 \section{Results}\label{sec:results}
 
-\subsection{Training Outcomes Under the Common Protocol}
+\subsection{Run-to-Run Variation in Training Outcomes}\label{sec:training_outcomes}
 
-The comparison runs began at step 1 with mean response lengths of 296.8--342.4 tokens. By step 50, the three DAPO-style runs had shortened to 52.8--63.2 tokens and ultimately ended at 46.9--60.0 tokens; GRPO seed 9 ended at 22.3 tokens. These large shifts motivate diagnostic attention, but their consequences are evaluated separately rather than inferred from length alone. Table~\ref{tab:matched_outcomes} reports every run in the controlled experiment. The prespecified early-short-response criterion was met by PPO seed 9, GRPO seed 9, and all three DAPO-style seeds. PPO seed 9 increased from 16.3 mean tokens over steps 90--100 to 468.8 tokens at step 300, but its step-300 Countdown accuracy was only 1.5\%. It therefore shows response-length recovery without recovery in task performance. The other early-short-response runs ended at 22--60 tokens and 24.8--27.1\% Countdown accuracy. By contrast, the remaining PPO and GRPO runs reached 52.0--59.1\%.
+\noindent\textbf{Early shortening.}
+All runs began with mean responses of 296.8--438.9 tokens. By steps 90--100, 3 of 10 PPO runs, 7 of 10 GRPO runs, and 8 of 10 DAPO-style runs met the early-short criterion (Table~\ref{tab:matched_outcomes}); these runs first fell below 100 tokens between steps 11 and 28. Window means fell into two clusters, 26--120 tokens in 19 runs and 1,172--2,283 tokens in 11, with no run in between, so we compared methods with the Mann--Whitney test, which uses ranks rather than means. PPO shortened early in 3 of 10 runs, against 7 of 10 GRPO runs, which suggests that the method affects shortening. Ten seeds per method, however, are too few to establish this: if both methods shortened equally often, a split at least this uneven would still arise by chance in 18\% of experiments (Fisher's exact test, $p=0.18$). The window mean gives a similar result: the Mann--Whitney p-value is 0.035, or 0.071 after Holm correction for testing two pairs of methods. Widening the upper clip showed no sign of an effect: 8 of 10 DAPO-style runs shortened early, against 7 of 10 GRPO runs ($p=1.0$; window mean $p=0.19$). In GRPO runs, however, the upper clip was active on only a median 0.06\% of response tokens, so this comparison tested a small change. Table~\ref{tab:method_tests} lists the prespecified tests.
+
 \begin{table}[H]
 \centering
-\caption{All nine comparison runs. Window values are means over steps 90--100; Early short is Yes when mean response length is below 100 tokens. Endpoint values and Countdown accuracy are measured at step 300. Entropy ($H$) is per-token categorical Shannon entropy in nats.}
+\caption{Training outcomes by method (ten runs each). Early short: mean response length over steps 90--100 at most 100 tokens, with exact 95\% Clopper--Pearson intervals (\%). Window tokens: median (range) of that mean. Entropy explosion: step-300 per-token entropy above 1 nat. Countdown: step-300 validation accuracy, median (range). Every run appears in Table~\ref{tab:all_b_runs}.}
 \label{tab:matched_outcomes}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{llcrrrrr}
+\begin{tabular}{lcccc}
 \toprule
-Method & Seed & Early short & Window tokens & Window $H$ & Endpoint tokens & Endpoint $H$ & Countdown (\%) \\
+Method & Early short & Window tokens & Entropy explosion & Countdown (\%) \\
 \midrule
-PPO & 7 & No & 1374.1 & 0.054 & 1455.2 & 0.050 & 55.7 \\
-PPO & 8 & No & 447.0 & 0.323 & 1371.9 & 0.058 & 53.5 \\
-PPO & 9 & Yes & 16.3 & 0.280 & 468.8 & 0.662 & 1.5 \\
-\midrule
-GRPO & 7 & No & 267.8 & 0.421 & 1720.5 & 0.082 & 52.0 \\
-GRPO & 8 & No & 725.0 & 0.432 & 1239.3 & 0.071 & 59.1 \\
-GRPO & 9 & Yes & 22.4 & 0.070 & 22.3 & 0.024 & 25.9 \\
-\midrule
-DAPO-style & 7 & Yes & 55.6 & 0.044 & 54.2 & 0.037 & 25.8 \\
-DAPO-style & 8 & Yes & 54.7 & 0.339 & 60.0 & 0.024 & 24.8 \\
-DAPO-style & 9 & Yes & 51.0 & 0.054 & 46.9 & 0.019 & 27.1 \\
+PPO & 3/10 (7--65) & 2040.4 (34.9--2282.8) & 4/10 & 47.8 (2.1--54.4) \\
+GRPO & 7/10 (35--93) & 70.9 (26.0--1918.8) & 1/10 & 30.8 (25.8--62.4) \\
+DAPO-style & 8/10 (44--97) & 59.5 (43.9--1864.1) & 2/10 & 27.3 (25.0--63.6) \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-The prespecified early-short-response counts are 1/3 for PPO, 1/3 for symmetric-clip GRPO, and 3/3 for asymmetric-clip DAPO-style training. At step 300, response length remained below 100 tokens in 0/3 PPO runs, 1/3 GRPO runs, and 3/3 DAPO-style runs; PPO seed 9 had recovered in length but not in task performance. The paired GRPO--DAPO-style contrast is underpowered (two-sided exact McNemar $p=0.50$). This controlled contrast is consistent with lower response-length stability under asymmetric clipping in the tested setting. Three seeds are too few to estimate population frequencies or to claim that asymmetric clipping alone is causal, especially because the PPO comparison also changes the estimator and adds a critic.\par
-These comparison runs explain why we monitor response length. During steps 90--100, PPO seed 9 produced only 16.3 tokens on average, whereas PPO seeds 7 and 8 produced 1,374.1 and 447.0 tokens; PPO seed 9 subsequently recovered in length to 468.8 tokens at step 300. GRPO seed 9 remained short (22.4 tokens during the window and 22.3 at step 300), whereas GRPO seeds 7 and 8 had longer responses during the window and at step 300. All three DAPO-style seeds were short during the window and remained short at step 300. On Countdown, the five runs that met the early-short-response criterion averaged 21.0\% accuracy, compared with 55.1\% for the four runs that did not. The same pattern appeared within both methods that supplied a short--long comparison: PPO seed 9 achieved 1.5\%, versus 53.5--55.7\% for the longer-response PPO seeds 7--8, and GRPO seed 9 achieved 25.9\%, versus 52.0--59.1\% for the longer-response GRPO seeds 7--8. The three persistently short DAPO-style seeds achieved 24.8--27.1\%; because every DAPO-style seed was short, this method provides no within-method long-response comparison. Thus, abrupt shortening was a useful early warning of poor in-domain performance in the controlled experiment, but it was not itself the definition or demonstrated cause of failure. The separate no-dynamic-sampling screen contained overlapping accuracy ranges for short- and long-response runs, and PPO seed 9 recovered in length without recovering its accuracy. Response length must therefore be interpreted alongside correctness rather than used as a standalone performance measure.\par
-Entropy and response length were related in some runs but did not define the same outcome. All six group-relative runs first dipped below 100 tokens at steps 25--26 while their online entropies were still 0.480--0.643 nats; GRPO seeds 7 and 8 subsequently returned to longer responses. During the prespecified window, entropy ranged from 0.044 to 0.339 among early-short-response runs and from 0.054 to 0.432 among the other runs. At step 300, the four persistently short group-relative runs had entropies of 0.019--0.037, but the four long-response PPO and GRPO runs also had low values of 0.050--0.082. PPO seed 9 recovered to 468.8 tokens and entropy 0.662, yet its accuracy remained only 1.5\%. Thus, response shortening and entropy decline can co-occur, but neither is a proxy for the other and the histories do not justify relabeling every short-response event as entropy collapse.\par
-\subsection{Prompt-Conditional Benchmark Performance}
+Countdown accuracy rose from 0.7--4.8\% before training to method means of 39.5\% (PPO), 40.4\% (GRPO), and 36.9\% (DAPO-style) at step 300, whereas runs of the same method ended 36.6--52.3 points apart. The prespecified tests did not detect method differences (Table~\ref{tab:method_tests}), but the uncertainty is wide: resampling the ten seeds gives 95\% intervals of $-11.1$ to $10.6$ points for PPO minus GRPO and $-14.3$ to $7.8$ points for DAPO-style minus GRPO. The 18 early-short runs averaged 28.7\%, versus 54.3\% for the other 12, a gap of 25.5 points (95\% interval 16.5--32.6; $p=6.0\times10^{-5}$; post hoc comparison). This association does not show that shortening caused the accuracy loss. Two early-short runs later recovered in length and reached 55.9\% and 63.6\% accuracy; the latter also developed the entropy explosion described next. Figure~\ref{fig:training_dynamics} shows the trajectories of all 30 runs.
 
-Each method was trained in three independent runs (seeds 7--9). For the comparison, we selected the final checkpoint at step 300 from each run---one checkpoint per seed---and evaluated it on the same complete benchmark test sets. We computed accuracy separately for each checkpoint and report the mean and sample standard deviation of the three checkpoint-level accuracies in Table~\ref{tab:matched_summary}.
-Under standard prompts, the fine-tuned models have nearly identical flexible accuracy to the base model: all three group means are within 0.2 percentage points of the base model's 49.0\% four-benchmark mean (Table~\ref{tab:matched_summary}). Strict standard-prompt accuracy is 4.3--6.0 points higher than the base while flexible accuracy is unchanged, indicating better adherence to the required final-answer format rather than a broad correctness gain. Standard-prompt strict-score gains were concentrated on GSM8K: mean strict accuracy was 55.6\% for PPO, 57.7\% for GRPO, and 51.9\% for DAPO-style training, compared with 33.4\% for the base model. In contrast, the corresponding flexible GSM8K accuracies were 72.2\%, 73.4\%, and 73.3\%, versus 72.3\% for the base model. MATH, BBH, and MMLU-Pro showed no consistent standard-prompt improvement. The concentration on GSM8K is consistent with partial task overlap: both Countdown and GSM8K require elementary arithmetic and a short numerical result, whereas MATH covers more varied symbolic mathematics and BBH and MMLU-Pro test broader reasoning or knowledge. Nevertheless, flexible GSM8K accuracy changed by at most 1.1 percentage points, so the large strict-score gains are better explained by more reliable final-answer formatting than by improved arithmetic reasoning. Complete per-seed benchmark values are in Appendix~\ref{app:matched_full}.
+\noindent\textbf{Entropy explosion.}
+Seven runs became unstable late in training: four PPO runs, one GRPO run, and two DAPO-style runs. Their per-token entropy on the training batch rose above 1 nat between steps 98 and 270 and reached 4.20--8.88 nats at step 300, whereas every other run ended at 0.007--0.753 nats. Their training samples, drawn at temperature 1.0 without truncation, degenerated into unrelated multilingual tokens; in the three group-relative runs, 33--41\% of step-300 samples ran to the response cap, sometimes after a tagged answer.
+
+Degenerate training samples coexisted with high evaluation accuracy in the three group-relative explosion checkpoints: they reached 55.5--63.6\% on Countdown, 73.2--75.0\% on greedy standard-prompt GSM8K, and 52.0--54.5\% sampled MATH-500 accuracy, against about 53.9\% for the base model. Evaluation differed from training sampling: Countdown validation used top-$p=0.7$, and benchmarks used greedy decoding or temperature 0.6 with top-$p=0.95$. These observations suggest decoding-dependent degeneration, but do not isolate the effect of nucleus truncation or locate the excess entropy in a particular part of the token distribution. In PPO, the four explosion runs ended at 2.1--40.9\% Countdown accuracy, below every other PPO run (45.3--54.4\%); three had also shortened early, so the contributions of the two behaviors cannot be separated. A KL loss toward the initial policy did not consistently prevent explosion in the five selected reruns (Appendix~\ref{app:kl_blowup}). With coefficient 0.05 from the first step, the two PPO runs kept long responses and ended without an explosion, but all three group-relative runs still exploded and ended 9.3--22.8 points below their original Countdown accuracy.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{paper_figs/fig_training_dynamics.pdf}
+\caption{Training trajectories for all 30 runs, with one unsmoothed line per run. (A) Mean rollout length on a logarithmic axis; the shaded window is steps 90--100 and the dotted line is 100 tokens. (B) Logged actor entropy; the dotted line marks the post hoc 1-nat endpoint criterion, not an onset rule. (C) Countdown validation accuracy, sampled every five steps. Entropy aggregation is specified in Appendix~\ref{app:training_details}.}
+\label{fig:training_dynamics}
+\end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Benchmark-performance summary by training method. Each accuracy averages GSM8K, MATH, BBH, and MMLU-Pro with equal benchmark weight. Strict scoring requires the specified final-answer format; flexible scoring permits answer extraction from completed responses.}
+\caption{Prespecified two-sided tests of method differences. Holm correction applies to the two primary window-mean comparisons. None meets the 0.05 threshold after the stated correction; these results do not establish equivalence or exclude practically important differences.}
+\label{tab:method_tests}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llllr}
+\toprule
+Question & Comparison & Outcome & Test & $p$ \\
+\midrule
+Q1 & DAPO-style vs.\ GRPO & Window mean & Mann--Whitney, Holm & 0.19 \\
+Q1 & DAPO-style vs.\ GRPO & Early short, 8/10 vs.\ 7/10 & Fisher & 1.0 \\
+Q2 & PPO vs.\ GRPO & Window mean & Mann--Whitney, Holm & 0.071 (unadjusted 0.035) \\
+Q2 & PPO vs.\ GRPO & Early short, 3/10 vs.\ 7/10 & Fisher & 0.18 \\
+Q3 & PPO vs.\ GRPO & Countdown accuracy & Mann--Whitney & 0.58 \\
+Q3 & DAPO-style vs.\ GRPO & Countdown accuracy & Mann--Whitney & 0.74 \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\noindent\textbf{What the training method changed.}
+The prespecified tests did not detect differences in final Countdown accuracy or shortening. PPO shortened early less often than GRPO and DAPO-style training and had more entropy explosions (4/10 versus 1/10 and 2/10), but ten runs per method leave substantial uncertainty. Early shortening also took different forms: under the training prompt, early-short PPO checkpoints wrote until the length limit, whereas early-short group-relative checkpoints ended their reasoning almost at once (Section~\ref{sec:prompt_ablation}). Because PPO differs from GRPO in both the advantage estimator and the use of a critic, these runs cannot distinguish their contributions.
+
+\subsection{Standard Prompts Hid Differences Between Checkpoints}\label{sec:prompt_results}
+
+Table~\ref{tab:matched_summary} reports, for each method, the mean and sample standard deviation of benchmark accuracy over the ten step-300 checkpoints. Under standard prompts the methods look alike: flexible accuracy averages 44.3--47.0\%, versus 49.1\% for the base model, and the larger PPO spread comes from two degenerate checkpoints (Section~\ref{sec:prompt_ablation}). MATH, BBH, and MMLU-Pro show no standard-prompt improvement. We compared each checkpoint with the base model item by item, using the exact McNemar test, which asks whether one model wins the items that only one of the two answers correctly more often than chance (without correction for multiple tests). None of the 12 checkpoints that did not shorten early was significantly more accurate on MATH or BBH, while 6 and 9, respectively, were significantly less accurate, by at most 2.9 and 10.5 points; on MMLU-Pro, one was more accurate (by 1.1 points) and two less. The one gain appeared on BBH under the think prompt, where 7 of the 12 checkpoints that did not shorten early exceeded the base model under the same prompt by 1.6--5.8 points (base 36.5\%), and also its standard-prompt score (35.3\%); we did not test what drives this gain. Per-seed scores appear in Supplementary Table S1.
+
+\begin{table}[H]
+\centering
+\caption{Benchmark accuracy (\%), with equal weight for GSM8K, MATH, BBH, and MMLU-Pro. Parentheses show sample standard deviations across the ten seeds. Strict scoring requires a recognized final-answer format; flexible scoring additionally permits fallback extraction from completed responses.}
 \label{tab:matched_summary}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrr}
 \toprule
 Method & Early short & Strict standard & Flexible standard & Flexible think \\
 \midrule
-Base model & -- & 39.2 & 49.0 & 41.6 \\
-PPO & 1/3 & 44.8 (0.9) & 49.0 (0.5) & 43.4 (6.3) \\
-GRPO & 1/3 & 45.2 (0.9) & 49.2 (0.4) & 32.8 (12.8) \\
-DAPO-style & 3/3 & 43.4 (0.8) & 48.9 (0.3) & 20.0 (1.5) \\
+Base model & -- & 39.1 & 49.1 & 41.3 \\
+PPO & 3/10 & 43.2 (8.6) & 44.3 (8.7) & 28.5 (22.3) \\
+GRPO & 7/10 & 42.6 (5.0) & 46.7 (2.9) & 31.0 (12.9) \\
+DAPO-style & 8/10 & 43.7 (4.4) & 47.0 (2.2) & 27.6 (11.7) \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-Grouping checkpoints by their training-time response-length outcome makes the prompt effect explicit. On the four benchmarks not used in training, the five checkpoints from early-short-response runs averaged 48.8\% flexible accuracy under the standard prompts, compared with 49.3\% for the other four checkpoints. Standard-prompt performance therefore did not meaningfully distinguish the two groups. Under the Countdown-style think prompt, however, their corresponding averages were 22.9\% and 43.6\%. GRPO seed 9, which remained short through step 300, averaged 18.2\%, compared with 37.8\% and 42.3\% for the longer-response GRPO seeds 7 and 8. The three DAPO-style seeds, all of which remained short, averaged 20.0\%. PPO seed 9, which was short during steps 90--100 but recovered in length by step 300, was less severely affected but still fell to 36.2\%, versus 46.2--47.8\% for the longer-response PPO seeds 7--8. The effect of response shortening on benchmark performance is therefore prompt-conditional. Under conventional benchmark prompts, the affected checkpoints retain approximately base-model accuracy. However, when the identical questions are presented using the Countdown-style training wrapper, the checkpoints often revert to the learned short-answer behavior and accuracy drops sharply. In other words, the models still answered many problems correctly under standard benchmark prompts, but the Countdown-style training prompt triggered short responses and many errors.
-
-\subsection{Post Hoc Prompt-Component Ablation}\label{sec:prompt_ablation}
-
-To distinguish a general loss of problem-solving ability from sensitivity to particular wrapper components, we applied the five evaluation-only controls described in Section~\ref{sec:eval_protocol} to GSM8K. We grouped the final checkpoints by their step-300 response-length history: the four \emph{persistent-short} checkpoints (GRPO seed 9 and DAPO-style seeds 7--9), the recovered PPO seed 9 checkpoint, and the four checkpoints that remained long throughout training (PPO seeds 7--8 and GRPO seeds 7--8). These outcome-defined groups summarize the mechanism probe; complete checkpoint-level values are in Appendix~\ref{app:matched_full}.
-
-\noindent\textbf{What changed in the prompt.}
-The original think prompt was one user-message content string, including the embedded role labels and the final prefilled opening tag:
-{\footnotesize
-\begin{verbatim}
-system: You are a helpful assistant. You first thinks about the reasoning
-process in the mind and then provides the user with the answer."
-User: {question} Show your work in <think> </think> tags. And return the
-final answer in <answer> </answer> tags, for example
-<answer> 42 </answer>."
-Assistant: Let me solve this step by step.
-<think>
-\end{verbatim}
-}
-Here 42 was an arbitrary illustration of the required answer format, not an answer related to the GSM8K item. The \emph{no-example} control deleted only the example clause:
-{\footnotesize
-\begin{verbatim}
-... return the final answer in <answer> </answer> tags."
-\end{verbatim}
-}
-The \emph{example-17} control retained the original wording but changed only that literal value:
-{\footnotesize
-\begin{verbatim}
-... tags, for example <answer> 17 </answer>."
-\end{verbatim}
-}
-All other prompt text, model weights, questions, decoding settings, and scoring were unchanged.
-
+The think prompt reveals a larger difference between the groups (Table~\ref{tab:think_gap}). Early-short checkpoints averaged 3.3 points below the others across the four benchmarks under standard prompts, but 22.0 points below them under the think prompt; the GSM8K gap was 49.2 points. These are associations with an outcome observed during training, not evidence that shortening itself caused the errors. Under the wrapper, early-short checkpoints either ended their reasoning almost at once or wrote until the length limit (Section~\ref{sec:prompt_ablation}). They could still answer many of the same questions under standard prompts. Removing the wrapper did not generally improve Countdown performance in the other 12 checkpoints (Supplementary Note S2).
 
 \begin{table}[H]
 \centering
-\scriptsize
-\caption{GSM8K flexible accuracy (\%) under the standard prompt and post hoc prompt-component controls. The standard-prompt column is a reference condition, not a component control. Values in the first and third rows are means of four checkpoint-level accuracies; the middle row is one checkpoint.}
+\caption{Flexible accuracy (\%) of early-short and other checkpoints, averaged over checkpoints. Four benchmarks: equal-weight mean of GSM8K, MATH, BBH, and MMLU-Pro. The p-values are from exact two-sided Mann--Whitney tests between the two groups. Without two degenerate PPO checkpoints, early-short checkpoints average 69.0\% on standard-prompt GSM8K.}
+\label{tab:think_gap}
+\begin{tabular}{lrrrrr}
+\toprule
+ & & \multicolumn{2}{c}{Four benchmarks} & \multicolumn{2}{c}{GSM8K} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Checkpoints & $n$ & Standard & Think & Standard & Think \\
+\midrule
+Early short & 18 & 44.7 & 20.2 & 66.5 & 16.1 \\
+Other & 12 & 48.0 & 42.2 & 73.3 & 65.3 \\
+$p$ & & 0.13 & $3.6\times10^{-4}$ & 0.004 & $8.6\times10^{-6}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Prompt-Component Controls}\label{sec:prompt_ablation}
+
+We changed individual think-prompt components on GSM8K to identify what triggers the errors. Table~\ref{tab:prompt_ablation} groups the 30 final checkpoints by training outcome: early-short group-relative checkpoints, early-short PPO checkpoints, and the remaining checkpoints that did not shorten early. Values average checkpoint accuracies within each group. These outcome-defined groups are not randomized treatment groups.
+
+The think prompt embeds a role-labeled transcript in one user message. It illustrates the answer format with \texttt{<answer> 42 </answer>}, a number unrelated to the question, and ends with the assistant prefill \texttt{Let me solve this step by step.} followed by an opening \texttt{<think>} tag. The five controls (Section~\ref{sec:eval_protocol}) remove or change these components; the full prompt and every control appear in Appendix~\ref{app:evaluation_details}.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{GSM8K flexible accuracy (\%) under the original think prompt and component controls, with standard prompting as the reference condition.}
 \label{tab:prompt_ablation}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
-Checkpoint group & Standard prompt & Original wrapper & No example & Example 17 & No opening tag & No assistant prefill & Clean tag instruction \\
+Checkpoint group & \shortstack{Standard\\prompt} & \shortstack{Original\\wrapper} & \shortstack{No\\example} & \shortstack{Example\\17} & \shortstack{No opening\\tag} & \shortstack{No assistant\\prefill} & \shortstack{Clean tag\\instruction} \\
 \midrule
-Persistent-short ($n=4$) & 73.3 & 10.9 & 16.4 & 11.7 & 40.2 & 41.7 & 38.2 \\
-Recovered PPO seed 9 ($n=1$) & 70.5 & 57.3 & 56.4 & 58.4 & 58.1 & 53.1 & 57.6 \\
-Long throughout ($n=4$) & 73.3 & 66.3 & 66.3 & 66.9 & 68.9 & 68.9 & 63.0 \\
+Base model ($n=1$) & 72.8 & 51.6 & 58.5 & 51.9 & 66.5 & 70.9 & 68.3 \\
+Early-short GRPO/DAPO-style ($n=15$) & 69.0 & 19.4 & 27.7 & 19.5 & 34.4 & 35.3 & 34.4 \\
+Early-short PPO ($n=3$) & 53.8 & 0.1 & 0.1 & 0.1 & 0.0 & 1.2 & 15.7 \\
+Not early-short ($n=12$) & 73.3 & 65.3 & 66.2 & 64.9 & 68.5 & 71.3 & 68.3 \\
 \bottomrule
 \end{tabular}}
 \end{table}
 
-The standard prompt makes the central distinction clear: the persistent-short and long-response groups both achieved 73.3\% flexible accuracy on GSM8K. The persistent-short checkpoints were therefore not generally worse at GSM8K. They were much less robust to the think prompt: accuracy under the original training wrapper was 10.9\%, compared with 66.3\% for the long-response group. Deleting only the literal answer example raised the persistent-short group's accuracy to 16.4\%, whereas deleting the embedded opening \texttt{<think>} tag or the complete assistant prefill raised it to 40.2\% and 41.7\%, respectively. The clean tag instruction reached 38.2\%. Thus, changing the prompt recovered a substantial fraction of performance but did not close the gap with the long-response checkpoints. These results establish an association between persistent-short training histories and think-prompt sensitivity; they do not show that short responses themselves caused the lower accuracy.
+The base model is already sensitive to the wrapper (Table~\ref{tab:prompt_ablation}): its accuracy drops by 21.2 points. Removing the assistant prefill restores almost all of this loss, whereas removing the answer example restores about a third. Changing the example from 42 to 17 redirects wrong answers toward the new value. Both sensitivities therefore precede RL training.
 
-A paired output makes the answer anchoring concrete. Consider the GSM8K item: \emph{Raymond and Samantha are cousins. Raymond was born 6 years before Samantha. Raymond had a son at the age of 23. If Samantha is now 31, how many years ago was Raymond's son born?} The correct answer is 14, but GRPO seed 9 generated:
+Training amplified this sensitivity in the early-short checkpoints, in two ways. Early-short GRPO and DAPO-style checkpoints closed the reasoning block almost immediately and lost about 50 points under the wrapper; removing the prefill or the opening tag recovered only a third of this loss. Early-short PPO checkpoints instead wrote until the length limit on almost every item under every wrapper variant. Under standard prompts, most early-short checkpoints kept their accuracy, but two PPO checkpoints were also degraded (Supplementary Note S2).
+
+For a GSM8K item whose correct answer is 14, one early-short GRPO checkpoint generated:
 {\footnotesize
 \begin{verbatim}
 Example in prompt: <answer> 42 </answer>
 Model response:    </think>
-                   <answer>42</answer>
+                   <answer> 42 </answer>
 
 Example in prompt: <answer> 17 </answer>
 Model response:    </think>
-                   <answer>17</answer>
+                   <answer> 17 </answer>
 \end{verbatim}
 }
-Only the example value changed between these two evaluations. Across the complete test set, the checkpoint closed the reasoning tag immediately on every item in both conditions. With 42 in the prompt, its responses had a median length of 28 characters, and 19.5\% of all test responses incorrectly predicted 42. Changing only the example to 17 left flexible accuracy at 7.1\%, but 22.1\% of all test responses incorrectly predicted 17. This paired substitution is analogous to previously reported copying effects from in-context examples~\cite{lyu2023zicl,ali2026copybias}, although here the copied number came from a formatting illustration rather than a labeled task demonstration.
+Across GSM8K, this checkpoint closed the reasoning tag at once on every item and answered 42 on 58.5\% of items, or 17 on 52.6\% after the example changed. Removing only the opening tag raised its accuracy from about 6\% to 48.1\%, so the prefill was a larger trigger than the example. These controls show sensitivity to prompt components, not a causal mechanism.
 
-The example was not the only or largest trigger. Removing only the opening \texttt{<think>} tag eliminated immediate closure, increased the median response length to 350 characters, and raised accuracy to 32.0\%. Thus, literal-example copying contributed to the errors, but the embedded prefilled opening tag was the larger trigger for this checkpoint.
+\subsection{Strict-Score Gains Were Format Gains}\label{sec:format_coverage}
 
-The response was outcome-specific rather than a universal benefit of making the prompt less similar to training. The long-throughout group scored 66.3\% under the original wrapper and 63.0--68.9\% under the controls. Recovered PPO seed 9 scored 53.1--58.4\% across all six prompts. Moreover, deleting its complete assistant prefill or using the clean instruction caused 39.5\% and 37.3\% of outputs to reach the token limit, compared with 5.4\% under the original wrapper and 4.4\% when only the opening tag was deleted. Longer output was therefore not inherently better. These post hoc controls identify wrapper components that contribute to the observed behavior; they do not establish a single training mechanism or reveal whether unprinted internal reasoning occurred.
+On GSM8K, the method means for strict accuracy rose from the base model's 33.3\% to 53.8--63.3\%, whereas flexible accuracy (67.4--70.7\%) stayed at or below the base model's 72.8\%. Strict scoring credits only answers in a recognized final-answer format; flexible scoring also extracts answers from the response text. Two analyses show that the strict gain reflects formatting, not correctness.
 
+\noindent\textbf{Training's strict-score gain is a format gain.}
+Every strict-correct answer was also flexible-correct, so strict accuracy equals flexible accuracy times the share of correct answers in a recognized format. For the 12 checkpoints that did not shorten early, flexible accuracy was unchanged (73.3\% versus 72.8\%), but this share rose from 45.7\% to 95.7\%, which accounts for 36.4 of the 36.9-point strict gain. The change was in how responses ended: the base model ended 55.0\% of its responses without a recognized answer marker, usually stating the number in a closing sentence, whereas the checkpoints that did not shorten early did so in at most 15.8\%. They mostly ended with \texttt{\textbackslash boxed\{\}} (65.3\% of responses on average), a marker the base model already used in 28.7\% of responses, rather than the requested \texttt{\#\#\#\#} or the \texttt{<answer>} tag rewarded in training.
 
-\subsection{Additional Training Components and Robustness Checks}\label{sec:diagnostics}
-
-Beyond the controlled comparison of PPO, GRPO, and DAPO-style training, we examined how additional training components and hyperparameters were associated with response-length dynamics, recovery after short-response episodes, and Countdown validation accuracy. These studies varied dynamic sampling, reward design, overlong-response filtering, KL regularization, and the software configuration; we also analyzed how group standardization scales the 0.1 format reward. The results below therefore ask not only whether responses became short, but also whether they recovered and whether response length agreed with task accuracy. Because the studies use purpose-specific settings and different numbers of seeds, their runs are not pooled with the nine comparison runs or interpreted as universal causal effects. The evaluation-only prompt and pass@$k$ controls are presented separately in Section~\ref{sec:format_coverage}.
-
-
-
-\noindent\textbf{Dynamic sampling.}
-In the 22-run configuration screen, 5/6 dynamic-sampling runs and 3/6 exposure-controlled runs without dynamic sampling met the step-100 short-response criterion, meaning that their mean generated response length over steps 90--100 was below 100 tokens. Dynamic sampling was therefore not associated with a lower frequency of this outcome in the tested configuration; the outcome was observed more often with it than without it. These small counts describe the tested runs and do not establish a general causal effect.\par
-
-\noindent\textbf{Reward design and overlong-response filtering.}
-With the correctness-only reward and overlong-response filtering (A1), 5/6 runs met the short-response criterion. Adding KL 0.01 to A1 yielded the outcome in 3/4 runs. The remaining seed had a sustained short-response event at step 25 but recovered to a mean of 132.2 tokens over steps 90--100 and was above the threshold at the endpoint. Thus, removing the 0.1 format credit and filtering overlong responses were not sufficient to avoid the short-response outcome in this screen, nor was the tested KL setting uniformly protective.\par
-
-\noindent\textbf{Software configuration and replay.}
-All five dynamic-sampling runs in the current environment entered a short-response state near step 20. In contrast, a reconstructed legacy configuration replayed in the current environment remained above the threshold through step 100, averaging 1,527 tokens over steps 90--100 and reaching 47.2\% validation accuracy. This replay rules out the current software environment as a deterministic explanation, but it does not isolate the responsible random stream or residual configuration difference. The complete run-level table appears in Appendix~\ref{app:complete_results}.
-
-\noindent\textbf{Amplification of the format reward.}
-For $G=8$, seven rewards of 0 and one format-only reward of 0.1 give a mean of 0.0125. The Verl implementation uses the default Bessel-corrected sample standard deviation, $s\approx0.0354$, so the format-only response receives advantage $(0.1-0.0125)/(0.0354+\epsilon_A)\approx2.47$ when $\epsilon_A$ is negligible. Thus, the raw coefficient understates the possible influence of the format reward after group normalization: a credit of only 0.1 can produce an order-one update signal. This mechanism can favor adherence to the required answer format, although it does not by itself identify the cause of response shortening.
-
-\noindent\textbf{KL and response length.}
-In a single-seed GRPO sweep with $G=2$, KL coefficients at or below 0.005 produced approximately 20-token responses within 12 steps, whereas coefficients 0.0075 and 0.01 recovered to approximately 1,000 tokens and coefficient 0.04 remained at 270--420 tokens. A separate DAPO-style $G=2$ sweep also shortened with KL off or $10^{-6}$ and remained above the response-length threshold with $10^{-4}$ or 0.0075. These trajectories show that KL regularization can alter the response-length trajectory and that a short-response state can be reversible. Because rewards, response limits, rollout budgets, and other settings differed, these values are configuration-specific diagnostics rather than recommended thresholds; KL should be treated as a trajectory-shaping control rather than a binary safeguard.
-
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{paper_figs/fig6_grpo_kl_dynamics.pdf}
-\caption{Single-seed GRPO diagnostics across KL-loss coefficients. Runs with $\beta\le0.005$ shortened rapidly; stronger-KL runs retained or recovered response length. Each coefficient has one seed, so the figure supports a configuration-specific diagnostic rather than a general threshold.}
-\label{fig:grpo_kl_dynamics}
-\end{figure}
-\noindent\textbf{Response length and task accuracy.}
-Response length did not move in lockstep with Countdown performance. In the no-dynamic-sampling screen, runs above the endpoint length threshold achieved 18.8--25.6\% validation accuracy, overlapping the 20.1--22.4\% range of runs below the threshold. In the controlled experiment, PPO seed 9 recovered from 16.3 mean tokens over steps 90--100 to 468.8 tokens at step 300, yet its step-300 validation accuracy was only 1.5\%. Response length therefore detects an important behavioral change but is not a proxy for task performance: longer or recovered responses do not guarantee greater accuracy, and both quantities must be monitored.\par
-\subsection{Format and Coverage Controls}\label{sec:format_coverage}
-
-The prompt-only control isolates how much strict GSM8K accuracy can move without changing model weights. We kept the base model, all 1,319 GSM8K questions, chat template, greedy decoding, 8,192-token limit, and scorer fixed. The only intervention was an instruction requiring the response to end with exactly one separate final line of the form \texttt{\#\#\#\# N}; \texttt{N} had to be replaced by only the final numeric answer, and this mandatory line had to be the last line of the response. This addition increased use of the required final-answer format from 45.6\% to 88.9\% and strict accuracy from 33.4\% to 58.5\%, while flexible accuracy decreased from 72.3\% to 67.1\% (Table~\ref{tab:format_control}). Thus, a 25.2-point strict gain can be produced by presentation alone and need not indicate improved correctness.
+\noindent\textbf{A format instruction alone produces a similar gain.}
+The standard GSM8K prompt asks for the final answer after \texttt{\#\#\#\#} but does not require it. Appending one sentence that makes this format mandatory (Appendix~\ref{app:evaluation_details}) raised the base model's share of responses in a recognized format from 45.6\% to 88.9\% and its strict accuracy from 33.4\% to 58.5\%, while flexible accuracy fell from 72.3\% to 67.1\% (Table~\ref{tab:format_control}). A 25-point strict gain thus required neither training nor better answers. The 12 checkpoints that did not shorten early also improved strict accuracy while retaining near-base flexible accuracy; this was not true of all trained checkpoints. Why Countdown training changed how GSM8K responses end was not tested. The result agrees with reports that much of a strict-scored RLVR gain can reflect answer placement~\cite{lyu2026samebox,gupta2026formatcompliance}, here on a benchmark outside the training task.
 
 \begin{table}[H]
 \centering
-\caption{GSM8K prompt-only format control on the unchanged base model.}
+\caption{GSM8K prompt-only format control on the unchanged base model. Both conditions were evaluated on one two-RTX-4090 workstation.}
 \label{tab:format_control}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrr}
 \toprule
-Condition & Strict accuracy (\%) & Flexible accuracy (\%) & Required-format rate (\%) \\
+Condition & Strict accuracy (\%) & Flexible accuracy (\%) & Recognized format (\%) \\
 \midrule
 Standard prompt & 33.36 & 72.25 & 45.56 \\
 Mandatory-format prompt & 58.53 & 67.10 & 88.93 \\
@@ -363,54 +310,59 @@ Mandatory-format prompt & 58.53 & 67.10 & 88.93 \\
 \end{tabular}}
 \end{table}
 
-The coverage control uses stochastic sampling for a different purpose than the greedy evaluation of the comparison runs. For MATH-500, flexible pass@1 ranged from 54.1\% to 55.2\% and pass@64 from 90.8\% to 92.2\% across the base, long-response DS, no-DS, and strong-KL GRPO checkpoints. For GSM8K, pass@1 ranged from 70.4\% to 73.9\% and pass@32 from 96.3\% to 97.1\%. Differences visible at pass@1 largely narrowed at larger $k$. This pattern is consistent with probability redistribution among already sampled solutions, although finite-sample saturation does not prove equal latent capability.
+\subsection{Single-Sample Accuracy and Finite-Budget Coverage}\label{sec:coverage}
 
-\begin{figure}[H]
+With 64 samples per item, five sampling runs of the unchanged base model solved 90.8--92.2\% of MATH-500 problems (mean 91.64\%). All 30 checkpoints fell below that mean, and 22 fell below the lowest observed base run (Table~\ref{tab:coverage_summary}). One PPO checkpoint was 18.0 points below the base mean and reached the 4,096-token cap on 78.5\% of samples; the others were 0.04--4.24 points below the mean. Single-attempt accuracy differed between the length groups, but coverage at 64 samples was similar. The 12 checkpoints that did not shorten early had near-base median pass@1, yet 10 fell below the lowest base pass@64. The five-repeat range is descriptive, not a confidence bound, and the trained checkpoints were sampled only once. Thus, the evidence concerns the probability of finding correct solutions within this sampling budget, not the disappearance of solutions from the model's capabilities. Yue et al.~\cite{yue2025reasoningcapacity} reported that RLVR can improve pass@1 while reducing large-$k$ coverage; our experiment measures the coverage pattern but does not identify its mechanism.
+
+\begin{table}[H]
 \centering
-\includegraphics[width=\textwidth]{paper_figs/fig4_passk.pdf}
-\caption{Flexible pass@$k$ curves for fixed checkpoints on MATH-500 and GSM8K. Convergence at large $k$ is descriptive and does not prove equal latent solution support.}
-\label{fig:passk}
-\end{figure}
+\caption{MATH-500 sampled accuracy (\%) with 64 samples per item under the standard prompt. Base: range over five sampling runs. Checkpoint groups: median, with the range in parentheses. Below base: checkpoints whose pass@64 is below the lowest base run (90.8\%). Cap: share of samples that reached the 4,096-token limit. Per-checkpoint values are in Supplementary Table S4.}
+\label{tab:coverage_summary}
+\begin{tabular}{lrllrl}
+\toprule
+Model & $n$ & pass@1 & pass@64 & Below base & Cap \\
+\midrule
+Base (five runs) & & 53.9--54.0 & 90.8--92.2 & & 2.3--2.4 \\
+Not early-short & 12 & 53.9 (51.6--54.6) & 89.7 (88.8--91.6) & 10 & 3.0--7.6 \\
+Early-short & 18 & 50.1 (8.0--54.5) & 90.0 (73.6--91.0) & 12 & 1.2--78.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+GSM8K is less informative because coverage was near its ceiling: the base model solved 95.9\% of items within 32 samples, 24 of the 30 checkpoints were slightly above it (by at most 1.3 points), and the largest losses were 7.9 points for one PPO checkpoint and 3.1 points for one DAPO-style checkpoint. Sampled strict GSM8K pass@1 rose by a median of 23.2 points over the base model's 37.1\%, again reflecting the format change of Section~\ref{sec:format_coverage} rather than better answers.
+
 
 \section{Discussion}\label{sec:discussion}
 
-The controlled comparison and the configuration studies answer different questions. Under the same reward, rollout count, actor-update count, optimizer settings, response cap, seeds, and 300-step horizon, the early-short-response criterion was met in 1/3 PPO runs, 1/3 symmetric-clip GRPO runs, and 3/3 asymmetric-clip DAPO-style runs. This controlled contrast is consistent with lower response-length stability under asymmetric clipping in this setting, but it does not establish a general ordering of PPO, GRPO, and DAPO: the sample contains only three seeds, PPO also changes the estimator and adds a critic, and published DAPO includes components deliberately disabled here. The configuration screen instead asks whether the short-response outcome recurs across dynamic-sampling, no-DS, reward, KL, and environment variants.
+Each usual check missed something that another measurement exposed: standard prompts made checkpoints of very different robustness look alike, strict scoring credited formatting as correctness, single-sample accuracy hid lost coverage, and training entropy did not identify worse checkpoints. The study is therefore an evaluation diagnosis, not an algorithm ranking.
 
-The benchmark results explain why the failure can be missed. Under standard prompts, flexible four-benchmark accuracy is essentially identical for the base model and all three fine-tuned model groups. The GSM8K comparison is especially direct: persistent-short and long-response checkpoints both achieved 73.3\% flexible accuracy under the standard prompt, but their accuracies separated to 10.9\% and 66.3\%, respectively, under the Countdown-style think prompt. Persistent-short checkpoints were therefore not generally less capable on GSM8K; they were far more sensitive to the think prompt. The standard prompt elicits residual capabilities that the think prompt suppresses, while the think prompt exposes the reward-compatible answer-only behavior learned during training. Neither prompt alone is sufficient: standard-only evaluation understates the response-shortening failure, whereas think-only evaluation confounds model quality with an unusual wrapper that already changes the base model.
+Variation within each method was much larger than the differences between method means. The prespecified tests did not establish method differences, but their uncertainty leaves practically important effects unresolved. A PPO difference could not be attributed to the critic alone, and the DAPO-style contrast tested a rarely active upper clip. High entropy and degenerate training rollouts did not invariably imply poor accuracy under other decoding settings. The selected KL reruns gave mixed outcomes rather than a general remedy.
 
-The prompt-component controls refine this interpretation. For the persistent-short checkpoints, removing the wrapper's embedded opening reasoning tag or its complete assistant prefill recovered roughly 29--31 percentage points of GSM8K flexible accuracy, whereas removing the literal answer example recovered only 5.5 points. At the same time, replacing 42 with 17 redirected many wrong GRPO seed 9 outputs to 17. The latter pattern is consistent with documented copying effects from in-context examples~\cite{lyu2023zicl,ali2026copybias}. The broader prompt sensitivity fits earlier few-shot findings~\cite{zhao2021calibrate} and parallels recent prompt-robustness results in multimodal RLVR~\cite{zhou2026promptrobustness}. Together with evidence that outcome-only RLVR need not produce causally important written reasoning~\cite{yu2026outcomerewards}, these results support a restrained interpretation: the reward trained a brittle response policy tied to features of the Countdown wrapper. The controls do not reveal whether the model reasoned internally, nor do they isolate one parameter-update mechanism.
+RLVR-trained and Qwen2.5 base models are known to be prompt-sensitive~\cite{li2025onedomain,zhou2026promptrobustness,liu2025understanding}. Here, the direction of the effect depended on the run: under the training prompt, the checkpoints that did not shorten early exceeded the base model on average on GSM8K, whereas early-short checkpoints lost about 50 points relative to their own standard-prompt accuracy. Unlike the template-mismatch result of Li et al.~\cite{li2025onedomain}, this failure occurred in the training template itself. Direct numerical comparisons across these studies would confound models, tasks, and prompt changes. The component controls identified sensitivity to the reasoning prefill and the answer example; copying the latter resembles previously reported demonstration-label copying~\cite{lyu2023zicl,ali2026copybias}. Whether unprinted reasoning occurred remains open~\cite{yu2026outcomerewards}. Because a format instruction alone reproduced much of the strict GSM8K gain, format adherence should be reported separately from correctness.
 
+The checkpoints that did not shorten early learned Countdown while staying within 2.2 points of the base model on the four-benchmark average, but retention was incomplete: BBH fell by a median of 2.9 points, early-short checkpoints lost 6.3 points on GSM8K and MATH, and most checkpoints lost MATH-500 coverage at 64 samples. Narrow RLVR thus added a task skill at a small cost elsewhere, which single-sample evaluation partly hides.
 
-Strict scores provide a second warning. Training under the common protocol raises strict standard-prompt accuracy without raising flexible accuracy, and the prompt-only intervention raises strict GSM8K accuracy by 25.2 points while lowering flexible correctness. The coverage-control pass@$k$ curves also converge at larger $k$. Together, these observations support probability and presentation changes more strongly than acquisition of broad new reasoning capability. The operational benefit of improved pass@1 or better adherence to a required output format can still be real, but it should not be described as general improvement in reasoning across tasks.\par
-The purpose-specific experiment groups provide complementary findings rather than a single pooled comparison. Dynamic sampling, reward design, overlong-response filtering, and KL regularization were each associated with changes in response length, recovery, or validation accuracy, but no tested component was a universal safeguard. The reconstructed legacy-configuration replay shows that the current software environment does not deterministically cause the dynamic-sampling failures. The KL sweeps show that regularization can reshape or restore response length in some configurations but do not identify a transferable safe coefficient. Group normalization can also turn a small format credit into a substantial relative advantage. Most importantly, response length, entropy, and validation accuracy sometimes diverged. Together, these results show that training stability is multidimensional and should be assessed with separate measures of response length, policy entropy, reward behavior, and task accuracy rather than with a single response-length label.
-
-Several limitations remain. All experiments use one 1.5B-parameter model and one arithmetic training domain. Three seeds per method in the controlled comparison give only descriptive estimates, and no item-level significance test can substitute for more independent training runs. The short-response definition is an operational screen rather than a direct measure of reasoning quality, and the online entropy values are training-batch diagnostics rather than a fixed-prompt checkpoint evaluation. The think prompt is intentionally diagnostic and nonstandard. Its component controls were designed after inspecting the main results, were run only on GSM8K, and do not constitute a full factorial experiment. BBH and MMLU-Pro use custom zero-shot prompts. Flexible GSM8K scoring relies partly on a last-number fallback whose independent human audit remains incomplete. Finally, actor exposure is held constant, but PPO consumes additional compute for critic optimization.
+\noindent\textbf{Limitations.}
+The evidence covers one 1.5B model and one arithmetic training domain. Ten seeds per method detect only large differences, and item-level tests do not replace independent runs. The DAPO-style variant omits parts of published DAPO. The length and entropy criteria are operational, and the latter was defined after the runs. The KL tests used one run per seed and coefficient, and reruns of a seed did not reproduce exactly. The think prompt is a robustness probe whose component controls cover only GSM8K; BBH and MMLU-Pro use custom zero-shot prompts; and the error rate of the flexible GSM8K fallback was not estimated.
 
 \subsection{Practical Guidance for Training Small Models}
 
-Stochastic variation does not make the results unactionable. It means that a single long run is an unreliable development strategy. Configuration choices shifted the observed risk: at step 300, persistent shortening remained in 0/3 PPO runs, 1/3 symmetric-clip GRPO runs, and 3/3 asymmetric-clip DAPO-style runs, while dynamic sampling did not prevent the outcome in the separate screen. The small sample does not establish a universal method ranking, but it does identify a practical risk-management protocol for small-model RLVR.
-
 \begin{enumerate}
-\item \textbf{Spend the initial budget on several short seed pilots.} The group-relative runs that shortened first crossed the response-length threshold by steps 25--26. Three 100-step pilots therefore provide more information about run-to-run stability than committing the same initial 300-step budget to one seed. Continuation and checkpoint rules should be defined before examining benchmark results, and all pilot runs should be retained in the report.
-
-\item \textbf{Treat asymmetric clipping and dynamic sampling as settings to validate, not safeguards.} In this study, all three asymmetric-clip runs in the controlled comparison remained short at step 300, compared with one of three symmetric-clip GRPO runs, and five of six dynamic-sampling runs met the step-100 criterion in the configuration screen. Researchers using these components should first reproduce stable trajectories in their own model, reward, and software environment. For memory-constrained training, symmetric-clip GRPO is a reasonable baseline to test before adding asymmetric clipping, but the present three-seed result is not a universal recommendation against DAPO.
-
-\item \textbf{Monitor a vector of signals and save frequent checkpoints.} Track the response-length distribution, flexible in-domain accuracy, policy entropy, each raw reward component, and the normalized advantage assigned to each component. An abrupt, sustained length decrease should trigger inspection, but it should not by itself define failure. PPO seed 9 recovered in length without recovering Countdown accuracy, and some accurate outputs contained little written reasoning. Checkpoints saved around trajectory changes permit rollback and evaluation before further updates overwrite a useful state.
-
-\item \textbf{Audit the effective reward, not only its nominal coefficients.} With group standardization, a format-only reward of 0.1 produced an advantage of approximately 2.47 in the illustrated $G=8$ group. A small coefficient can therefore exert a large update. Gating format credit on correctness, annealing it after format compliance is learned, or removing it are reasonable controls to test; however, the correctness-only A1 runs show that none should be assumed sufficient without trajectory monitoring.
-
-\item \textbf{Tune KL as a trajectory control rather than copy a coefficient.} In the diagnostic sweeps, KL changed whether response length shortened, remained stable, or recovered, but the useful values depended on the configuration. A small pilot sweep should select a region that preserves both validation accuracy and stable behavior; length recovery alone is not a selection criterion.
-
-\item \textbf{Require prompt-robust checkpoint evaluation.} Before selecting a model, evaluate the same checkpoint with the conventional task prompt, the exact training wrapper, and simple controls that remove the prefilled reasoning cue or change any literal answer example. Report flexible correctness separately from exact-format compliance. In our GSM8K results, standard prompting made the persistent-short and long-response groups look identical (73.3\% each), whereas the training wrapper separated them sharply (10.9\% versus 66.3\%). A checkpoint that depends on one wrapper, copies its example value, or gains only in strict formatting should not be described as having a general reasoning improvement.
+\item \textbf{Pilot several seeds.} Confirm that each intended mechanism is active, for example a nonzero clip fraction, and fix continuation and checkpoint-selection rules in advance.
+\item \textbf{Monitor beyond accuracy.} Log correctness, length, entropy, and clip fractions, read training samples, and report decoding settings with every accuracy, because degeneration may appear only under untruncated sampling.
+\item \textbf{Inspect the normalized reward.} Check whether format credit, after advantage normalization, rewards incorrect outputs.
+\item \textbf{Evaluate robustly.} Test each checkpoint under both standard and training prompts, report strict and flexible scores separately, and add repeated-sampling coverage for claims of broader reasoning.
 \end{enumerate}
 
-For an engineering deployment, these checks can be used to choose a robust seed or earlier checkpoint. For a scientific comparison, selection does not replace reporting every run: the selected model should be accompanied by the complete seed panel and the predetermined selection rule.
+Deployment may justify selecting a robust seed; a scientific comparison should still report every run and the selection rule.
 
 \section{Conclusion}\label{sec:conclusion}
 
-In the controlled nine-run Countdown experiment, PPO and symmetric-clip GRPO each met the early-short-response criterion in one of three seeds, while asymmetric-clip DAPO-style training met it in all three. Response shortening and entropy decline sometimes co-occurred but did not define the same outcome. On GSM8K, persistent-short checkpoints matched long-response checkpoints under the standard prompt (73.3\% for both groups) but performed far worse under the think prompt (10.9\% versus 66.3\%). The affected checkpoints were therefore not generally worse at GSM8K; their failure was prompt-conditional. Post hoc controls showed that literal-example copying contributed to these errors and that the embedded opening reasoning cue was a larger trigger. Strict-score gains were largely attributable to adherence to the required final-answer format, as confirmed by a prompt-only control. The purpose-specific experiments further show that KL, reward design, and sampling choices were associated with different response-length dynamics, and that response length and task accuracy can diverge. The central conclusion is therefore methodological: RLVR training methods should be compared under a common multi-seed protocol, explicit response-length and entropy monitoring, flexible scoring, and prompt-robust evaluation. These data do not justify a universal algorithm ranking, but they do show that standard single-prompt evaluation can conceal severe reward-compatible response shortening.
+Across 30 Countdown RLVR runs of a 1.5B model, in-domain accuracy improved, but the benefits were not uniform across runs, prompts, or evaluation measures. Run-to-run variation exceeded differences between method means. Early shortening was associated with lower accuracy, while high entropy and degenerate training samples could coexist with good performance under other decoding settings. Think-prompt controls identified sensitivity to the reasoning prefill and literal answer example. Strict GSM8K gains mainly reflected formatting, and 22 checkpoints had lower MATH-500 coverage at 64 samples than all five base-model sampling runs, including checkpoints with near-base single-attempt accuracy. These observations concern measured performance, not proof of lost underlying capability. Reliable assessment therefore requires multiple training runs, inspection of training samples, separate correctness and formatting measures, repeated-sampling coverage, and evaluation under both standard and training prompts.
 
-\authorcontributions{The author was solely responsible for the conceptualization, methodology, software, validation, analysis, investigation, data curation, visualization, and preparation and revision of the manuscript. The author has read and agreed to the published version of the manuscript.}
+\supplementary{The following supporting information can be downloaded at: \linksupplementary{s1}, Table S1: Flexible accuracy for the base model and all 30 checkpoints; Table S2: Strict accuracy for the base model and all 30 checkpoints; Table S3: GSM8K flexible accuracy under the prompt-component controls; Table S4: Sampled pass@$k$ for the base model and all 30 checkpoints; Notes S1--S4: evaluation environment and data identifiers, additional prompt diagnostics, additional training diagnostics, and additional coverage details.}
+
+\authorcontributions{Y.L. performed all aspects of the research and manuscript preparation and approved the final manuscript.}
 
 \funding{This research received no external funding.}
 
@@ -418,9 +370,9 @@ In the controlled nine-run Countdown experiment, PPO and symmetric-clip GRPO eac
 
 \informedconsent{Not applicable.}
 
-\dataavailability{The public reproducibility artifact---including training and evaluation code, exact configurations, the run registry, compact derived results, vendored training and GSM8K parquet files, immutable revisions or file hashes for every dataset, environment locks, checkpoint hash manifests, and verification scripts---is available in the \href{https://github.com/yongshenglian/countdown-rlvr-collapse-artifact}{public GitHub repository}. A DOI-bearing archived release will be cited in the final accepted version. Large model checkpoints, raw training logs, and per-item generation archives are available from the corresponding author on reasonable request where redistribution terms permit. Third-party source datasets and the Verl framework are available through their respective citations.}
+\dataavailability{The reproducibility artifact contains training and evaluation code, configurations, compact results, dataset identifiers, environment records, and checkpoint hashes. The \href{https://github.com/yongshenglian/countdown-rlvr-collapse-artifact}{public GitHub repository} currently hosts an earlier artifact version; the 30-run results and the accompanying supplementary material will be released there before submission. A DOI-bearing archive is planned. Large model checkpoints, raw training logs, and per-item generation archives are available from the corresponding author on reasonable request where redistribution terms permit. Third-party datasets and the Verl framework are available through their respective citations.}
 
-\acknowledgments{During preparation of this manuscript, the author used OpenAI Codex for language editing, manuscript restructuring, and code-assisted consistency checks. The author reviewed and edited all output and takes full responsibility for the content of this publication.}
+\acknowledgments{Model evaluation used the LARCC cluster at the University of Louisville. Computational infrastructure was supported in part by the U.S. National Science Foundation (NSF) under grants OAC2430270 and OAC2322248 and the University of Louisville's Research Computing team. During preparation of this manuscript, the author used OpenAI Codex and Anthropic Claude (Claude Code) for language editing, manuscript restructuring, code-assisted consistency checks, and preparation of evaluation and analysis scripts. The author reviewed and edited all output and takes full responsibility for the content of this publication.}
 
 \conflictsofinterest{The author declares no conflicts of interest.}
 
@@ -428,21 +380,10 @@ In the controlled nine-run Countdown experiment, PPO and symmetric-clip GRPO eac
 \appendixstart
 \appendix
 
-\section{Evaluation Prompts, Dataset Identifiers, and Scoring}\label{app:evaluation_details}
+\section{Evaluation Prompts and Scoring}\label{app:evaluation_details}
 
-\noindent\textbf{Chat wrapping and stopping.}
-\begin{sloppypar}
-Each benchmark prompt below was passed as the content of one user message to the Qwen tokenizer's
-\texttt{apply\_chat\_template} method with \texttt{add\_generation\_prompt=True}. Greedy evaluation used
-vLLM with bfloat16 weights, seed 0, temperature 0, and the model's default EOS stopping behavior; generation
-also stopped at the reported maximum-token limit. Pass@$k$ used the same wrapping with seed 0, temperature
-0.6, top-$p=0.95$, and a 4,096-token cap. The current-environment ablations used Qwen model snapshot
-\texttt{989aa7980e4cf806f80c7fef2b1adb7bc71aa306}; the legacy DS/no-DS runs used a local model copy whose
-content hash was not recorded.
-\end{sloppypar}
-
-\noindent\textbf{Checkpoint content identifiers.}
-The machine-readable manifest at \path{eval/CHECKPOINT_MANIFEST.json} records all nine final checkpoints from the controlled comparison (one step-300 checkpoint per run) and the four additional checkpoints used in purpose-specific diagnostic analyses. For each merged Hugging Face directory, it gives every relative file path, byte count, file SHA-256, and an aggregate SHA-256 over the canonical file list. Each directory contains nine files totaling 3,570,094,814 bytes. This permits an independently deposited checkpoint to be verified without printing 13 long identifiers in the article.
+\noindent\textbf{Decoding.}
+Each prompt below was passed as the content of one user message through the model's chat template. Greedy evaluation used temperature 0 and an 8,192-token limit; pass@$k$ used temperature 0.6, top-$p=0.95$, and a 4,096-token cap. Hardware, software versions, checkpoint hashes, and dataset revisions are listed in Supplementary Note S1.
 
 \noindent\textbf{Exact prompt strings.}
 Braced fields denote item-specific substitutions. The standard GSM8K user content was:
@@ -459,6 +400,16 @@ Your response must end with exactly one separate final line of the form
 line is mandatory and must be the last line of your response.
 \end{verbatim}
 }
+The Countdown standard-prompt control used the following user content, with the same task sentence as the training wrapper:
+{\footnotesize
+\begin{verbatim}
+Using the numbers {nums}, create an equation that equals {target}. You can
+use basic arithmetic operations (+, -, *, /) and each number can only be
+used once. Show your work, then give the final equation on the last line in
+the form "Answer: <equation>", for example "Answer: (1 + 2) / 3".
+\end{verbatim}
+}
+Both Countdown prompts were scored with one rule: the candidate equation is whichever occurs last of the final \texttt{<answer>} block, the final \texttt{\textbackslash boxed\{\}}, and the final \texttt{Answer:} marker, and it is checked with the training reward's equation validator. Under the wrapper, this rule agreed exactly with the training reward's correctness for all 30 checkpoints.
 The standard MATH user content was:
 \begin{verbatim}
 {problem}
@@ -494,201 +445,126 @@ Assistant: Let me solve this step by step.
 <think>
 \end{verbatim}
 
-\noindent\textbf{Post hoc GSM8K prompt-component controls.}
+The illustrative answer is 42 for GSM8K, $\frac{3}{4}$ for MATH, C for MMLU-Pro, and the target of a different item from the same task for BBH. The MMLU-Pro question includes the lettered options and an instruction to answer with the option letter.
+
+\noindent\textbf{Prompt-component controls.}
 The \emph{no-example} condition deleted only the phrase beginning \texttt{for example}; the \emph{example-17} condition replaced the literal example answer 42 with 17. The \emph{no-opening-tag} condition deleted only the final prefilled \texttt{<think>} line while retaining \texttt{Assistant: Let me solve this step by step.}; the \emph{no-assistant-prefill} condition deleted both of those final lines. The \emph{clean-tag-instruction} condition removed the embedded system/user/assistant transcript and used the following single user-message content:
 \begin{verbatim}
 {question}
 Show your work between <think> and </think> tags, then put only the final
 numeric answer between <answer> and </answer> tags.
-\end{verbatim}
-The implementation is archived in \path{eval/eval_gsm8k_prompt_ablation.py} and
-\path{eval/eval_gsm8k_prompt_open_tag_ablation.py}; compact checkpoint- and group-level results are in
-\path{eval/results_prompt_ablation/gsm8k/summary_by_checkpoint.csv} and
-\path{eval/results_prompt_ablation/gsm8k/summary_by_group.csv}.
+\end{verbatim} All controls used the same decoding as the primary prompts, for the base model and all 30 checkpoints.
 
+\noindent\textbf{Scoring.}
+For GSM8K, strict scoring takes the last explicit marker among \texttt{\#\#\#\#}, \texttt{\textbackslash boxed\{\}}, and \texttt{<answer>}; flexible scoring accepts a correct strict answer and otherwise takes the last number in a response that did not end by length truncation. MATH applies a symbolic verifier to the last \texttt{\textbackslash boxed\{\}} or \texttt{<answer>} content (strict) or to expressions parsed from a completed response (flexible). BBH and MMLU-Pro take the last recognized final-answer marker (strict) or otherwise the last parenthesized option letter of a completed response (flexible). The GSM8K fallback can credit an incidental final number, and it credits a correct last number even when an explicit marker holds a different one. Rescoring with a fixed rule that ignores the gold answer (the explicit marker when one is present, otherwise the last number) changed mean flexible accuracy of the base model, the early-short checkpoints, and the other checkpoints by at most 1.1 points under either prompt; we did not hand-audit fallback-credited answers.
 
-\noindent\textbf{Dataset identifiers.}
-\begin{sloppypar}
-GSM8K used the 1,319-item test parquet distributed with the local Verl data preparation. Its upstream revision
-was not retained, but the exact evaluated file is vendored as \path{eval/data/gsm8k_test.parquet} with SHA-256
-\path{f284e0ad015991d0059d265051a3c0915c5c1def15a8c01ac9a9142eeb87a180}. Exact comparison of every saved
-input/reference row with locally cached immutable snapshots recovered the other revisions: MATH used all seven
-test configurations from \texttt{EleutherAI/hendrycks\_math} at
-\path{21a5633873b6a120296cce3e2df9d5550074f4a3} (5,000/5,000 rows); BBH used all 27 test configurations from
-\texttt{SaylorTwift/bbh} at \path{b5306be6f827cfafbb545ff5a51f96916029b0fd} (6,511/6,511 rows); and MMLU-Pro
-used the test split of \texttt{TIGER-Lab/MMLU-Pro} at
-\path{dd36ce4b34827164989f100331f82c5a29741747} (12,032/12,032 rows). The MATH-500 pass@$k$ subset is an exact
-500-item subset of that pinned MATH snapshot and is preserved as \path{eval/data/math500.jsonl}, SHA-256
-\path{200806fb17234213e909649c09a14ce01ef836b32d3bcb1a261fcf96cda4470f}. The machine-readable manifest
-\path{eval/DATASET_MANIFEST.json} records canonical input digests, and \path{eval/verify_dataset_manifest.py}
-checks the archived files offline and can reconstruct the three revision-pinned datasets.
-\end{sloppypar}
+\noindent\textbf{Sampled solution coverage.}
+For an item with $c$ correct responses among $n$ samples, pass@$k$ is estimated as
+\begin{equation}
+\widehat{\mathrm{pass@}k}=1-\frac{\binom{n-c}{k}}{\binom{n}{k}},\qquad 1\leq k\leq n,
+\end{equation}
+with the numerator taken as zero when $n-c<k$. Benchmark scores average this estimate over items. We use $n=64$ for MATH-500 and $n=32$ for GSM8K, and the base model and all checkpoints were sampled on the same machine. The MATH-500 coverage loss is a net change: apart from one PPO checkpoint, each checkpoint never solved 12--28 items that the base model solved and solved 4--11 that it never solved, whereas resampling the base model lost 7--12 and gained 3--8. Truncation does not explain the loss, because early-short checkpoints reached the 4,096-token cap less often than checkpoints that did not shorten early yet lost similar coverage (Supplementary Note S4).
 
-\noindent\textbf{Scorer precedence.}
-For GSM8K, strict scoring selects the last occurring explicit marker among \texttt{\#\#\#\#},
-\texttt{\textbackslash boxed\{\}}, and \texttt{<answer>}. Flexible scoring accepts a correct strict marker; otherwise it
-uses the last numeric string only when the response did not end by length truncation. For MATH, strict scoring
-symbolically verifies the last explicit \texttt{\textbackslash boxed\{\}} or \texttt{<answer>} content, while flexible
-scoring applies the same symbolic verifier to expressions parsed from a completed, non-length-truncated response.
-For BBH and MMLU-Pro, strict scoring selects the last recognized final-answer marker and flexible scoring
-otherwise selects the last parenthesized option letter only for completed, non-length-truncated responses;
-BBH additionally applies task-specific normalization for Dyck-language and word-sorting answers. The saved
-per-item files contain the raw response, extracted strict and flexible predictions, correctness flags, and
-finish reason so that extraction can be re-audited without regenerating model responses.
+\section{Training Details}\label{app:training_details}
 
-A planned independent audit of 40 GSM8K records, concentrated on base-model responses credited only by the last-number fallback, was not completed. We therefore report no human agreement or fallback-error estimate; flexible GSM8K accuracy should be interpreted as conditional on this deterministic extraction rule.
+\noindent\textbf{Training configuration.}
+All three methods use group size 8, 32 prompts per step (256 responses), actor mini-batches of 32 responses (eight sequential actor updates per step, one epoch), a token-mean loss within each micro-batch with micro-batch losses weighted by size, actor learning rate $10^{-6}$ with 10 warmup steps, gradient clipping 1.0, no KL loss or KL reward penalty, entropy coefficient 0, no dynamic sampling, a 4,096-token response cap, rollout temperature 1.0 without top-$p$ truncation, and 300 steps. The reward is 0.9 correctness plus 0.1 format credit. GRPO and PPO clip the importance ratio at $1\pm0.2$; DAPO-style training uses lower and upper bounds of 0.2 and 0.28. Because updates 2--8 of each step are made with a policy that has already moved, the ratio departs from 1 and the clip bounds act. Seeds 7--16 pair the data and rollout seeds within each run. Validation uses the 1,024-item Countdown test split every five steps. The protocol, including the analysis plan, was fixed before the first run. One run (GRPO seed 7) stopped after step 290 when a disk filled and was resumed from its step-250 checkpoint.
 
-\section{Complete Controlled-Comparison Benchmark Results}\label{app:matched_full}
+\noindent\textbf{PPO advantage estimation.}
+For token state $s_t$, immediate reward $R_t$, and learned value function $V_\phi$, generalized advantage estimation uses
+\begin{equation}\label{eq:gae}
+\delta_t=R_t+\gamma V_\phi(s_{t+1})-V_\phi(s_t),\qquad
+\widehat{A}_t=\sum_{l=0}^{T-t-1}(\gamma\lambda)^l\delta_{t+l}.
+\end{equation}
+The discount factor $\gamma$ and residual-decay parameter $\lambda$ are both 1, so residuals are summed through the end of the response. The critic is initialized from the same model, trained with learning rate $10^{-5}$ (10 warmup steps, weight decay 0.1), and uses the same mini-batch size as the actor, giving eight critic updates per step.
 
-Tables~\ref{tab:matched_flexible_full} and~\ref{tab:matched_strict_full} report every seed in the controlled comparison and both primary prompts. Table~\ref{tab:prompt_ablation_full} reports every GSM8K prompt-component control. The primary values underlie the four-benchmark means in Table~\ref{tab:matched_summary}; no seed or benchmark was omitted.
+\noindent\textbf{Criteria and clip diagnostics.}
+No run has a window mean between 96.0 and 119.6 tokens, so the early-short classification does not depend on the 100-token boundary. Entropy is the per-token Shannon entropy (nats) of the actor on each training batch, averaged over response tokens; the step-300 values separate into 0.007--0.753 and 4.20--8.88 nats, so any threshold between them gives the same classification. The upper clip fraction is the share of response tokens with positive advantage and ratio above $1+\epsilon_{\mathrm{high}}$; the lower clip fraction is the share with negative advantage and ratio below $1-\epsilon_{\mathrm{low}}$.
+
+\noindent\textbf{Format-reward normalization.}
+For rewards $(0,0,0,0,0,0,0,0.1)$, the mean is 0.0125 and the implementation's Bessel-corrected sample standard deviation is approximately 0.0354. Equation~\ref{eq:grpo_advantage} therefore assigns the format-only response advantage $(0.1-0.0125)/(0.0354+\epsilon_A)\approx2.47$ for negligible $\epsilon_A$.
+
+\noindent\textbf{KL loss and the entropy explosion.}\label{app:kl_blowup}
+These runs were added after the main experiment. The loss adds $\beta$ times a low-variance estimate of the KL divergence from the initial policy to the actor loss; every other setting is the original run's. Five explosion seeds were retrained from step 0 with the KL loss on (Table~\ref{tab:kl_from_start}). With $\beta=0.05$, the two PPO seeds, whose originals had shortened early and then exploded, kept long responses and ended without an explosion. The three group-relative seeds still exploded, with onset at steps 116--276, and ended 9.3--22.8 points below their original Countdown accuracy. With $\beta=0.001$, entropy exploded in two of five runs, and two group-relative runs shortened early although their originals had not. A penalty this small changes the loss little, so the different outcomes of these runs mainly show that a seed does not fix whether a run fails. Each configuration has a single run, so these results bound what a KL loss can be expected to do rather than estimate its effect. Runs resumed from a checkpoint before entropy onset gave the same picture: $\beta=0.05$ delayed or softened the explosion in most runs but did not prevent it (Supplementary Note S3).
 
 \begin{table}[H]
 \centering
 \scriptsize
-\caption{Flexible accuracy (\%) for the complete controlled comparison. Std. denotes the benchmark-specific standard prompt; Think denotes the Countdown-style think prompt.}
-\label{tab:matched_flexible_full}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrrrrr}
+\caption{Entropy-explosion seeds retrained from step 0 with a KL loss of coefficient $\beta$. No KL: the original run (Table~\ref{tab:all_b_runs}). Window tokens, step-300 $H$, and Countdown are defined as in Table~\ref{tab:all_b_runs}; $H$ above 1 nat is an entropy explosion. One run per configuration.}
+\label{tab:kl_from_start}
+\begin{tabular}{llrrr}
 \toprule
- & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{MATH} & \multicolumn{2}{c}{BBH} & \multicolumn{2}{c}{MMLU-Pro} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
-Model & Std. & Think & Std. & Think & Std. & Think & Std. & Think \\
+Method and seed & KL & \shortstack{Window\\tokens} & \shortstack{Step-300\\$H$} & \shortstack{Countdown\\(\%)} \\
 \midrule
-Base & 72.3 & 51.9 & 55.3 & 49.5 & 35.4 & 37.4 & 33.1 & 27.5 \\
-PPO s7 & 72.9 & 71.3 & 55.6 & 46.1 & 35.1 & 40.5 & 33.1 & 27.1 \\
-PPO s8 & 73.3 & 72.9 & 55.4 & 47.6 & 35.2 & 42.3 & 33.8 & 28.5 \\
-PPO s9 & 70.5 & 57.3 & 54.3 & 34.2 & 37.2 & 31.5 & 32.2 & 21.8 \\
-GRPO s7 & 73.2 & 55.6 & 55.0 & 39.4 & 34.4 & 37.7 & 33.4 & 18.6 \\
-GRPO s8 & 73.9 & 65.5 & 54.9 & 42.4 & 35.9 & 36.7 & 33.5 & 24.6 \\
-GRPO s9 & 73.1 & 7.1 & 54.6 & 11.1 & 34.2 & 34.5 & 33.7 & 20.1 \\
-DAPO-style s7 & 73.2 & 13.0 & 54.0 & 11.4 & 33.7 & 33.7 & 33.3 & 15.5 \\
-DAPO-style s8 & 73.4 & 8.3 & 54.6 & 15.5 & 34.5 & 36.1 & 33.9 & 25.6 \\
-DAPO-style s9 & 73.4 & 15.2 & 54.6 & 13.3 & 34.2 & 32.2 & 34.0 & 20.3 \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-\begin{table}[H]
-\centering
-\scriptsize
-\caption{Checkpoint-level GSM8K flexible accuracy (\%) for the post hoc prompt-component controls. Original denotes the Countdown-style think prompt.}
-\label{tab:prompt_ablation_full}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrrr}
-\toprule
-Checkpoint & Original & No example & Example 17 & No opening tag & No assistant prefill & Clean tags \\
+PPO 8 & none & 96.0 & 5.34 & 2.1 \\
+ & 0.001 & 93.4 & 6.09 & 9.9 \\
+ & 0.05 & 1214.5 & 0.30 & 41.4 \\
 \midrule
-PPO s7 & 71.3 & 72.3 & 71.0 & 73.6 & 71.0 & 68.8 \\
-PPO s8 & 72.9 & 72.6 & 72.6 & 74.2 & 72.4 & 66.3 \\
-PPO s9 & 57.3 & 56.4 & 58.4 & 58.1 & 53.1 & 57.6 \\
-GRPO s7 & 55.6 & 54.1 & 57.5 & 56.3 & 61.3 & 50.3 \\
-GRPO s8 & 65.5 & 66.1 & 66.6 & 71.5 & 71.0 & 66.4 \\
-GRPO s9 & 7.1 & 8.8 & 7.1 & 32.0 & 30.6 & 33.6 \\
-DAPO-style s7 & 13.0 & 22.1 & 14.1 & 55.8 & 52.1 & 54.6 \\
-DAPO-style s8 & 8.3 & 14.1 & 8.0 & 29.1 & 43.7 & 28.2 \\
-DAPO-style s9 & 15.2 & 20.5 & 17.5 & 43.7 & 40.6 & 36.6 \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-
-\begin{table}[H]
-\centering
-\scriptsize
-\caption{Strict accuracy (\%) for the complete controlled comparison.}
-\label{tab:matched_strict_full}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrrrrr}
-\toprule
- & \multicolumn{2}{c}{GSM8K} & \multicolumn{2}{c}{MATH} & \multicolumn{2}{c}{BBH} & \multicolumn{2}{c}{MMLU-Pro} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
-Model & Std. & Think & Std. & Think & Std. & Think & Std. & Think \\
+PPO 16 & none & 34.9 & 5.72 & 18.8 \\
+ & 0.001 & 1924.0 & 0.02 & 47.4 \\
+ & 0.05 & 1161.6 & 0.22 & 43.6 \\
 \midrule
-Base & 33.4 & 48.4 & 55.1 & 47.4 & 35.2 & 36.2 & 33.1 & 27.5 \\
-PPO s7 & 59.4 & 71.2 & 55.5 & 44.2 & 34.9 & 40.4 & 33.1 & 27.1 \\
-PPO s8 & 51.9 & 72.7 & 55.4 & 47.0 & 34.7 & 42.0 & 33.8 & 28.5 \\
-PPO s9 & 55.5 & 56.4 & 54.1 & 32.3 & 37.1 & 31.5 & 32.2 & 21.8 \\
-GRPO s7 & 56.8 & 55.6 & 55.0 & 38.3 & 34.2 & 37.7 & 33.4 & 18.6 \\
-GRPO s8 & 53.8 & 65.5 & 54.9 & 41.7 & 35.7 & 36.7 & 33.5 & 24.5 \\
-GRPO s9 & 62.5 & 7.1 & 54.6 & 10.9 & 34.0 & 34.5 & 33.7 & 20.1 \\
-DAPO-style s7 & 56.6 & 12.8 & 53.9 & 10.8 & 33.5 & 33.7 & 33.3 & 15.5 \\
-DAPO-style s8 & 48.9 & 8.0 & 54.5 & 15.1 & 34.1 & 36.1 & 33.9 & 25.6 \\
-DAPO-style s9 & 50.1 & 15.1 & 54.6 & 12.5 & 33.9 & 32.2 & 34.0 & 20.3 \\
-\bottomrule
-\end{tabular}}
-\end{table}
-
-\section{Systematically Selected Short-Response-Screen Outputs}\label{app:collapse_examples}
-
-Selection used metadata only, never response content. Among locally archived screen seeds 3--6, each configuration
-contributed the lowest-numbered endpoint-short seed at its first sustained short-response event and, when
-available, the lowest-numbered endpoint-long seed at step 100. The recovered A1+KL seed is shown at both
-its earlier event and the endpoint. All seven selections happen to use the fixed first validation item
-(numbers 99, 26, 26; target 100). Exact unabridged responses, source-log paths, and the extraction script are
-provided in \path{ablation/representative_outputs.md}, \path{ablation/representative_outputs.json}, and
-\path{ablation/extract_representative_outputs.py}. Representative response excerpts are listed in Table~\ref{tab:collapse_examples}.
-
-\begin{table}[H]
-\centering
-\footnotesize
-\caption{Content-blind examples from the short-response screen. The label \emph{Endpoint short} denotes a mean below 100 tokens over steps 90--100;
-the selected step is either the first sustained event or step 100. Character count is reported because the
-archived printed examples do not retain per-example token counts.}
-\label{tab:collapse_examples}
-\begin{tabular}{lrrrrp{5.0cm}}
-\toprule
-Configuration & Seed & Step & Chars & Score & Observation \\
+GRPO 13 & none & 1172.0 & 5.09 & 59.6 \\
+ & 0.001 & 67.5 & 0.31 & 30.0 \\
+ & 0.05 & 898.1 & 4.12 & 41.9 \\
 \midrule
-Exposure-matched no-DS & 5 & 30 & 132 & 0.1 & Tagged but incorrect expression; short at endpoint. \\
-Exposure-matched no-DS & 3 & 100 & 12,252 & 0.0 & Long unfinished search with no answer tag; long at endpoint. \\
-DS & 3 & 20 & 33 & 0.0 & Answer-only but incorrect expression; short at endpoint. \\
-A1 & 3 & 25 & 33 & 0.0 & Answer-only but incorrect expression; short at endpoint. \\
-A1 + KL 0.01 & 3 & 30 & 31 & 0.0 & Answer-only but incorrect expression; short at endpoint. \\
-A1 + KL 0.01 & 4 & 25 & 31 & 0.0 & Answer-only but incorrect expression during an early event. \\
-A1 + KL 0.01 & 4 & 100 & 173 & 0.0 & Longer explanation after recovery, but the equation remains incorrect; long at endpoint. \\
+DAPO-style 11 & none & 1864.1 & 8.88 & 55.5 \\
+ & 0.001 & 53.2 & 0.59 & 30.0 \\
+ & 0.05 & 549.1 & 7.09 & 46.2 \\
+\midrule
+DAPO-style 15 & none & 59.0 & 5.07 & 63.6 \\
+ & 0.001 & 976.6 & 5.03 & 63.8 \\
+ & 0.05 & 560.3 & 7.96 & 40.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\section{Complete Short-Response Screen}\label{app:complete_results}
+\section{Complete Training Results}\label{app:complete_results}
 
-Table~\ref{tab:all_screen_runs} reports every run in the fixed 22-run screen rather than only representative outcomes. Event step is the first sustained short-response window; a dash denotes right-censoring at step 100. The length and accuracy columns average available observations over steps 90--100.
+Table~\ref{tab:all_b_runs} reports every run; no run was stopped early, dropped, or replaced.
 
 \begin{table}[H]
 \centering
 \scriptsize
-\caption{Complete 22-run short-response screen. Endpoint is Short when mean response length over steps 90--100 is below 100 tokens and Long otherwise. The asterisk marks the legacy DS run whose stored random seeds are unknown; 1 is only a display identifier.}
-\label{tab:all_screen_runs}
+\caption{All 30 training runs. Window tokens is the mean response length over steps 90--100. Step-300 $H$ is the per-token categorical entropy (nats) of the training batch at step 300; an entropy explosion is step-300 $H$ above 1 nat. Countdown is validation accuracy at step 300. Clip fractions are percentages of response tokens, averaged over the 300 training steps.}
+\label{tab:all_b_runs}
 \resizebox{\textwidth}{!}{%
-\begin{tabular}{lllccrr}
+\begin{tabular}{lrlrlrrr}
 \toprule
-Configuration & Run/seed & Environment & Event step & Endpoint & Mean tokens & Validation accuracy (\%) \\
+Method and seed & \shortstack{Window\\tokens} & \shortstack{Early\\short} & \shortstack{Step-300\\$H$} & \shortstack{Entropy\\explosion} & \shortstack{Countdown\\(\%)} & \shortstack{Upper clip\\(\%)} & \shortstack{Lower clip\\(\%)} \\
 \midrule
-DS & 1* & Legacy & -- & Long & 1569.4 & 50.8 \\
-DS & 2 & Current & 20 & Short & 20.4 & 26.2 \\
-DS & 3 & Current & 20 & Short & 20.6 & 27.9 \\
-DS & 4 & Current & 20 & Short & 20.5 & 26.6 \\
-DS & 5 & Current & 20 & Short & 20.3 & 28.7 \\
-DS & 6 & Current & 20 & Short & 19.5 & 28.8 \\
+PPO 7 & 2060.0 & No & 0.01 & No & 52.4 & 0.07 & 0.11 \\
+PPO 8 & 96.0 & Yes & 5.34 & Yes & 2.1 & 0.76 & 2.21 \\
+PPO 9 & 2220.8 & No & 0.02 & No & 45.3 & 0.08 & 0.12 \\
+PPO 10 & 66.1 & Yes & 6.52 & Yes & 24.3 & 0.51 & 1.59 \\
+PPO 11 & 2174.4 & No & 0.14 & No & 54.0 & 0.08 & 0.10 \\
+PPO 12 & 2020.7 & No & 0.02 & No & 52.6 & 0.07 & 0.11 \\
+PPO 13 & 2111.2 & No & 0.01 & No & 50.2 & 0.06 & 0.11 \\
+PPO 14 & 119.6 & No & 4.20 & Yes & 40.9 & 0.21 & 0.43 \\
+PPO 15 & 2282.8 & No & 0.01 & No & 54.4 & 0.07 & 0.09 \\
+PPO 16 & 34.9 & Yes & 5.72 & Yes & 18.8 & 0.92 & 2.17 \\
 \midrule
-Exposure-matched no-DS & 1 & Current & 45 & Short & 61.9 & 22.4 \\
-Exposure-matched no-DS & 2 & Current & -- & Long & 229.6 & 18.8 \\
-Exposure-matched no-DS & 3 & Current & -- & Long & 1007.1 & 21.8 \\
-Exposure-matched no-DS & 4 & Current & -- & Long & 497.6 & 25.6 \\
-Exposure-matched no-DS & 5 & Current & 30 & Short & 41.7 & 20.3 \\
-Exposure-matched no-DS & 6 & Current & 50 & Short & 52.7 & 20.1 \\
+GRPO 7 & 1811.0 & No & 0.10 & No & 60.3 & 0.03 & 0.10 \\
+GRPO 8 & 69.5 & Yes & 0.39 & No & 26.1 & 0.07 & 0.70 \\
+GRPO 9 & 87.3 & Yes & 0.06 & No & 25.8 & 0.04 & 0.38 \\
+GRPO 10 & 52.8 & Yes & 0.11 & No & 31.1 & 0.08 & 0.54 \\
+GRPO 11 & 1918.8 & No & 0.05 & No & 62.4 & 0.03 & 0.11 \\
+GRPO 12 & 71.6 & Yes & 0.10 & No & 25.8 & 0.05 & 0.44 \\
+GRPO 13 & 1172.0 & No & 5.09 & Yes & 59.6 & 0.13 & 0.38 \\
+GRPO 14 & 65.5 & Yes & 0.18 & No & 55.9 & 0.06 & 0.37 \\
+GRPO 15 & 70.3 & Yes & 0.09 & No & 26.9 & 0.04 & 0.40 \\
+GRPO 16 & 26.0 & Yes & 0.06 & No & 30.5 & 0.12 & 0.61 \\
 \midrule
-A1 & 1 & Current & -- & Long & 2223.7 & 41.6 \\
-A1 & 2 & Current & 25 & Short & 19.7 & 24.6 \\
-A1 & 3 & Current & 25 & Short & 19.7 & 22.0 \\
-A1 & 4 & Current & 50 & Short & 20.7 & 22.9 \\
-A1 & 5 & Current & 25 & Short & 19.6 & 19.6 \\
-A1 & 6 & Current & 25 & Short & 19.7 & 25.7 \\
-\midrule
-A1 + KL 0.01 & 3 & Current & 30 & Short & 20.9 & 23.4 \\
-A1 + KL 0.01 & 4 & Current & 25 & Long & 132.2 & 25.3 \\
-A1 + KL 0.01 & 5 & Current & 30 & Short & 18.5 & 22.8 \\
-A1 + KL 0.01 & 6 & Current & 30 & Short & 20.7 & 23.5 \\
+DAPO-style 7 & 1843.2 & No & 0.36 & No & 63.5 & 0.01 & 0.12 \\
+DAPO-style 8 & 43.9 & Yes & 0.24 & No & 27.0 & 0.07 & 0.63 \\
+DAPO-style 9 & 48.7 & Yes & 0.42 & No & 28.1 & 0.06 & 0.58 \\
+DAPO-style 10 & 61.3 & Yes & 0.75 & No & 27.6 & 0.04 & 0.48 \\
+DAPO-style 11 & 1864.1 & No & 8.88 & Yes & 55.5 & 0.02 & 1.68 \\
+DAPO-style 12 & 65.5 & Yes & 0.17 & No & 25.0 & 0.04 & 0.40 \\
+DAPO-style 13 & 54.6 & Yes & 0.07 & No & 26.5 & 0.06 & 0.56 \\
+DAPO-style 14 & 60.1 & Yes & 0.11 & No & 26.9 & 0.04 & 0.44 \\
+DAPO-style 15 & 59.0 & Yes & 5.07 & Yes & 63.6 & 0.02 & 0.47 \\
+DAPO-style 16 & 57.3 & Yes & 0.24 & No & 25.1 & 0.05 & 0.57 \\
 \bottomrule
 \end{tabular}}
 \end{table}

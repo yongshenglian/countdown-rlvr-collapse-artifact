@@ -5,8 +5,8 @@
 # (DAPO_new/f8h77wol, Qwen2.5-1.5B-G8-acc-filtering-tokenlevel-bsz-32-0910), which is rung 3.
 # A rung script sets only: EXP_NAME, CLIP_HIGH, FILTER, GEN_BSZ (and optionally MAX_RESP).
 #
-# Shared setup (all rungs):  32 prompts trained per step, 8 responses each, 8 actor optimizer updates per step
-#   (256 response sequences / response mini-batch 32), 4096-token response cap, Sep-2025 reward (0.9 + 0.1 format), KL off, entropy 0,
+# Shared setup (all rungs):  32 prompts trained per step, 8 responses each, ONE actor optimizer update per step
+#   (mini-batch 32 is in prompts: 32 x 8 = 256 responses = the full batch; see MINI_BSZ), 4096-token response cap, Sep-2025 reward (0.9 + 0.1 format), KL off, entropy 0,
 #   lr 1e-6 with 10 warmup steps, constant after, a fixed requested horizon, token-mean loss.
 set -xeuo pipefail
 
@@ -32,7 +32,13 @@ ENV_BIN=/home/lian/miniconda3/envs/verl-fork/bin
 # Hugging Face release Qwen/Qwen2.5-1.5B-Instruct (revision 989aa79), the same checkpoint used as "base" in eval.
 MODEL_PATH=/home/lian/.cache/huggingface/hub/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306
 MAX_RESP=${MAX_RESP:-4096}
-CKPTS_DIR=/mnt/sdb/verl/${PROJECT}/${EXP_NAME}
+CKPT_ROOT=${CKPT_ROOT:-/mnt/sdb/verl}
+# DUMP=1 saves every training batch (token ids, log-probs, advantages, rewards) and every validation set's
+# generations inside the checkpoint directory. Needs replication/patches/experiment_b_logging.patch.
+DUMP=${DUMP:-0}
+CKPTS_DIR=${CKPT_ROOT}/${PROJECT}/${EXP_NAME}
+DUMP_ARGS=""
+if [ "${DUMP}" = 1 ]; then DUMP_ARGS="++trainer.step_dump_dir=${CKPTS_DIR}/dumps/steps ++trainer.validation_data_dir=${CKPTS_DIR}/dumps/val"; fi
 RAY_ADDRESS=${RAY_ADDRESS:-"http://localhost:8265"}
 RUNTIME_ENV=/home/lian/verl/verl/trainer/runtime_env.yaml
 REWARD_FILE=${REWARD_FILE:-/home/lian/AI_PPO_2026/ablation/reward_sep2025.py}
@@ -42,6 +48,9 @@ OVERLONG=${OVERLONG:-False}     # option A2: DAPO soft overlong punishment (rewa
 OVERLONG_LEN=${OVERLONG_LEN:-0}
 OVERLONG_PENALTY=${OVERLONG_PENALTY:-0.0}
 EXTRA_ARGS=${EXTRA_ARGS:-}      # option C: +algorithm.mask_uninformative_groups=True
+# Actor mini-batch in PROMPTS: verl multiplies it by rollout.n. 32 prompts x 8 = 256 responses = the whole batch,
+# i.e. ONE on-policy update per step, so the clip never binds. MINI_BSZ=4 gives 8 updates of 32 responses.
+MINI_BSZ=${MINI_BSZ:-32}
 
 cd /home/lian/verl   # same working directory (and verl 0.2.0.dev code) as the original DAPO runs
 
@@ -74,7 +83,7 @@ ${ENV_BIN}/ray job submit --address="${RAY_ADDRESS}" --no-wait --runtime-env="${
   actor_rollout_ref.actor.loss_agg_mode=token-mean \
   actor_rollout_ref.actor.grad_clip=1.0 \
   actor_rollout_ref.actor.ppo_epochs=1 \
-  actor_rollout_ref.actor.ppo_mini_batch_size=32 \
+  actor_rollout_ref.actor.ppo_mini_batch_size=${MINI_BSZ} \
   actor_rollout_ref.actor.optim.lr=1e-6 \
   actor_rollout_ref.actor.optim.lr_warmup_steps=10 \
   actor_rollout_ref.actor.optim.weight_decay=0.1 \
@@ -125,4 +134,4 @@ ${ENV_BIN}/ray job submit --address="${RAY_ADDRESS}" --no-wait --runtime-env="${
   trainer.total_epochs=${TOTAL_EPOCHS} \
   trainer.total_training_steps=${TOTAL_STEPS} \
   trainer.default_local_dir=${CKPTS_DIR} \
-  trainer.resume_mode=auto ${SEED_ARGS} ${EXTRA_ARGS}
+  trainer.resume_mode=auto ${SEED_ARGS} ${DUMP_ARGS} ${EXTRA_ARGS}

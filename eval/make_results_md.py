@@ -126,7 +126,7 @@ def steps_table(reg, order):
         else:
             trained = int(r.train_batch_size)
             gen = trained
-        upd = trained / mini * int(r.ppo_epochs)
+        upd = trained * n / mini * int(r.ppo_epochs)
         rows.append({"model": m, "step": step, "prompts generated / step": round(gen, 1),
                      "prompts trained / step": trained, "responses trained / step": trained * n,
                      "updates / step": int(upd), "prompts trained at eval step": trained * step,
@@ -136,14 +136,14 @@ def steps_table(reg, order):
 
 CONTROLLED = [
     "- **Original DAPO w/ DS vs. w/o DS: not controlled.** Without DS the trainer used all 192 generated prompts "
-    "(1,536 responses, 6 updates per step); with DS it retained 32 prompts (256 responses, 1 update). The original "
+    "(1,536 responses, 48 actor updates per step); with DS it retained 32 prompts (256 responses, 8 actor updates). The original "
     "benchmark gap therefore cannot be attributed to filtering. The completed matched comparison uses 32 prompts "
-    "and one update per step in both conditions (section 3.10), but it has limited seed replication and the matched "
+    "and eight actor updates per step in both conditions (section 3.10), but it has limited seed replication and the matched "
     "no-DS run was trained in a later software environment (`../ablation/README.md`).",
     "- **GRPO KL sweep (n = 2, lr 1e-6, mini-batch 64):** only the KL coefficient differs. Step-matched at 250 for "
     "all five coefficients (section 3.7); the KL 0.01 run exists only at step 250.",
-    "- **GRPO group size (n = 2 / 4 / 8 at KL 0.001):** prompts and updates per step are equal (192, 3), but "
-    "responses per step grow with n (384 / 768 / 1,536), so group size and sample budget change together.",
+    "- **GRPO group size (n = 2 / 4 / 8 at KL 0.001):** prompts per step are equal (192), but responses and actor updates grow with n; "
+    "responses are 384 / 768 / 1,536 and actor updates are 6 / 12 / 24, so group size and sample budget change together.",
     "- **GRPO reward (equal 0.5/0.5 vs. standard, n = 4, KL 1e-6): not controlled.** The equal-reward run "
     "(`checkagain`) was trained with `/home/lian/verl_fork` = verl 0.5.0.dev, the others with `/home/lian/verl` = "
     "verl 0.2.0.dev; 135 source files differ, including `trainer/ppo/core_algos.py`, `workers/actor/dp_actor.py` "
@@ -271,8 +271,8 @@ def main():
              "DS off, the DAPO trainer trains on the whole generated batch (`batch = new_batch`, "
              "`recipe/dapo/src/dapo_ray_trainer.py` line 170), so `train_batch_size=32` is ignored; with DS on it "
              "cuts the kept groups to `train_batch_size` (lines 215-216). Both are confirmed by the logged token counts "
-             "(1,536 sequences per step without DS, 256 with DS, at every step). Optimizer updates per step = trained "
-             "prompts / mini-batch x PPO epochs (PPO also updates its critic, not counted).\n")
+             "(1,536 sequences per step without DS, 256 with DS, at every step). Actor optimizer updates per step = trained "
+             "prompts x rollout n / response mini-batch x PPO epochs (PPO also updates its critic, not counted).\n")
     L.append(md_table(steps_table(reg, ORDER)))
     L.append("")
     L.append("### Which comparisons are controlled\n")
@@ -414,8 +414,8 @@ def main():
 
     L.append("\n### 3.10 Controlled dynamic-sampling test: ablation rung 2 vs. DS\n")
     L.append("Rung 2 has the DS run's exact settings (KL off, entropy 0, clip 0.2/0.28, lr 1e-6, n = 8, 4,096-token cap, "
-             "Sep reward) and the same trained batch (32 prompts, 1 update per step); only dynamic sampling is off "
-             "(`../ablation/README.md`). The old no-DS run is shown for reference (192 prompts, 6 updates per step).\n")
+             "Sep reward) and the same trained batch (32 prompts, 8 actor updates per step); only dynamic sampling is off "
+             "(`../ablation/README.md`). The old no-DS run is shown for reference (192 prompts, 48 actor updates per step).\n")
     root = os.path.dirname(HERE)
     hist = {"DS (f8h77wol)": os.path.join(root, "dapo_DS_f8h77wol_history.csv"),
             "rung 2 (no DS, 32/step)": os.path.join(root, "ablation", "rung2_5vmxmx4q_history.csv"),
@@ -562,11 +562,11 @@ def main():
              "trainer code and evaluated step (section 2, 'Which comparisons are controlled').")
     F.append("- **Highest average among the legacy headline checkpoints: DAPO w/o DS (step 300)**, and highest on GSM8K. "
              "Its gap over the original DS checkpoint cannot be attributed to dynamic sampling: no-DS trained on 192 "
-             "prompts and made 6 updates per step, whereas DS trained on 32 prompts and made 1 update. The completed "
+             "prompts and made 48 actor updates per step, whereas DS trained on 32 prompts and made 8 actor updates. The completed "
              "matched comparison is reported separately in section 3.10 and remains subject to seed and environment "
              "caveats. Strong-KL GRPO (KL 0.01 / 0.04) is significantly better than DAPO w/o DS on MATH and worse on "
              "GSM8K.")
-    F.append("- **Controlled dynamic-sampling test (ablation rung 2 vs. DS, both 32 prompts and 1 update per step, "
+    F.append("- **Controlled dynamic-sampling test (ablation rung 2 vs. DS, both 32 prompts and 8 actor updates per step, "
              "step 300; section 3.10):** without DS the model collapses into short answers on Countdown within 50 steps "
              "(mean response 54 tokens vs. 2,577 with DS; Countdown validation 25% vs. 65%). The old no-DS run avoided "
              "this only by training on 6x more prompts per step. On the benchmarks, DS makes little difference under "

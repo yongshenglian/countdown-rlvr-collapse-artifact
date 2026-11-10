@@ -1,0 +1,22 @@
+{
+  "source_git_commit": "77e475ca4bf5ec13684ee98b9d28f21551efb33f",
+  "decoding": {
+    "temperature": 0.0,
+    "max_tokens": 8192,
+    "max_model_len": 10240,
+    "seed": 0,
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "countdown__train_wrapper": 1024,
+    "countdown__standard": 1024
+  },
+  "include_base": true,
+  "sha256": {
+    "prompts/countdown__train_wrapper.jsonl": "ea0f8624f151a6c801ee6c547f67d52f650d57f848884e81714d2c8d90ada656",
+    "prompts/countdown__standard.jsonl": "fcacd5273c10997213ebb08fea7068e134739b5c7feb0fd41de216df92104c7d",
+    "CHECKPOINT_HASHES.json": "41f4213365d6e9ef1e79aed9f2ed3073190ce9ab096fa192ed159774e6d654b0",
+    "run.py": "7eb75c33eb851dc7a3ece5289b991185e75b196207b18edd2fc2e6e3e52c1ba3",
+    "run_lambda.sh": "844589f38f7f14e2c5462678320518ae47f9fbb45fea34c8a861c306df55b372"
+  }
+}

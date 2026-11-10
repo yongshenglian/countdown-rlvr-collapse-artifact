@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Submit one run from MATCHED_COMPARISON_PROTOCOL.md.
-# Usage: bash replication/submit_matched_comparison.sh ppo|grpo|dapo 7|8|9
+# Usage: bash replication/submit_matched_comparison.sh ppo|grpo|dapo 7-13
 set -euo pipefail
 
 ROOT=/home/lian/AI_PPO_2026
@@ -16,9 +16,9 @@ PROJECT=Matched_RLVR_Comparison
 TOTAL_STEPS=300
 
 recipe=${1:?recipe must be ppo, grpo, or dapo}
-seed=${2:?seed must be 7, 8, or 9}
+seed=${2:?seed must be 7-13}
 case "$recipe" in ppo|grpo|dapo) ;; *) echo "Invalid recipe: $recipe" >&2; exit 2 ;; esac
-case "$seed" in 7|8|9) ;; *) echo "Invalid prospective seed: $seed" >&2; exit 2 ;; esac
+case "$seed" in 7|8|9|10|11|12|13) ;; *) echo "Invalid prospective seed: $seed" >&2; exit 2 ;; esac
 
 if ! "$RAY" status >/dev/null 2>&1; then
   echo "Ray cluster is not available at $ADDRESS" >&2

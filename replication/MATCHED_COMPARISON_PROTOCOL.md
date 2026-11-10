@@ -108,3 +108,55 @@ The queue stops on a runtime failure so that any repair can be documented and ap
   its scalar at the last valid response token. The GRPO and DAPO-style launchers retain their native DAPO
   wrapper with `overlong_buffer.enable=False`. This compatibility repair changes neither the reward function
   nor any frozen data, algorithm, seed, hyperparameter, endpoint, or run order.
+
+## Seed extension (frozen 27 October 2026, before launching any seed-10--13 run)
+
+Motivation: with three seeds per method, no between-method difference in the early-short-response
+rate can reach p < 0.05 (even 3/3 versus 0/3 gives one-sided Fisher p = 0.05). The extension adds
+four seeds per method so that each method has seven.
+
+- New seeds: 10, 11, 12, 13 for PPO, GRPO, and DAPO-style (12 runs). Data seed and rollout seed are
+  again paired within each run.
+- Everything else is unchanged from the frozen protocol above: the same machine, GPUs, software
+  environment, verl commit, launch scripts, reward, data, hyperparameters, 300-step horizon,
+  checkpoints, and validation schedule. The only script changes are accepting seeds 10--13 and a new
+  queue order.
+- Execution order (method order rotated across seeds):
+  1. PPO 10, 2. GRPO 10, 3. DAPO-style 10,
+  4. GRPO 11, 5. DAPO-style 11, 6. PPO 11,
+  7. DAPO-style 12, 8. PPO 12, 9. GRPO 12,
+  10. PPO 13, 11. DAPO-style 13, 12. GRPO 13.
+- Endpoints are unchanged: the early-short-response criterion (mean response length below 100 tokens
+  over steps 90--100) and the step-300 checkpoint for in-domain and downstream evaluation.
+- No run is stopped early, dropped, or replaced; a failed run stays in the denominator. A startup
+  failure before step 1 is repaired, documented here, and rerun, as for seed 7.
+- Primary analysis, fixed now: the early-short-response rate of DAPO-style versus GRPO over seeds
+  7--13 (7 versus 7), two-sided Fisher exact test. This contrast isolates asymmetric clipping. PPO
+  versus GRPO and DAPO-style versus PPO are secondary and reported with the same test, without
+  multiplicity correction; exact 95% Clopper--Pearson intervals are reported for each method's rate.
+- Seeds 7--9 and 10--13 are pooled; per-seed results are reported for all 21 runs. Results for
+  seeds 7--9 are already known, so the pooled analysis is not fully prospective; seeds 10--13 alone are
+  also reported as a prospective replication.
+- The prompt-conditional analysis (standard versus think prompt on GSM8K, persistent-short versus
+  long-response checkpoints) is repeated on all 21 step-300 checkpoints with an exact two-sided
+  Mann--Whitney test.
+
+### Deviation: early-short threshold rounding (28 October 2026, after six extension runs)
+
+GRPO seed 10 averaged 100.05 tokens over steps 90--100, so it narrowly missed the frozen "below 100
+tokens" rule, although it stayed below 100 tokens for most of training after step 30 and ended at 66
+tokens. After seeing this value, the criterion was changed to: the window mean, rounded to the nearest
+token, is at most 100 tokens. The change is post hoc and is reported as such. It is applied to every run
+(all comparison seeds, the extension, and the 22-run screen) and reclassifies only GRPO seed 10; the
+nearest other run is 132 tokens. It works against the primary hypothesis because it adds an
+early-short run to GRPO, the comparator for DAPO-style training. Results are also reported under the
+original "below 100 tokens" rule as a sensitivity analysis.
+
+### Addition: GSM8K prompt variants on the extension checkpoints (30 October 2026, before any extension checkpoint was evaluated downstream)
+
+The 12 extension step-300 checkpoints get the same downstream evaluation as seeds 7--9: all four
+benchmarks with the standard and think prompts. They also get the five GSM8K think-prompt variants
+already run on the nine seed 7--9 checkpoints (`eval/eval_gsm8k_prompt_ablation.py`: think_no_example,
+think_example17, think_no_prefill, clean_tags; and `eval/eval_gsm8k_prompt_open_tag_ablation.py`),
+with the same 8,192-token limit, greedy decoding, and scorers. The variants are not run on the other
+benchmarks: their wording assumes a numeric answer.

@@ -21,6 +21,19 @@ MODELS = {
     "matched_dapo_s7_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s7_step300",
     "matched_dapo_s8_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s8_step300",
     "matched_dapo_s9_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s9_step300",
+    # Seed extension of the matched comparison (seeds 10--13, step 300).
+    "matched_ppo_s10_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s10_step300",
+    "matched_ppo_s11_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s11_step300",
+    "matched_ppo_s12_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s12_step300",
+    "matched_ppo_s13_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_ppo_s13_step300",
+    "matched_grpo_s10_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s10_step300",
+    "matched_grpo_s11_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s11_step300",
+    "matched_grpo_s12_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s12_step300",
+    "matched_grpo_s13_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_grpo_s13_step300",
+    "matched_dapo_s10_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s10_step300",
+    "matched_dapo_s11_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s11_step300",
+    "matched_dapo_s12_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s12_step300",
+    "matched_dapo_s13_step300": "/mnt/sdb/verl/Matched_RLVR_Comparison/merged_hf/matched_dapo_s13_step300",
     "noDS_step300": "/mnt/sdb/verl/DAPO_new/merged_hf/noDS_step300",
     "DS_step300": "/mnt/sdb/verl/DAPO_new/merged_hf/DS_step300",
     # improved PPO, /home/lian/verl/checkpoints/PPO_Countdown_R1_0923/ppo_qwen2.5_1.5b-train192-mini32/global_step_400
@@ -113,6 +126,10 @@ MODELS = {
     "rungA1s2_step300": "/mnt/sdb/verl/DAPO_new/merged_hf/rungA1s2_step300",
     # option A1, training seed 2 (data.seed=2, rollout.seed=2), step 520
     "rungA1s2_step520": "/mnt/sdb/verl/DAPO_new/merged_hf/rungA1s2_step520",
+    # Experiment B: active clip (mini-batch 4 prompts, 8 updates/step), seeds 7--16, step 300
+    # (replication/ACTIVE_CLIP_PROTOCOL.md; merged by replication/merge_active_clip_checkpoints.sh).
+    **{f"b_{m}_s{s}_step300": f"/mnt/sda/data/verl/Active_Clip_Comparison/merged_hf/b_{m}_s{s}_step300"
+       for s in range(7, 17) for m in ("ppo", "grpo", "dapo")},
 }
 
 # results/ holds the 2048-token run; set EVAL_RESULTS=results_8k (etc.) for other settings
