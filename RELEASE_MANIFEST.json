@@ -1,6 +1,6 @@
 {
   "aggregate_definition": "SHA-256 of canonical JSON file list (path, bytes, sha256)",
-  "aggregate_sha256": "c4677e657ee419d1e9fcf82f311c2aa4121c2ab346da3fe440d02fa0db082e87",
+  "aggregate_sha256": "f0bf45cc4263d9155f2ff06588c2e78d729ed06a294d357155b04e6cbc1e9667",
   "file_count": 376,
   "files": [
     {
@@ -1646,12 +1646,12 @@
     {
       "bytes": 270784,
       "path": "ppo_comparison_revised.pdf",
-      "sha256": "45547da26089bc98734ed4a3ae477ef3e3e03b695c8b7455fbd36b1602259acf"
+      "sha256": "d183819c3b595338ad17601569dbaf1727b936b4041e6e8b9264657170aec86b"
     },
     {
       "bytes": 62778,
       "path": "ppo_comparison_revised.tex",
-      "sha256": "0eb39907d1a2c9794c2e2bb368ee9a4ba88c0ce9be3ee96c451da369340427e4"
+      "sha256": "2e0fda986333686e6142d314aa1ba4a2139367cd7467a2571c5fbb5db8ac67e4"
     },
     {
       "bytes": 9911,
